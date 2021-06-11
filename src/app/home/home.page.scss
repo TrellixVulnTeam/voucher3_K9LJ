@@ -1,0 +1,38 @@
+.leftleft{
+  transition: all .2s ease;
+  // opacity:1;
+  transform: translateY(-320px);
+}
+
+.leftleftx{
+  transition: all .2s ease;
+  // opacity:0;
+  transform: translateY(0);
+}
+
+.leftleftall{
+  transition: opacity .2s ease;
+  opacity: 1;
+  transform: translateX(100vw);
+}
+
+.leftleftallx{
+  transition: opacity .2s ease;
+  opacity:0;
+  transform: translateX(0);
+  animation: goaway .2s ease;
+}
+
+@keyframes goaway{
+  0%{
+      opacity:1;
+      transform: translateX(-100vw);
+  }
+  99%{
+      transform: translateX(-100vw);
+  }
+  100%{
+      opacity:0;
+      transform: translateX(0);
+  }
+}

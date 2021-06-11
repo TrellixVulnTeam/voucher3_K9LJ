@@ -1,0 +1,187 @@
+<ion-content>
+
+  <div *ngIf="paid == 'true' && addresser == 'false' || paid == true && addresser == 'true'"
+    style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .3); position: fixed; top: 0;">
+
+    <div style="width: calc(100% - 40px); max-width: 300px; height: calc(100vh / 1.5); max-height: 500px;">
+
+      <div
+        style="width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
+
+        <div
+          style="width: 100%; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <div
+            style="width: calc(100% - 50px); height: 100px; display: flex; flex-direction: column; align-items: center; border-bottom: 3px dashed #eeeeee; position: relative;">
+
+            <div
+              style="width: 60px; height: 60px; padding: 5px; background-color: #ffffff; border-radius: 100%; position: absolute; top: -30px;">
+
+              <div
+                style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #ff9900; border-radius: 100%;">
+                <ion-icon style="font-size: 45px; color: #ffffff;" name="checkmark"></ion-icon>
+              </div>
+
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 30px;">
+              <h3 style="font-weight: 600; margin: 0px 0px 3px 0px;">Thank You!</h3>
+              <h6 style="font-weight: 600; color: #cccccc; margin: 0;">Your purchase was successful</h6>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <div
+        style="margin-top: -1px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0px; background: #ffffff; border-radius: 10px; background-image:
+         radial-gradient(circle at left top, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right top, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
+
+        <div style="width: calc(100% - 50px); max-width: 300px; max-height: 300px;">
+
+          <img style="width: 100%; height: 100%; object-fit: contain;" src="{{qr}}" alt="">
+        </div>
+
+        <div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
+          <div style="width: calc(100% - 50px); font-size: 14px; font-weight: 500; color: #cccccc; text-align: center;">
+            You can redeem the product at our outlet.</div>
+        </div>
+
+
+
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="paid == 'true' && addresser == 'true' || paid == true && addresser == 'false'"
+    style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .3); position: fixed; top: 0;">
+
+    <div style="width: calc(100% - 40px); max-width: 400px; height: calc(100vh / 1.5); max-height: 500px;">
+
+      <div
+        style="width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
+
+        <div
+          style="width: 100%; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <div
+            style="width: calc(100% - 50px); height: 100px; display: flex; flex-direction: column; align-items: center; border-bottom: 3px dashed #eeeeee; position: relative;">
+
+            <div
+              style="width: 60px; height: 60px; padding: 5px; background-color: #ffffff; border-radius: 100%; position: absolute; top: -30px;">
+
+              <div
+                style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #ff9900; border-radius: 100%;">
+                <ion-icon style="font-size: 45px; color: #ffffff;" name="checkmark"></ion-icon>
+              </div>
+
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 30px;">
+              <h3 style="font-weight: 600; margin: 0px 0px 3px 0px;">Thank You!</h3>
+              <h6 style="font-weight: 600; color: #d7d7d7; margin: 0;">Your purchase was successful</h6>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <div
+        style="margin-top: -1px; width: 100%; background: #ffffff; border-radius: 10px;
+         background-image: radial-gradient(circle at left top, rgba(0, 0, 0, 0.3) 15px, transparent 0),
+          radial-gradient(circle at right top, rgba(0, 0, 0, 0.3) 15px, transparent 0); padding: 30px; text-align: center;">
+
+        <img style="width: 100%;" src="assets/1.png">
+
+        <div style=" font-size: 14px; font-weight: 500; color: #cccccc; text-align: center; margin-top: 20px;">
+          Merchant will shipout your product soon.</div>
+
+        <!-- <div style="font-weight: 500; display: flex; align-items: center;">
+          <ion-icon style="margin-right: 10px; font-size: 25px;" name="person-circle-outline"></ion-icon>
+          <div style="width: calc(100% - 20px);"> {{name}}</div>
+        </div>
+
+        <div style="margin-top: 30px; font-weight: 500; display: flex; align-items: center;">
+          <ion-icon style="margin-right: 10px; font-size: 25px;" name="call-outline"></ion-icon>
+
+          <div style="width: calc(100% - 20px);"> {{contact}}</div>
+        </div>
+
+        <div style="margin-top: 30px; font-weight: 500; display: flex; align-items: center;">
+          <ion-icon style="margin-right: 10px; font-size: 25px;" name="mail-outline"></ion-icon>
+
+          <div style="width: calc(100% - 20px);"> {{email}}</div>
+        </div>
+
+        <div style="margin-top: 30px; font-weight: 500; display: flex; align-items: center;">
+          <ion-icon style="margin-right: 10px; font-size: 25px;" name="home-outline"></ion-icon>
+          <div style="width: calc(100% - 20px);"> {{address}}</div>
+        </div> -->
+
+        <div *ngIf="items.aftersale" style="margin-top: 30px; font-weight: 500; font-size: 12px;"><span
+            style="color: red;">*</span> Instruction:</div>
+
+        <div *ngIf="items.aftersale" style=" margin-top: 5px; font-weight: 500;">
+          - {{items.aftersale}}</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="paid == 'false' || paid == false"
+    style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .3); ">
+
+    <div style="width: calc(100% - 40px); max-width: 400px;">
+
+      <div
+        style="width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
+
+        <div
+          style="width: 100%; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <div
+            style="width: calc(100% - 50px); height: 100px; display: flex; flex-direction: column; align-items: center; border-bottom: 3px dashed #eeeeee; position: relative;">
+
+            <div
+              style="width: 60px; height: 60px; padding: 5px; background-color: #ffffff; border-radius: 100%; position: absolute; top: -30px;">
+
+              <div
+                style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #e05555; border-radius: 100%;">
+                <ion-icon style="font-size: 45px; color: #ffffff;" name="close"></ion-icon>
+              </div>
+
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 30px;">
+              <h3 style="font-weight: 600; margin: 0px 0px 3px 0px;">Sorry!</h3>
+              <h6 style="font-weight: 600; color: #d7d7d7; margin: 0;">Your purchase was unsuccessful</h6>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top: -1px; width: 100%; background: #ffffff; border-radius: 10px;
+         background-image: radial-gradient(circle at left top, rgba(0, 0, 0, 0.3) 15px, transparent 0),
+          radial-gradient(circle at right top, rgba(0, 0, 0, 0.3) 15px, transparent 0); padding: 40px 30px;">
+
+        <img style="width: 100%;" src="assets/1.png">
+
+        <div style=" font-size: 14px; font-weight: 500; color: #cccccc; text-align: center; margin-top: 20px;">
+          You have cancelled your transaction.</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

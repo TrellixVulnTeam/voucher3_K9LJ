@@ -1,0 +1,208 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+.anim{
+    transition: all .4s ease;
+
+    .scale{
+        transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: scale(1);
+    }
+    
+    .scalex{
+        transition: all .4s ease;
+        transform: scale(0);
+    }
+
+    .scaleabit{
+        transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: scale(1);
+    }
+    
+    .scaleabitx{
+        transition: all .4s ease;
+        transform: scale(0.90);
+    }
+    
+    
+    .fromleft{
+        transition: all .4s ease;
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .fromleftx{
+        transition: all .4s ease;
+        transform: translateX(-100vw);
+        opacity: 0;
+    }
+    
+    .fromright{
+        transition: all .4s ease;
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .fromrightx{
+        transition: all .4s ease;
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+    
+    .fromtop{
+        transition: all .4s ease;
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .fromtopx{
+        transition: all .4s ease;
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+    
+    .frombottom{
+        transition: all .4s ease;
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .frombottomx{
+        transition: all .4s ease;
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+    
+    .fadeleft{
+        transition: all .4s ease;
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .fadeleftx{
+        transition: all .4s ease;
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+
+    .goleft{
+        transition: all .4s ease;
+        transform: translateX(0px);
+        padding-left:20px;
+        opacity: 1;
+    }
+    
+    .goleftx{
+        padding-left:0px;
+        transition: all .4s ease;
+        transform: translateX(-100px);
+        opacity: 1;
+    }
+    
+    .faderight{
+        transition: all .4s ease;
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .faderightx{
+        transition: all .4s ease;
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    
+    .fadetop{
+        transition: all .4s ease;
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .fadetopx{
+        transition: all .4s ease;
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    
+    .fadebottom{
+        transition: all .4s ease;
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .fadebottomx{
+        transition: all .4s ease;
+        transform: translateY(100px);
+        opacity: 0;
+    }
+
+    .fade{
+        transition: all .4s ease;
+        opacity: 1;
+    }
+
+    .fadex{
+        transition: all .4s ease;
+        opacity: 0;
+    }
+
+    .rotate{
+        transition: all .4s ease;
+        transform: rotate(360deg);
+        opacity: 1;
+    }
+
+    .rotatex{
+        transition: all .4s ease;
+        transform: rotate(0);
+        opacity: 0;
+    }
+
+}
+
+.scaling{
+    transition: all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(1);
+    opacity: 1;
+}
+
+.scalingx{
+    transition: all .2s ease;
+    transform: scale(0);
+    opacity: 0;
+}
+
+.loading{
+    transition: all .5s ease;
+    opacity: 1;
+    z-index: 1000000;
+  }
+  
+  .loadingx{
+    transition: all .5s ease;
+    opacity: 0;
+    z-index: -1;
+  }

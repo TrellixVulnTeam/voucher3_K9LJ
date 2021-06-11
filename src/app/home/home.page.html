@@ -1,0 +1,196 @@
+<ion-content *ngIf="lengthof_obj(items) > 0" style="--background: #f7f9fd; color: black;">
+
+  <div [ngStyle]="{'margin-left': lefter()}" style="max-width: 800px; width: 100vw;">
+    <div style="top: 0px; position: sticky;  display: flex; align-items: center; 
+    justify-content: space-between; padding: 7.5px 20px; background-color: #f5783c;z-index: 10000;">
+      <img style="height: 20px;" src="assets/logo.png">
+    </div>
+
+    <ion-slides *ngIf="items.photo" style='height: 300px; max-height: 300px;' pager="true" [options]="slideOpts">
+      <ion-slide *ngFor="let x of items.photo"
+        style='height:auto;display:flex;justify-content: center;align-items: center;background-color: black;;'>
+        <img style='width:100%;object-fit: contain;height:100%;position: absolute;z-index:1;' src={{x.url}} alt="">
+        <img style='width:100%;object-fit: cover;height:100%;filter: blur(2px);opacity: 0.5;' src={{x.url}} alt="">
+      </ion-slide>
+    </ion-slides>
+
+    <div *ngIf="!items.photo" style='height: 300px; max-height: 300px; position: relative;'>
+      <img style='width:100%;object-fit: contain;height:100%;position: absolute;z-index:1;' src={{items.thumbnail}}
+        alt="">
+      <img style='width:100%;object-fit: cover;height:100%;filter: blur(2px);opacity: 0.5;' src={{items.thumbnail}}
+        alt="">
+    </div>
+
+    <div style='padding:20px; background-color: white;'>
+      <div style='display:flex;width: 100%;'>
+        <!-- <img style='width:100px;height:100px;object-fit: cover;border-radius:5px;' src={{items.thumbnail}} alt=""> -->
+        <div style='padding:0px 0px;margin-left:0px; display: flex; height: 100%;
+          flex-direction: column; align-content: space-between;'>
+          <div>
+            <div style='color:#f26627;border-radius: 5px;width:max-content;font-size:12px;margin-bottom:5px;'>
+              {{vendor.name}}</div>
+            <div style='font-size:16px; '>{{items.name}}</div>
+          </div>
+          <div style='font-size:15px;font-weight: bold;color:#f5783c;margin-top:10px;'>{{items.price_now ? 'RM' : ''}}
+            {{items.price_now ? items.price_now : 'FREE'}}&nbsp;
+          </div>
+          <div *ngIf='items.price_ori>items.price_now' style='display:flex;align-items: center;margin-top:10px;'>
+            <div style='font-size:12px;font-weight: normal;color:#999999;text-decoration: line-through;'>&nbsp;RM
+              {{items.price_ori}}&nbsp;
+            </div>
+
+            <div style='font-size:12px;color:#f26627;margin-left:10px;'>-
+              RM{{( items.price_ori - items.price_now ).toFixed(2)}}
+              OFF</div>
+          </div>
+
+        </div>
+      </div>
+      <div *ngIf='items.description' style='margin-top:30px;font-size:16px;font-weight: bold;'>Description 配套详情</div>
+      <div style='font-size:15px;margin-top:10px;color:#262626; white-space: pre-wrap;'>{{items.description}}</div>
+
+      <div *ngIf='items.tnc' style='margin-top:30px;font-size:16px;font-weight: bold;'>Terms & Conditions 配套条规</div>
+      <div style='font-size:15px;margin-top:10px;color:#262626; white-space: pre-wrap; '>{{items.tnc}}</div>
+
+      <div style='width:100%;border-bottom:1px solid #eeeeee;margin-top:30px;'></div>
+      <div style='margin-top:30px;font-size:16px;font-weight: bold;'>About Merchant 关于商家</div>
+
+      <div style='padding: 20px 0px; width: 100%; display: flex;'>
+        <img *ngIf="vendor.photo"
+          style='margin-top: 10px; min-height: 80px; min-width: 80px; max-height: 80px; max-width: 80px; border-radius: 100%;object-fit: cover;'
+          src={{vendor.photo}} alt="">
+
+        <img *ngIf="!vendor.photo"
+          style='margin-top: 10px; height: 80px; width: 80px; border-radius: 100%;object-fit: cover;'
+          src='https://as2.ftcdn.net/jpg/02/23/44/07/500_F_223440761_58cni9Dlb97tCoTCbljUpQ1KpfttHuIC.jpg' alt="">
+
+        <div style='padding-left: 20px; width: 100%;'>
+          <div style='font-size:14px;font-weight: bold;'>{{vendor.name}}</div>
+          <div style='margin-top:5px;font-size:14px;color:#737373; display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;'>{{vendor.description}}</div>
+        </div>
+      </div>
+
+
+      <div style="width: 100%; font-size: 10px; color: #999999; text-align: center;">© Copyright 2020- All rights
+        reserved - Vsnap by Vsnap Global Sdn Bhd. Version 1.3.0
+      </div>
+
+      <div style="width: 100%; font-size: 10px;margin-top:10px; text-align: center;">
+        <span (click)='enterlink("terms")' style='cursor: pointer; color:rgb(81, 81, 255);'>Terms & Condition</span> •
+        <span (click)='enterlink("privacy")' style='cursor: pointer; color:rgb(81, 81, 255);'>Privacy Policy</span> •
+        <span (click)='enterlink("disclaimer")' style='cursor: pointer; color:rgb(81, 81, 255);'>Disclaimer</span> •
+        <span (click)='enterlink("refund")' style='cursor: pointer; color:rgb(81, 81, 255);'>Refund Policy</span>
+      </div>
+    </div>
+
+    <!-- <div style='width: 100vw; height: 95px;'></div> -->
+
+    <div style="width: 100%; max-width: 1024px; position: sticky; bottom: 0px; z-index: 100;">
+      <div style='display:flex;justify-content: space-between;align-items: center;
+      padding: 7.5px 15px;box-shadow: 1px -3px 5px rgba(0,0,0,0.1); background-color: white;'>
+        <div style='display:flex;justify-content: center;align-items: center;'>
+          <div [ngStyle]="{'color': qtys>1 ? 'black' : '#999999'}"
+            style='border: 1px solid #eeeeee;height:30px;width:30px;display:flex;justify-content: center;align-items: center;cursor: pointer;'>
+            <ion-icon (click)="calc('-')" name="remove-outline"></ion-icon>
+          </div>
+          <div style='color:black; font-size:15px;margin:0px 20px;font-weight: bold;'>{{qtys}}</div>
+          <div [ngStyle]="{'color': 5>qtys ? 'black' : '#999999'}"
+            style='border: 1px solid #eeeeee;height:30px;width:30px;display:flex;justify-content: center;align-items: center;cursor: pointer;'>
+            <ion-icon (click)="5>qtys ? calc('+') : null" name="add-outline"></ion-icon>
+          </div>
+        </div>
+        <div style='color:black; font-size:15px;font-weight: bold;'>{{items.price_now ? 'RM ' : ''}}{{ items.price_now ?
+          (items.price_now * qtys) : 'FREE'}}</div>
+      </div>
+      <div class="ion-activatable ripple-parent" (click)='buy = true' style='z-index: 100; background-color: #f5783c;padding:10px 20px;text-align: center;
+      cursor: pointer;color:white;font-size: 16px;font-weight: bold;height:50px;display:flex;
+      justify-content: center;align-items: center;cursor: pointer;z-index:1000;'>
+        <ion-ripple-effect></ion-ripple-effect>
+        Buy Now
+      </div>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-content *ngIf="lengthof_obj(items) == 0" style="--background: #f7f9fd; color: black;">
+  <div
+    style="width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <img style="width: 100%;object-fit: cover;"
+      src="https://cdn.dribbble.com/users/718859/screenshots/3267029/jisunpark_404-error.gif">
+  </div>
+</ion-content>
+
+
+<div [ngClass]="buy ? 'loading' : 'loadingx'" style=" width: 100vw; height: 100vh; color: black;
+ position: fixed; display: flex; align-items: center; justify-content: center;">
+  <div style="background-color: black; position: absolute; height: 100vh; width: 100vw; opacity: 0.5; z-index: 0;">
+  </div>
+
+  <div
+    style="padding: 15px; border-radius: 15px; background-color: white; z-index: 100; width: 80%; max-width: 400px; position: relative;">
+    <div style="font-size: 14px; font-weight: 500;">Please fill up the information 请填写资料</div>
+
+    <ion-icon (click)="buy = false" style="position: absolute; top: 10px; right: 10px; font-size: 20px;"
+      name="close-circle-outline"></ion-icon>
+
+    <ion-item style="font-size: 14px;" class="ion-no-padding">
+      <ion-label position="floating">Name 姓名</ion-label>
+      <ion-input type='text' [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item style="font-size: 14px;" class="ion-no-padding">
+      <ion-label position="floating">Email 邮件</ion-label>
+      <ion-input type='email' [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="items.address" style="font-size: 14px;" class="ion-no-padding">
+      <ion-label position="floating">Address 邮寄地址</ion-label>
+      <ion-input type='text' [(ngModel)]="address"></ion-input>
+    </ion-item>
+    <ion-item style="font-size: 14px;" class="ion-no-padding">
+      <ion-label position="floating">Contact 联系号码</ion-label>
+      <ion-input type='tel' [(ngModel)]="contact"></ion-input>
+    </ion-item>
+
+    <div *ngIf="items.address==true" style="font-size: 12px; font-weight: 500; margin-top: 10px;"><span
+        style="color: red">*</span>
+      Item will be delivered to this address | 商品將會運送到此地址</div>
+    <div *ngIf="items.address ==false" style="font-size: 12px; font-weight: 500; margin-top: 10px;"><span
+        style="color: red">*</span>Voucher QR code
+      will be sent to your email upon purchase | 配套QR二维码将在付款后发至您的email</div>
+
+    <div style="display: flex; align-items: center;margin-top: 10px;">
+      <ion-checkbox [(ngModel)]="agree"
+        style="max-width: 15px; max-height: 15px; --border-color-checked: #f26627 ; --background-checked: #f26627">
+      </ion-checkbox>
+      <div style="padding-left: 10px; font-size: 10px;">i've agreed with the <span (click)='enterlink("refund")'
+          style="cursor: pointer; color: #0000EE; text-decoration: underline;">Refund Policy</span> and
+        <span (click)='enterlink("terms")' style="cursor: pointer; color: #0000EE; text-decoration: underline;">Terms
+          and
+          Conditions</span>
+      </div>
+    </div>
+
+    <div *ngIf="!agree || !check() "
+      style='border-radius: 10px; margin-top: 20px; background-color: #eeeeee;
+  padding:7.5px 15px;text-align: center; cursor: pointer;color:#999999;font-size: 14px; font-weight: bold; text-align: center; cursor: pointer;z-index:1000;'>
+      Purchase 购买
+    </div>
+
+    <div *ngIf="agree && check()" (click)="buys()" class="ion-activatable ripple-parent"
+      style='border-radius: 10px; margin-top: 20px; background-color: #f5783c;
+    padding:7.5px 15px;text-align: center; cursor: pointer;color:white;font-size: 14px; font-weight: bold; text-align: center; cursor: pointer;z-index:1000;'>
+      <ion-ripple-effect></ion-ripple-effect>
+      Purchase 购买
+    </div>
+  </div>
+
+</div>
+
+<div [ngClass]="load == true ? 'loading' : 'loadingx'" style=" width: 100vw; height: 100vh;
+ position: fixed; display: flex; align-items: center; justify-content: center;
+  background-color: white;">
+  <img style="object-fit: cover; height: 100%; width: 100%;" src='assets/clogo.gif'>
+</div>

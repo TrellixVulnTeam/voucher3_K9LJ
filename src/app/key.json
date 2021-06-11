@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "project_id": "newvsnap",
+    "private_key_id": "7b7561d00fbc9744ec90eb1998d3fe690883ca52",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCcxmP2nJjtoLg9\nkS7c48exwqJyxWVcrAy7540jZqu0BgSeqYouM73R+2gHDS+quHdqWNTt78EKJXuw\nPQ7wEjJ31YqnxuCzye/vJmO3R2KyCYcpThiiDAfofwStlaRzEiX4EOqSEx4zF9rZ\nbAq+IPQzZpwHyOstFdhuJUuI5yuGw/aaDv3RVRGoHvsMMEyNbO2grWPpGy74nNT2\nJHUt4gquoFec46nlOS8o2TbiKKaJer4aIcR5dDkxZKVMWErPFcvTtBV64yVoO0v4\nxxu3xefdB83EsEFiPD/DdnOXQxVj7wvxXrQAYud/MitDYLH1/yuKqUWhfe0LR8bd\ntlX2niCdAgMBAAECggEAGy0WyfqWVebc2StQHNFNXgaXw15tdjWK1Y3LfP4AuKms\nZlaMUfr9Jie2/jXuc+EbLi+s5XwAkgIyYTgMXVhCMFyvdur2K6RPN70HXw98T9Fw\nARx9D6YXPtm51V9RzPKx60D/cIfo3cF+Wd8tM40h18ErPfw5rCyTwnArmlU8SdVr\nzu/4VNUdzb2ff7Sa4aidM4yTN7p+ZOxo3SICs7ia3eE62aj5NFYOAS74PwLCrllx\ntuwmAYH/n20QjvcluLOS5SD3/EMbT1T2NWPTSCDsaSoPlmH2QOIjqyt45K98CTBH\nbPpMTE4kf6VYSEKA7DQmPXVVj5OW1xXYA1oKIRPjvwKBgQDWO3EZc5eZ2I7lqWSC\n12rtGfwY0zz9gB4wSkUJy3IBqsZknIrQAlkBwZdmUQrU7YzwTux3vdHUfbxTgVOc\nrXRynYA7R3N1DxaR9f69TzIN1tkaQA+CalgXQ6OnygppN4I36MPACgVDf4KD86/8\nuaQzB0hivsQw5GTZ+BP2CGxXswKBgQC7VzJdLTPcF16pHOR+p6GPCkZfqeETKf1q\nDxUcaHstKQfYo4hYVHzFb7U/cmnYTJ3uDfUoXtadDOCk5gg8hGnjvHyuLNTpNBRu\n9shO/wLpIaE257WzIUzfoMEGxSgpR5VAh7RapgKVkgQAMfYQbVT0lBvDGmd5xf8U\nZSSZtJ5+bwKBgQCX6hTccHybataCAym0Ip+/PILo87o3JQfDRJdKR8szZW9D30IM\nGO4W8bmzo1pj/YPI0J6clq1Z2kOWj4nD+7gsooVRA+zaoHVn0aHvil47NBRFqhGV\ncGXBMYS2se3KCMO9c8CDyFdNMvlRKpesRdQrH0n0Q8SJyxu8+U7mU7jIQwKBgG0x\nktp6eWrEeFlLzOcB4AoWrBQgWV8pL1r9NYncYEdfTgJ4twT9IciWpuc3UfhQGBFk\nM0v3k1Hw6pNSvORBLdMezvFakjLnNy3CS9i3jMPD5UqyXdbuBvelpDzE9/avkZAO\nSRI5BvKVLB3NASZsA4OXPGNI5Z01ycridSXeAC+jAoGBAMYsBMJSiTkutQUsE4yt\nTnCNA2JtmiNqQ/1LmLEgHuLpCFxPt8o9tSyLWu/lLcQu7jXBQk6WX/ofslSGVqBb\n/k9sh8WlTxhnIn7lANnRgHk11JjnbMxr4VsZfpTkFdPPXOeBlXbTMY2lBIuCFleM\nDOqOVAHCfH1QyjM26PTkVGzh\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-qpclg@newvsnap.iam.gserviceaccount.com",
+    "client_id": "116802919918037821731",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-qpclg%40newvsnap.iam.gserviceaccount.com"
+  }
+  
