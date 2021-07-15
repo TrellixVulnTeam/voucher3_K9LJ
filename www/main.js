@@ -50,6 +50,7 @@ __webpack_require__.r(__webpack_exports__);
 const environment = {
     production: false
 };
+// put here so cannot check ur api key
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
@@ -79,11 +80,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "TEn/");
 /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! firebase/app */ "Jgta");
 /* harmony import */ var _app_firebase_config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.firebase.config */ "9QRN");
-/* harmony import */ var localforage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! localforage */ "oAJy");
-/* harmony import */ var localforage__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(localforage__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _StorageModel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./StorageModel */ "Xsaj");
-
-
 
 
 
@@ -95,13 +91,6 @@ let AppComponent = class AppComponent {
     constructor(platform) {
         this.platform = platform;
         this.InitFirebase();
-        this.platform.ready().then(() => {
-            new _StorageModel__WEBPACK_IMPORTED_MODULE_8__["default"](localforage__WEBPACK_IMPORTED_MODULE_7__["createInstance"]({
-                name: "ss"
-            }), {
-                name: 'ss'
-            });
-        });
         // this.storage.set('hello', 'asd123')
     }
     InitFirebase() {
@@ -142,96 +131,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "Xsaj":
-/*!*********************************!*\
-  !*** ./src/app/StorageModel.js ***!
-  \*********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Storage; });
-const getDefaultConfig = () => ({
-    name: 'some-store-name', // Used as DB name in IDB or WebSQL, and prefix in LocalStorage
-    size: 4980736 // 4.75 MB, WebSQL only
-  })
-  
-  class Storage {
-    constructor(storage, config) {
-      this.storage = storage
-      this.config(config)
-    }
-  
-    setItem(...args) {
-      try {
-        return this.storage.setItem(...args)
-      } catch (e) {
-        console.log('setItem - Executing on SSR')
-      }
-    }
-  
-    getItem(...args) {
-      try {
-        return this.storage.getItem(...args)
-      } catch (e) {
-        console.log('getItem - Executing on SSR')
-      }
-    }
-  
-    removeItem(...args) {
-      try {
-        return this.storage.removeItem(...args)
-      } catch (e) {
-        console.log('removeItem - Executing on SSR')
-      }
-    }
-  
-    length() {
-      try {
-        return this.storage.length()
-      } catch (e) {
-        console.log('length - Executing on SSR')
-      }
-    }
-  
-    async config({ ...restConfig }) {
-      const { driver, ...localForageConfig } = {
-        ...getDefaultConfig(),
-        ...restConfig
-      }
-  
-      this.storage.config(localForageConfig)
-  
-      if (driver !== undefined) {
-        try {
-          await this.storage.ready()
-          this.storage.setDriver(driver)
-        } catch (e) {
-          console.log('Storage on SSR Mode')
-        }
-      }
-    }
-  
-    keys() {
-      try {
-        return this.storage.keys()
-      } catch (e) {
-        console.log('Keys - Executing on SSR')
-      }
-    }
-  
-    clean() {
-      try {
-        return this.storage.clean()
-      } catch (e) {
-        console.log('Clean - Executing on SSR')
-      }
-    }
-  }
-
-/***/ }),
-
 /***/ "ZAI4":
 /*!*******************************!*\
   !*** ./src/app/app.module.ts ***!
@@ -254,6 +153,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_fire_auth__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/fire/auth */ "UbJi");
 /* harmony import */ var _ionic_native_in_app_browser_ngx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic-native/in-app-browser/ngx */ "m/P+");
 /* harmony import */ var _ionic_native_stripe_ngx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ionic-native/stripe/ngx */ "tF4M");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+
 
 
 
@@ -273,7 +174,7 @@ AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         declarations: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]],
         entryComponents: [],
         imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["BrowserModule"].withServerTransition({ appId: 'serverApp' }), _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicModule"].forRoot(), _app_routing_module__WEBPACK_IMPORTED_MODULE_6__["AppRoutingModule"], _angular_fire__WEBPACK_IMPORTED_MODULE_7__["AngularFireModule"].initializeApp(_app_firebase_config__WEBPACK_IMPORTED_MODULE_8__["FIREBASE_CONFIG"]),
-            _angular_fire_auth__WEBPACK_IMPORTED_MODULE_9__["AngularFireAuthModule"]],
+            _angular_fire_auth__WEBPACK_IMPORTED_MODULE_9__["AngularFireAuthModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_12__["HttpClientModule"]],
         providers: [{ provide: _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouteReuseStrategy"], useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicRouteStrategy"] }, _ionic_native_in_app_browser_ngx__WEBPACK_IMPORTED_MODULE_10__["InAppBrowser"], _ionic_native_stripe_ngx__WEBPACK_IMPORTED_MODULE_11__["Stripe"]],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]],
     })
@@ -539,14 +440,34 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [
     {
-        path: 'home',
-        loadChildren: () => __webpack_require__.e(/*! import() | home-home-module */ "home-home-module").then(__webpack_require__.bind(null, /*! ./home/home.module */ "ct+p")).then(m => m.HomePageModule)
+        path: 'home/:item/:user',
+        loadChildren: () => Promise.all(/*! import() | home-home-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("home-home-module")]).then(__webpack_require__.bind(null, /*! ./home/home.module */ "ct+p")).then(m => m.HomePageModule)
     },
     {
         path: '',
         redirectTo: 'home',
         pathMatch: 'full'
     },
+    {
+        path: 'home',
+        loadChildren: () => Promise.all(/*! import() | home-home-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("home-home-module")]).then(__webpack_require__.bind(null, /*! ./home/home.module */ "ct+p")).then(m => m.HomePageModule)
+    },
+    {
+        path: 'thanks',
+        loadChildren: () => Promise.all(/*! import() | thanks-thanks-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~store-store-module~thanks-thanks-module"), __webpack_require__.e("thanks-thanks-module")]).then(__webpack_require__.bind(null, /*! ./thanks/thanks.module */ "WBR6")).then(m => m.ThanksPageModule)
+    },
+    {
+        path: 'store/:id',
+        loadChildren: () => Promise.all(/*! import() | store-store-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~store-store-module~thanks-thanks-module"), __webpack_require__.e("store-store-module")]).then(__webpack_require__.bind(null, /*! ./store/store.module */ "NFwV")).then(m => m.StorePageModule)
+    },
+    {
+        path: 'brand/:vendor/:user',
+        loadChildren: () => Promise.all(/*! import() | brand-brand-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("brand-brand-module")]).then(__webpack_require__.bind(null, /*! ./brand/brand.module */ "ZQTp")).then(m => m.BrandPageModule)
+    },
+    {
+        path: 'order/:id',
+        loadChildren: () => Promise.all(/*! import() | order-order-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("order-order-module")]).then(__webpack_require__.bind(null, /*! ./order/order.module */ "+p+5")).then(m => m.OrderPageModule)
+    }
 ];
 let AppRoutingModule = class AppRoutingModule {
 };

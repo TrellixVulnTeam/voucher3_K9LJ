@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import firebase from 'firebase';
+import { Meta, Title } from '@angular/platform-browser';
+import { NavController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-thanks',
@@ -12,81 +14,100 @@ export class ThanksPage implements OnInit {
 
   constructor(
     private actRoute: ActivatedRoute,
-    private http: HttpClient) { }
-  qr;
-  id;
+    private http: HttpClient,
+    private title: Title,
+    private meta: Meta,
+    private nav: NavController,
+    public platform: Platform
+  ) { }
+
+  // qr;
+  // id;
+  orderid = "";
   paid;
-  addresser = 'false';
-  remark;
-  name;
-  contact;
-  address;
-  email;
-  userid;
-  vendor;
-  items = [] as any;
+  order = {} as any;
+  qr = "";
+  items = {} as any;
+  // remark; 
+  // name;
+  // contact;
+  // address;
+  // email;
+  // userid;
+  // vendor;
+  // items = [] as any;
+  // order = [] as any;
 
 
   ngOnInit() {
+
+  }
+
+  theheight = 0;
+
+  // heighting(){
+  //   // console.log((document.getElementById('heighter').clientHeight))
+  //   return 
+  // }
+  animer = 0;
+
+  proper2(x) {
+    return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
+  }
+  
+  ionViewWillEnter() {
+    this.qr = 'https://i.pinimg.com/originals/39/ee/de/39eede5b8818d7c02d2340a53a652961.gif'
+
     this.actRoute.queryParams.subscribe(a => {
-      this.id = a['items'];
-      this.paid = a['billplz[paid]'];
-      this.addresser = a['addresser'];
-      this.address = a['address'];
-      this.name = a['name'];
-      this.contact = a['contact'];
-      this.email = a['email'];
-      this.userid = a['userid'];
-      this.vendor = a['vendor'];
-
-      console.log(this.id);
-
-      firebase.database().ref('vouchers/' + this.id).once('value', data => {
-        this.items = data.val();
-      })
+      this.orderid = a['orderId'];
+      this.paid = a['status'] == "SUCCESS";
 
       if (this.paid == 'true' || this.paid == true) {
-        firebase.database().ref('users/' + this.userid).once('value', data => {
-          if (data.exists() && data.val().fcm) {
-            let body2 = {
-              title: 'Ticket sold!',
-              body: 'Ticket sold to ' + a['name'] + '!',
-              fcmkey: data.val().fcm,
-              path: '',
-              type: '',
-              id: '',
-            }
+        this.title.setTitle('Thanks For Your Purchase!');
+        // console.log(a['order']);
 
-            this.http.post('https://us-central1-newvsnap.cloudfunctions.net/nergigante/fcm', body2).subscribe(data2 => {
-              console.log(data2);
-            }, e => {
-              console.log(e);
-            });
+        firebase.database().ref('orders/' + this.orderid).once('value', data => {
+          if (data.exists()) {
+            // console.log(data.val());
+
+            this.order = data.val()
+            console.log(data.val().address);
+
+            this.animer = 6;
+
+            // this.theheight = (document.getElementById('heighter').clientHeight);
+
+            setInterval(() => {
+              this.theheight = (document.getElementById('heighter').clientHeight);
+            }, 500);
+
+
+            firebase.database().ref('vouchers/' + data.val().type_id).once('value', data => {
+              this.items = data.val();
+            })
+
           }
-
-          firebase.database().ref('vendors/' + this.vendor).once('value', data2 => {
-
-            if (data2.exists() && data2.val().fcm) {
-              let body3 = {
-                title: 'Ticket sold!',
-                body: 'Ticket sold to ' + a['name'] + ' by ' + data2.val().name + '!',
-                fcmkey: data2.val().fcm || '',
-                path: '',
-                type: '',
-                id: '',
-              }
-
-              this.http.post('https://us-central1-newvsnap.cloudfunctions.net/nergigante/fcm', body3).subscribe(data3 => {
-                console.log(data3);
-              }, e => {
-                console.log(e);
-              });
-            }
-          })
         })
+
+
+      } else {
+        this.title.setTitle('Fail to purchase!');
+        this.animer = 6;
+
+        setInterval(() => {
+          this.theheight = (document.getElementById('heighter').clientHeight);
+        }, 500);
       }
 
       this.qr = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + a['order'] + ',' + 'consumer'
     });
+  }
+
+  track(x) {
+    this.nav.navigateForward('order/' + x);
+  }
+
+  getvar(x) {
+    return x ? x.reduce((a, b) => a + ", " + b['name'], "") : '';
   }
 }

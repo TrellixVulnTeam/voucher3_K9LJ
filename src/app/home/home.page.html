@@ -1,196 +1,382 @@
-<ion-content *ngIf="lengthof_obj(items) > 0" style="--background: #f7f9fd; color: black;">
+<ion-content style='position: fixed;z-index:10000;top:0;display:flex;justify-content: flex-end; 
+   color: black;' [ngClass]='enter==true ? "inner22" : "innerx22"'>
+  <div class='inside' style='background-color: white;position: relative;min-height:100vh;'>
+    <div
+      style='z-index: 1000; position: sticky; top: 0px; background-color: white; padding:20px;display:flex;align-items: center;margin-bottom:10px;'>
+      <ion-icon (click)='enter=false' style='font-size:20px;margin-right:20px;cursor: pointer;'
+        name="arrow-back-outline"></ion-icon>
+      <div style='font-size:14px;font-weight: bold;'>Purchase Summary</div>
+    </div>
+    <div style='width:100%;background-color: white;padding:0px 20px;'>
 
-  <div [ngStyle]="{'margin-left': lefter()}" style="max-width: 800px; width: 100vw;">
-    <div style="top: 0px; position: sticky;  display: flex; align-items: center; 
-    justify-content: space-between; padding: 7.5px 20px; background-color: #f5783c;z-index: 10000;">
-      <img style="height: 20px;" src="assets/logo.png">
+      <div style='width:100%;display:flex;padding-bottom:20px;border-bottom:1px solid #eeeeee;margin-bottom:20px;'>
+        <img style='width:100px;height:100px;object-fit: cover;margin-right:20px;' src="{{voucher['thumbnail']}}"
+          alt="">
+        <div style='width:calc( 100% - 120px )'>
+          <div style='font-size:14px;'>{{voucher['name']}}</div>
+          <div *ngIf="voucher.price_now"
+            style='width:100%;text-align: left;font-size:14px;font-weight: bold;margin-top:10px;'>
+            {{(voucher.price_now + countvar())*qty | currency:"RM"}}</div>
+          <div *ngIf="!voucher.price_now"
+            style='width:100%;text-align: left;font-size:14px;font-weight: bold;margin-top:10px;'>
+            APPLY FOR FREE</div>
+
+          <div style='flex-wrap: wrap;display:flex;margin-top:10px;'>
+            <div style='font-size:12px;padding:5px 10px;margin-right:5px;margin-bottom:5px;border:1px solid #eeeeee;'>
+              {{qty}}&nbsp;unit{{qty>1 ? "s" :""}}</div>
+            <div *ngFor='let x of var_select;let i = index'
+              style='font-size:12px;padding:5px 10px;margin-right:5px;margin-bottom:5px;border:1px solid #eeeeee;'>
+              {{voucher['variations'][i].selections[x].name}}&nbsp;(+{{voucher['variations'][i].selections[x].price |
+              currency:"RM"}})</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style='margin-left:0px;margin-bottom:30px;'>
+        <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Buyer Name (eg. John Smith)</div>
+        <ion-input [(ngModel)]="name"
+          style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
+          placeholder="enter your name"></ion-input>
+      </div>
+
+      <div style='margin-left:0px;margin-bottom:30px;'>
+        <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Phone Number (eg. 60123268301)
+        </div>
+        <ion-input [(ngModel)]="contact" type='tel'
+          style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
+          placeholder="enter your phone number"></ion-input>
+      </div>
+
+      <div style='margin-left:0px;margin-bottom:30px;'>
+        <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Email Address (eg.
+          johnsmith@email.com)</div>
+        <ion-input [(ngModel)]="email" type='email'
+          style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
+          placeholder="enter your email address"></ion-input>
+      </div>
+
+      <div *ngIf="voucher.address" style='margin-left:0px;margin-bottom:30px;'>
+        <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Delivery Address</div>
+        <ion-input [(ngModel)]="address"
+          style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
+          placeholder="enter your delivery address"></ion-input>
+      </div>
+
+      <div *ngIf="voucher.address" style='width:100%;;display:flex;align-items: center;margin-bottom:30px;'>
+
+        <div style='margin-left:0px;margin-right:20px;width:calc( ( 100% - 20px ) / 2 );'>
+          <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Postcode</div>
+          <ion-input [(ngModel)]="postcode"
+            style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
+            placeholder="enter your postcode"></ion-input>
+        </div>
+
+        <div style='margin-left:0px;width:calc( ( 100% - 20px ) / 2 );'>
+          <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>City</div>
+          <ion-input [(ngModel)]="city"
+            style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
+            placeholder="enter your city"></ion-input>
+        </div>
+      </div>
+
+      <div style='margin-left:0px;margin-bottom:30px;'>
+        <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Remark</div>
+        <ion-textarea [(ngModel)]="remark" type='text' row='6'
+          style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
+          placeholder="{{voucher.remark}}"></ion-textarea>
+      </div>
+
+      <div style='font-size:12px;color:#999999;'>Order summary and payment receipt will be sent to your email address
+        upon successful payment. Please make sure all the above information is correct.</div>
+
+      <div style='font-size:12px;color:#999999;margin-top:20px;padding-bottom :30px;'>By placing the order, you've
+        agreed to our vsnap's&nbsp;<span (click)="outside('refund')" style='color:#525dc2'>Refund
+          Policy</span>&nbsp;and&nbsp;<span (click)="outside('terms')" style='color:#525dc2'>Terms & Conditions</span>
+      </div>
+
+    </div>
+    <div (click)="buys()"
+      style='z-index: 1000; position: sticky;bottom:0px;left:0;display:flex;justify-content: center;align-items: center;height:80px;width:calc( 100%  );background-color: white;'>
+      <div
+        style='z-index: 1000; padding:10px 20px;background-color: #c25254;color:white;text-align: center;font-size:16px;cursor: pointer;'>
+        PLACE ORDER</div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="animer > 5" style='--background:#f7f9fd;'>
+
+  <div
+    [ngStyle]="{'padding-left' : widther(900)==true ? ' calc( ( 100vw - 900px ) / 2 )' : '0px','padding-right' : widther(900)==true ? ' calc( ( 100vw - 900px ) / 2 )' : '0px' }"
+    style='width:100vw;background-color:#f7f9fd;'>
+
+    <div
+      style='width:100%;display:flex;align-items: center;justify-content: space-between;padding:0px 20px;background-color:white;border-bottom:1px solid #eeeeee;height:70px;'>
+      <img style='height:30px;object-fit: contain;cursor: pointer;' src="https://i.imgur.com/pEyI97C.png" alt="">
+      <div (click)="store(influencer.id)" style='display:flex;align-items: center;justify-content: flex-end;'>
+        <img style='height:40px;width:40px;object-fit: cover;border-radius:100%;'
+          src="{{influencer['photo'] ? (stringornot(influencer['photo']) ? influencer['photo'] : influencer['photo'][0] ) : 'https://i.imgur.com/GvrNqUS.png' }}"
+          alt="">
+        <div style='margin-left:10px;cursor: pointer;'>
+
+          <div
+            style='font-size:14px;color:#333333;background-color:white;margin-right:20px;text-align: left;font-weight: bold;'>
+            {{influencer['name']}}</div>
+          <div style='font-size:12px;color:#999999;margin-top:2px;'>Visit my store ></div>
+        </div>
+
+      </div>
     </div>
 
-    <ion-slides *ngIf="items.photo" style='height: 300px; max-height: 300px;' pager="true" [options]="slideOpts">
-      <ion-slide *ngFor="let x of items.photo"
-        style='height:auto;display:flex;justify-content: center;align-items: center;background-color: black;;'>
-        <img style='width:100%;object-fit: contain;height:100%;position: absolute;z-index:1;' src={{x.url}} alt="">
-        <img style='width:100%;object-fit: cover;height:100%;filter: blur(2px);opacity: 0.5;' src={{x.url}} alt="">
-      </ion-slide>
-    </ion-slides>
+    <div *ngIf='widther(600)==true' style='width:100%;display:flex;background-color: white;'>
 
-    <div *ngIf="!items.photo" style='height: 300px; max-height: 300px; position: relative;'>
-      <img style='width:100%;object-fit: contain;height:100%;position: absolute;z-index:1;' src={{items.thumbnail}}
-        alt="">
-      <img style='width:100%;object-fit: cover;height:100%;filter: blur(2px);opacity: 0.5;' src={{items.thumbnail}}
-        alt="">
-    </div>
+      <div style='width:40%;display:flex;justify-content: center;align-items: flex-start;padding:20px;'>
+        <ion-slides *ngIf="lengthof(voucher['photo']) > 0"
+          style='max-width:calc( 360px - 40px  );max-height:calc( 360px - 40px  );width:calc( 40vw - 40px  );height:calc( 40vw - 40px );'
+          pager="true">
+          <ion-slide
+            *ngFor='let x of (voucher["photo"] || ["http://www.wpkube.com/wp-content/uploads/2019/02/503-unavailable-error-wpk.jpg"])'
+            style='max-width:calc( 360px - 40px  );max-height:calc( 360px - 40px  );width:calc( 40vw - 40px  );height:calc( 40vw - 40px  );position: relative;background-color: black;'>
+            <img style='width:100%;height:100%;object-fit: contain;position: absolute;z-index:10;' src="{{x.url}}"
+              alt="">
+            <img style='width:100%;height:100%;object-fit: cover;opacity: 0.5;filter: blur(2px);' src="{{x.url}}"
+              alt="">
+          </ion-slide>
+        </ion-slides>
 
-    <div style='padding:20px; background-color: white;'>
-      <div style='display:flex;width: 100%;'>
-        <!-- <img style='width:100px;height:100px;object-fit: cover;border-radius:5px;' src={{items.thumbnail}} alt=""> -->
-        <div style='padding:0px 0px;margin-left:0px; display: flex; height: 100%;
-          flex-direction: column; align-content: space-between;'>
-          <div>
-            <div style='color:#f26627;border-radius: 5px;width:max-content;font-size:12px;margin-bottom:5px;'>
-              {{vendor.name}}</div>
-            <div style='font-size:16px; '>{{items.name}}</div>
+        <div *ngIf="lengthof(voucher['photo']) == 0"
+          style='max-width:calc( 360px - 40px  );max-height:calc( 360px - 40px  );width:calc( 40vw - 40px  );height:calc( 40vw - 40px  );position: relative;background-color: black;'>
+          <img style='width:100%;height:100%;object-fit: contain;position: absolute;z-index:10;'
+            src="{{voucher.thumbnail}}" alt="">
+          <img style='width:100%;height:100%;object-fit: cover;opacity: 0.5;filter: blur(2px);'
+            src="{{voucher.thumbnail}}" alt="">
+        </div>
+      </div>
+
+      <div style='width:60%;padding:20px 20px;'>
+        <div style='font-size:14px;color:#999999;'>{{vendor.name}}'s</div>
+        <div
+          style='font-size:18px;font-weight: bold;margin-bottom:30px;margin-top:5px;line-height: 35px;;color:#333333;'>
+          {{voucher.name}}</div>
+
+        <div style='margin-left:0px;display:flex;align-items: center;'>
+          <div *ngIf="voucher.price_now" style='font-size:16px;color:#c25254;font-weight: bold;'>{{(voucher.price_now +
+            countvar())*qty |
+            currency:"RM"}}</div>
+          <div *ngIf="!voucher.price_now" style='font-size:16px;color:#c25254;font-weight: bold;'>APPLY FOR FREE</div>
+          <div *ngIf='voucher.price_ori && voucher.price_ori>voucher.price_now'
+            style='display:flex;align-items: center;margin-left:10px;'>
+            <div style='font-size:12px;color:#999999;text-decoration: line-through;'>&nbsp;{{voucher.price_ori |
+              currency:"RM"}}&nbsp;</div>
+            <!-- <div style='font-size:12px;color:#c25254;margin-left:10px;font-weight: bold;'>RM20 OFF</div> -->
           </div>
-          <div style='font-size:15px;font-weight: bold;color:#f5783c;margin-top:10px;'>{{items.price_now ? 'RM' : ''}}
-            {{items.price_now ? items.price_now : 'FREE'}}&nbsp;
+        </div>
+        <div *ngFor='let eve of (voucher["variations"] || []);let i = index' style='width:100%;margin-top:15px;'>
+          <div style='font-size:12px;color:#999999;margin-bottom:5px;'>{{eve.name}}</div>
+          <div style='width:100%;display:flex;flex-wrap: wrap;'>
+            <div (click)='var_select[i]=j' *ngFor='let y of eve["selections"];let j = index'
+              [ngStyle]='{"border":var_select[i]==j ? "1px solid #c25254" : "1px solid #999999" ,"color":var_select[i]==j ? "#c25254" : "#999999","background-color":var_select[i]==j ? "rgba(192,82,84, 0.05)" : "white" }'
+              style='padding:5px 10px;margin-right:10px;margin-bottom:10px;cursor: pointer;font-size:12px;border-radius:5px;'>
+              {{y.name}}&nbsp;(+&nbsp;{{y.price | currency: "RM"}})</div>
           </div>
-          <div *ngIf='items.price_ori>items.price_now' style='display:flex;align-items: center;margin-top:10px;'>
-            <div style='font-size:12px;font-weight: normal;color:#999999;text-decoration: line-through;'>&nbsp;RM
-              {{items.price_ori}}&nbsp;
+        </div>
+
+        <div style='width:100%;margin-top:30px;display:flex;align-items: center;'>
+
+          <div style='display:flex;align-items: center;justify-content: center;margin-right:20px;'>
+            <div (click)="qty>1 ? qty=qty-1 : qty"
+              style='cursor: pointer;width:30px;height:30px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
+              <div style='font-size:16px;color:#999999'>-</div>
             </div>
-
-            <div style='font-size:12px;color:#f26627;margin-left:10px;'>-
-              RM{{( items.price_ori - items.price_now ).toFixed(2)}}
-              OFF</div>
+            <div
+              style='width:50px;height:30px;font-size:14px;color:#333333;text-align: center;display:flex;justify-content: center;align-items: center;'>
+              {{qty}}</div>
+            <div (click)='qty=qty+1;'
+              style='cursor: pointer;;width:30px;height:30px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
+              <div style='font-size:16px;color:#999999'>+</div>
+            </div>
           </div>
 
-        </div>
-      </div>
-      <div *ngIf='items.description' style='margin-top:30px;font-size:16px;font-weight: bold;'>Description 配套详情</div>
-      <div style='font-size:15px;margin-top:10px;color:#262626; white-space: pre-wrap;'>{{items.description}}</div>
+          <div (click)='enter=true'
+            style='padding:10px 30px;background-color: #c25254;color:white;font-size:14px;width: max-content;cursor: pointer;border-radius:5px;'>
+            BUY NOW</div>
 
-      <div *ngIf='items.tnc' style='margin-top:30px;font-size:16px;font-weight: bold;'>Terms & Conditions 配套条规</div>
-      <div style='font-size:15px;margin-top:10px;color:#262626; white-space: pre-wrap; '>{{items.tnc}}</div>
+          <!-- <div style='margin-left:20px;'>
+            <div style='font-size:16px;font-weight: bold;'>RM120.00</div>
+            <div style='display:flex;align-items: center;margin-top:5px;'>
+              <div style='font-size:12px;color:#999999;text-decoration: line-through;'>&nbsp;RM120.00&nbsp;</div>
+              <div style='font-size:12px;color:#c25254;margin-left:10px;font-weight: bold;'>RM20 OFF</div>
+            </div>
+          </div> -->
 
-      <div style='width:100%;border-bottom:1px solid #eeeeee;margin-top:30px;'></div>
-      <div style='margin-top:30px;font-size:16px;font-weight: bold;'>About Merchant 关于商家</div>
-
-      <div style='padding: 20px 0px; width: 100%; display: flex;'>
-        <img *ngIf="vendor.photo"
-          style='margin-top: 10px; min-height: 80px; min-width: 80px; max-height: 80px; max-width: 80px; border-radius: 100%;object-fit: cover;'
-          src={{vendor.photo}} alt="">
-
-        <img *ngIf="!vendor.photo"
-          style='margin-top: 10px; height: 80px; width: 80px; border-radius: 100%;object-fit: cover;'
-          src='https://as2.ftcdn.net/jpg/02/23/44/07/500_F_223440761_58cni9Dlb97tCoTCbljUpQ1KpfttHuIC.jpg' alt="">
-
-        <div style='padding-left: 20px; width: 100%;'>
-          <div style='font-size:14px;font-weight: bold;'>{{vendor.name}}</div>
-          <div style='margin-top:5px;font-size:14px;color:#737373; display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;'>{{vendor.description}}</div>
         </div>
       </div>
 
 
-      <div style="width: 100%; font-size: 10px; color: #999999; text-align: center;">© Copyright 2020- All rights
-        reserved - Vsnap by Vsnap Global Sdn Bhd. Version 1.3.0
+
+
+    </div>
+
+    <div *ngIf='widther(600)==false' style='width:100%;background-color: white;'>
+
+      <div style='width:100%;display:flex;justify-content: center;align-items: flex-start;padding:20px;height:75vw;'>
+        <ion-slides *ngIf="lengthof(voucher['photo']) > 0" style='max-width:100%;max-height:100%;width:100%;height:100%'
+          pager="true">
+          <ion-slide
+            *ngFor='let x of (voucher["photo"] || ["http://www.wpkube.com/wp-content/uploads/2019/02/503-unavailable-error-wpk.jpg"])'
+            style='max-width:100%;max-height:100%;width:100%;height:100%;position: relative;background-color: black;'>
+            <img style='width:100%;height:100%;object-fit: contain;position: absolute;z-index:10;' src="{{x.url}}"
+              alt="">
+            <img style='width:100%;height:100%;object-fit: cover;opacity: 0.5;filter: blur(2px);' src="{{x.url}}"
+              alt="">
+
+          </ion-slide>
+
+        </ion-slides>
+
+        <div *ngIf="lengthof(voucher['photo']) == 0"
+          style='max-width:100%;max-height:100%;width:100%;height:100%;position: relative;background-color: black;'>
+          <img style='width:100%;height:100%;object-fit: contain;position: absolute;z-index:10;'
+            src="{{voucher.thumbnail}}" alt="">
+          <img style='width:100%;height:100%;object-fit: cover;opacity: 0.5;filter: blur(2px);'
+            src="{{voucher.thumbnail}}" alt="">
+        </div>
+
       </div>
 
-      <div style="width: 100%; font-size: 10px;margin-top:10px; text-align: center;">
-        <span (click)='enterlink("terms")' style='cursor: pointer; color:rgb(81, 81, 255);'>Terms & Condition</span> •
-        <span (click)='enterlink("privacy")' style='cursor: pointer; color:rgb(81, 81, 255);'>Privacy Policy</span> •
-        <span (click)='enterlink("disclaimer")' style='cursor: pointer; color:rgb(81, 81, 255);'>Disclaimer</span> •
-        <span (click)='enterlink("refund")' style='cursor: pointer; color:rgb(81, 81, 255);'>Refund Policy</span>
+      <div style='width:100%;padding:20px 20px;padding-top:0px;'>
+        <div style='font-size:12px;color:#999999;'>{{vendor.name}}'s</div>
+        <div style='font-size:14px;font-weight: bold;margin-bottom:10px;margin-top:5px;color:#333333;'>{{voucher.name}}
+        </div>
+
+        <div style='margin-left:0px;display:flex;align-items: center;'>
+          <div *ngIf="voucher.price_now" style='font-size:14px;color:#c25254;font-weight: bold;'>{{(voucher.price_now +
+            countvar())*qty |
+            currency:"RM"}}</div>
+
+          <div *ngIf="!voucher.price_now" style='font-size:14px;color:#c25254;font-weight: bold;'>APPLY FOR FREE</div>
+
+          <div *ngIf='voucher.price_ori && voucher.price_ori>voucher.price_now'
+            style='display:flex;align-items: center;margin-left:10px;'>
+            <div style='font-size:11px;color:#999999;text-decoration: line-through;'>&nbsp;{{voucher.price_ori |
+              currency:"RM"}}&nbsp;</div>
+            <!-- <div style='font-size:12px;color:#c25254;margin-left:10px;font-weight: bold;'>RM20 OFF</div> -->
+          </div>
+        </div>
+        <div *ngFor='let eve of (voucher["variations"] || []);let i = index' style='width:100%;margin-top:15px;'>
+          <div style='font-size:12px;color:#999999;margin-bottom:5px;'>{{eve.name}}</div>
+          <div style='width:100%;display:flex;flex-wrap: wrap;'>
+            <div (click)='var_select[i]=j' *ngFor='let y of eve["selections"];let j = index'
+              [ngStyle]='{"border":var_select[i]==j ? "1px solid #c25254" : "1px solid #999999"
+               ,"color":var_select[i]==j ? "#c25254" : "#999999","background-color":var_select[i]==j ? "rgba(192,82,84, 0.05)" : "white" }'
+              style='padding:5px 10px;margin-right:10px;margin-bottom:10px;cursor: pointer;font-size:12px;border-radius:5px;'>
+              {{y.name}}&nbsp;(+&nbsp;{{y.price | currency: "RM"}})</div>
+          </div>
+        </div>
+
+        <div style='width:100%;margin-top:30px;display:flex;align-items: center;'>
+
+          <div style='display:flex;align-items: center;justify-content: center;margin-right:20px;'>
+            <div (click)="qty>1 ? qty=qty-1 : qty"
+              style='cursor: pointer;width:25px;height:25px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
+              <div style='font-size:16px;color:#999999'>-</div>
+            </div>
+            <div
+              style='width:40px;height:30px;font-size:12px;color:#333333;text-align: center;display:flex;justify-content: center;align-items: center;'>
+              {{qty}}</div>
+            <div (click)='qty=qty+1;'
+              style='cursor: pointer;;width:25px;height:25px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
+              <div style='font-size:16px;color:#999999'>+</div>
+            </div>
+          </div>
+
+          <div (click)='enter=true'
+            style='padding:10px 20px;background-color: #c25254;color:white;font-size:12px;width: max-content;cursor: pointer;border-radius:5px;text-align: center;'>
+            BUY NOW</div>
+
+          <!-- <div style='margin-left:20px;'>
+            <div style='font-size:16px;font-weight: bold;'>RM120.00</div>
+            <div style='display:flex;align-items: center;margin-top:5px;'>
+              <div style='font-size:12px;color:#999999;text-decoration: line-through;'>&nbsp;RM120.00&nbsp;</div>
+              <div style='font-size:12px;color:#c25254;margin-left:10px;font-weight: bold;'>RM20 OFF</div>
+            </div>
+          </div> -->
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+    <div style='padding:40px 20px;width:100%;background-color: white;padding-top:0px;'>
+      <div style='width:100%;border-top:1px solid #eeeeee;padding-bottom:0px;'></div>
+
+      <div style='width:100%;display:flex;align-items: center;'>
+        <div *ngIf='disabled[0]==true' (click)='selected=0'
+          [ngStyle]='{"border-bottom" : selected==0 ? "1px solid #c25254" : "1px solid #eeeeee" ,"color" : selected==0 ? "#c25254" : "#999999" }'
+          style='width:calc( 100% / 3 );padding:10px;border-bottom:1px solid #eeeeee;text-align: center;font-size:14px;cursor: pointer;'>
+          {{( widther(400)==true ? "Description" : "Desc.")}}</div>
+        <div *ngIf='disabled[1]==true' (click)='selected=1'
+          [ngStyle]='{"border-bottom" : selected==1 ? "1px solid #c25254" : "1px solid #eeeeee","color" : selected==1 ? "#c25254" : "#999999" }'
+          style='width:calc( 100% / 3 );padding:10px;border-bottom:1px solid #eeeeee;text-align: center;font-size:14px;cursor: pointer;'>
+          {{( widther(600)==true ? "Terms & Condition" : "T & C")}}</div>
+        <div *ngIf='disabled[2]==true' (click)='selected=2'
+          [ngStyle]='{"border-bottom" : selected==2 ? "1px solid #c25254" : "1px solid #eeeeee","color" : selected==2 ? "#c25254" : "#999999" }'
+          style='width:calc( 100% / 3 );padding:10px;border-bottom:1px solid #eeeeee;text-align: center;font-size:14px;cursor: pointer;'>
+          {{( widther(350)==true ? "About Us" : "About")}}</div>
+      </div>
+
+      <div *ngIf='selected==0' style='font-size:14px;color:#999999;width:100%;white-space: pre-line;padding:20px 0px;'>
+        {{voucher["description"]}}</div>
+      <div *ngIf='selected==1' style='font-size:14px;color:#999999;width:100%;white-space: pre-line;padding:20px 0px;'>
+        {{voucher["tnc"]}}</div>
+      <div *ngIf='selected==2' style='width:100%;padding:20px 0px;'>
+        <div style='width:100%;display:flex;align-items: center;justify-content: flex-start;'>
+          <img style='height:70px;width:70px;border-radius:100%;object-fit: cover;'
+            src="{{vendor['photo'] || 'https://media.istockphoto.com/vectors/young-woman-engaged-in-shopping-and-checkout-her-purchases-vector-id1073204892?b=1&k=6&m=1073204892&s=612x612&w=0&h=WQz5o6GHiShCSZhpcQ6G1Fkg8fPV65UKNU7z2sWTEBg='}}"
+            alt="">
+          <div style='width:calc( 100% - 70px );padding-left:20px;'>
+            <div style='font-size:14px;color:#333333;margin-bottom:10px;margin-top:10px;font-weight: bold;'>
+              {{vendor["name"]}}</div>
+            <div style='width:calc( 100% );display:flex;flex-wrap: wrap;'>
+              <div *ngFor='let x of vendor["link"]' (click)='openlink(x.link, x.name)'
+                style='cursor: pointer;;padding:5px 10px;border:1px solid #eeeeee;font-size:12px;margin-right:10px;margin-bottom:10px;'>
+                {{x.name}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- <div *ngIf="vendor['description']" style='font-size:14px;font-weight: bold;color:#333333;padding-top:20px;padding-bottom:10px;'>Company Description</div> -->
+        <div *ngIf="vendor['description']"
+          style='font-size:14px;color:#999999;width:100%;white-space: pre-line;padding:20px 0px;'>
+          {{vendor["description"]}}</div>
+
+        <div (click)="brand(vendor.id)"
+          style='font-size:14px;padding:10px 20px;border:1px solid #c25254;color:#c25254;width:max-content;margin-top:0px;cursor: pointer;'>
+          More from&nbsp;{{vendor["name"]}}&nbsp;></div>
+
       </div>
     </div>
 
-    <!-- <div style='width: 100vw; height: 95px;'></div> -->
-
-    <div style="width: 100%; max-width: 1024px; position: sticky; bottom: 0px; z-index: 100;">
-      <div style='display:flex;justify-content: space-between;align-items: center;
-      padding: 7.5px 15px;box-shadow: 1px -3px 5px rgba(0,0,0,0.1); background-color: white;'>
-        <div style='display:flex;justify-content: center;align-items: center;'>
-          <div [ngStyle]="{'color': qtys>1 ? 'black' : '#999999'}"
-            style='border: 1px solid #eeeeee;height:30px;width:30px;display:flex;justify-content: center;align-items: center;cursor: pointer;'>
-            <ion-icon (click)="calc('-')" name="remove-outline"></ion-icon>
-          </div>
-          <div style='color:black; font-size:15px;margin:0px 20px;font-weight: bold;'>{{qtys}}</div>
-          <div [ngStyle]="{'color': 5>qtys ? 'black' : '#999999'}"
-            style='border: 1px solid #eeeeee;height:30px;width:30px;display:flex;justify-content: center;align-items: center;cursor: pointer;'>
-            <ion-icon (click)="5>qtys ? calc('+') : null" name="add-outline"></ion-icon>
-          </div>
-        </div>
-        <div style='color:black; font-size:15px;font-weight: bold;'>{{items.price_now ? 'RM ' : ''}}{{ items.price_now ?
-          (items.price_now * qtys) : 'FREE'}}</div>
-      </div>
-      <div class="ion-activatable ripple-parent" (click)='buy = true' style='z-index: 100; background-color: #f5783c;padding:10px 20px;text-align: center;
-      cursor: pointer;color:white;font-size: 16px;font-weight: bold;height:50px;display:flex;
-      justify-content: center;align-items: center;cursor: pointer;z-index:1000;'>
-        <ion-ripple-effect></ion-ripple-effect>
-        Buy Now
+    <div style='padding:40px;border-top:1px solid #eeeeee;background-color: white;;'>
+      <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:20px;'>© Copyright 2020- All rights
+        reserved - Vsnap by Vsnap Global Sdn Bhd. version 3.2.8</div>
+      <div style='text-align: center;display:flex;align-items: center;justify-content: center;'>
+        <span (click)="outside('terms')" style='cursor: pointer;;font-size:10px;color:#525dc2;'>Terms &
+          Condition</span>&nbsp;•&nbsp;<span (click)="outside('privacy')"
+          style='cursor: pointer;font-size:10px;color:#525dc2;'>Privacy Policy</span>&nbsp;•&nbsp;<span
+          (click)="outside('disclaimer')"
+          style='cursor: pointer;font-size:10px;color:#525dc2;'>Disclaimer</span>&nbsp;•&nbsp;<span
+          (click)="outside('refund')" style='cursor: pointer;font-size:10px;color:#525dc2;'>Refund Policy</span>
       </div>
     </div>
   </div>
 
 </ion-content>
 
-<ion-content *ngIf="lengthof_obj(items) == 0" style="--background: #f7f9fd; color: black;">
-  <div
-    style="width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <img style="width: 100%;object-fit: cover;"
-      src="https://cdn.dribbble.com/users/718859/screenshots/3267029/jisunpark_404-error.gif">
-  </div>
-</ion-content>
-
-
-<div [ngClass]="buy ? 'loading' : 'loadingx'" style=" width: 100vw; height: 100vh; color: black;
- position: fixed; display: flex; align-items: center; justify-content: center;">
-  <div style="background-color: black; position: absolute; height: 100vh; width: 100vw; opacity: 0.5; z-index: 0;">
-  </div>
-
-  <div
-    style="padding: 15px; border-radius: 15px; background-color: white; z-index: 100; width: 80%; max-width: 400px; position: relative;">
-    <div style="font-size: 14px; font-weight: 500;">Please fill up the information 请填写资料</div>
-
-    <ion-icon (click)="buy = false" style="position: absolute; top: 10px; right: 10px; font-size: 20px;"
-      name="close-circle-outline"></ion-icon>
-
-    <ion-item style="font-size: 14px;" class="ion-no-padding">
-      <ion-label position="floating">Name 姓名</ion-label>
-      <ion-input type='text' [(ngModel)]="name"></ion-input>
-    </ion-item>
-    <ion-item style="font-size: 14px;" class="ion-no-padding">
-      <ion-label position="floating">Email 邮件</ion-label>
-      <ion-input type='email' [(ngModel)]="email"></ion-input>
-    </ion-item>
-    <ion-item *ngIf="items.address" style="font-size: 14px;" class="ion-no-padding">
-      <ion-label position="floating">Address 邮寄地址</ion-label>
-      <ion-input type='text' [(ngModel)]="address"></ion-input>
-    </ion-item>
-    <ion-item style="font-size: 14px;" class="ion-no-padding">
-      <ion-label position="floating">Contact 联系号码</ion-label>
-      <ion-input type='tel' [(ngModel)]="contact"></ion-input>
-    </ion-item>
-
-    <div *ngIf="items.address==true" style="font-size: 12px; font-weight: 500; margin-top: 10px;"><span
-        style="color: red">*</span>
-      Item will be delivered to this address | 商品將會運送到此地址</div>
-    <div *ngIf="items.address ==false" style="font-size: 12px; font-weight: 500; margin-top: 10px;"><span
-        style="color: red">*</span>Voucher QR code
-      will be sent to your email upon purchase | 配套QR二维码将在付款后发至您的email</div>
-
-    <div style="display: flex; align-items: center;margin-top: 10px;">
-      <ion-checkbox [(ngModel)]="agree"
-        style="max-width: 15px; max-height: 15px; --border-color-checked: #f26627 ; --background-checked: #f26627">
-      </ion-checkbox>
-      <div style="padding-left: 10px; font-size: 10px;">i've agreed with the <span (click)='enterlink("refund")'
-          style="cursor: pointer; color: #0000EE; text-decoration: underline;">Refund Policy</span> and
-        <span (click)='enterlink("terms")' style="cursor: pointer; color: #0000EE; text-decoration: underline;">Terms
-          and
-          Conditions</span>
-      </div>
-    </div>
-
-    <div *ngIf="!agree || !check() "
-      style='border-radius: 10px; margin-top: 20px; background-color: #eeeeee;
-  padding:7.5px 15px;text-align: center; cursor: pointer;color:#999999;font-size: 14px; font-weight: bold; text-align: center; cursor: pointer;z-index:1000;'>
-      Purchase 购买
-    </div>
-
-    <div *ngIf="agree && check()" (click)="buys()" class="ion-activatable ripple-parent"
-      style='border-radius: 10px; margin-top: 20px; background-color: #f5783c;
-    padding:7.5px 15px;text-align: center; cursor: pointer;color:white;font-size: 14px; font-weight: bold; text-align: center; cursor: pointer;z-index:1000;'>
-      <ion-ripple-effect></ion-ripple-effect>
-      Purchase 购买
-    </div>
-  </div>
-
-</div>
-
-<div [ngClass]="load == true ? 'loading' : 'loadingx'" style=" width: 100vw; height: 100vh;
- position: fixed; display: flex; align-items: center; justify-content: center;
-  background-color: white;">
-  <img style="object-fit: cover; height: 100%; width: 100%;" src='assets/clogo.gif'>
+<div *ngIf="5 > animer" [ngClass]=" animer == 0 ? 'loading' : 'loadingx'" style=" width: 100vw; height: 100vh;
+  position: fixed; display: flex; align-items: center; justify-content: center;
+   background-color: white;">
+  <img style="object-fit: cover; height: 100%;" src='assets/clogo.gif'>
 </div>

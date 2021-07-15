@@ -1,0 +1,90 @@
+.stuff{
+    width: calc(100% - 40px);
+    margin-left:20px;
+    max-width: 300px;
+    @media only screen and (min-width: 340px)  {
+
+        margin-left:calc( ( 100vw - 300px ) / 2 );
+        
+    }
+
+
+}
+
+.leftleft{
+    transition: all .2s ease;
+    // opacity:1;
+    transform: translateY(-320px);
+  }
+  
+  .leftleftx{
+    transition: all .2s ease;
+    // opacity:0;
+    transform: translateY(0);
+  }
+  
+  .leftleftall{
+    transition: opacity .2s ease;
+    opacity: 1;
+    transform: translateX(100vw);
+  }
+  
+  .leftleftallx{
+    transition: opacity .2s ease;
+    opacity:0;
+    transform: translateX(0);
+    animation: goaway .2s ease;
+  }
+  
+  @keyframes goaway{
+    0%{
+        opacity:1;
+        transform: translateX(-100vw);
+    }
+    99%{
+        transform: translateX(-100vw);
+    }
+    100%{
+        opacity:0;
+        transform: translateX(0);
+    }
+  }
+  
+  .inner22{
+    right:0;
+    opacity: 1;
+    --background:rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.7);
+    transition: all .2s ease;
+  }
+  
+  .innerx22{
+    right:-100%;
+    opacity: 0;
+    --background: rgba(0,0,0,0);
+    background-color: rgba(0,0,0,0);
+    transition: all .2s ease;
+  }
+  
+  .loading{
+    transition: all .5s ease;
+    opacity: 1;
+    z-index: 1000000;
+  }
+  
+  .loadingx{
+    transition: all .5s ease;
+    opacity: 0;
+    z-index: -1;
+  }
+  
+  
+  .inside{
+  
+    width:100vw;
+    @media only screen and (min-width: 600px)  {
+      margin-left:calc( 100vw - 500px );
+      max-width:500px;
+        width:500px;
+    }
+  }
