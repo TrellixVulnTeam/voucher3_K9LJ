@@ -1,12 +1,13 @@
-<ion-content>
+<ion-content style="--background: rgba(0, 0, 0, .3); ">
 
-  <div *ngIf="paid == 'true' && addresser == 'false' || paid == true && addresser == 'true'"
-    style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .3); position: fixed; top: 0;">
+  <div *ngIf="(paid == 'true' ||  paid == true)  && order.address == false" style="width: 100vw; ">
 
-    <div style="width: calc(100% - 40px); max-width: 300px; height: calc(100vh / 1.5); max-height: 500px;">
+    <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
+
+    <div #heighter id="heighter" class='stuff'>
 
       <div
-        style="width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
+        style="margin-top:30px;width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
 
         <div
           style="width: 100%; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -35,12 +36,32 @@
       </div>
 
       <div
-        style="margin-top: -1px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0px; background: #ffffff; border-radius: 10px; background-image:
+        style="margin-bottom:30px;margin-top: -1px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0px; background: #ffffff; border-radius: 10px; background-image:
          radial-gradient(circle at left top, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right top, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
 
-        <div style="width: calc(100% - 50px); max-width: 300px; max-height: 300px;">
+        <div style="width: calc(100% - 50px); max-width: 400px; ">
 
-          <img style="width: 100%; height: 100%; object-fit: contain;" src="{{qr}}" alt="">
+          <div style="text-align: start;">
+            <div style="display: flex; align-items: center; ">
+              <ion-icon style='font-size:18px;color:#00b871;margin-right:10px;' name="cube-outline"></ion-icon>
+              <div style="font-size: 14px; font-weight: 500;">Order Detail</div>
+            </div>
+            <div style="margin-left:28px;margin-top: 10px; font-size: 12px; color: #333333;line-height: 25px;">
+              {{order.name}} ({{order.qty}}&nbsp;units{{getvar(order.variations||[])}}) - {{order.price_now * order.qty
+              |
+              currency:'RM
+              '}}</div>
+            <div style="margin-left:28px;margin-top: 10px; font-size: 12px; color: #333333;">Order ID: {{order.id}}
+            </div>
+          </div>
+
+          <div
+            style="position: relative; margin-top: 10px; display: flex; align-items: center; justify-content: center; height: 200px; width: 100%">
+            <img style='width:100%;height:100%;object-fit: contain;position: absolute;z-index:10;' src="{{qr}}">
+            <img style='width: calc( 100% - 50px) ;height:100%;object-fit: cover;'
+              src="https://i.pinimg.com/originals/39/ee/de/39eede5b8818d7c02d2340a53a652961.gif">
+          </div>
+          <!-- <img style="width: 100%; height: 100%; object-fit: contain; margin-top: 10px;" src="{{qr}}" alt=""> -->
         </div>
 
         <div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
@@ -48,6 +69,23 @@
             You can redeem the product at our outlet.</div>
         </div>
 
+        <div style="display: flex; align-items: center;justify-content: center;width:100%;">
+          <div (click)="track(order.id)"
+            style="cursor: pointer; font-size: 14px; padding: 10px 20px; border: 1px solid #00b871; color: #00b871; font-weight: 300; width: max-content; margin: 10px 0px;">
+            Track your order</div>
+        </div>
+
+
+        <div *ngIf="items.aftersale" style="text-align: start;width:100%; padding: 20px;">
+          <div style="margin-top: 30px; font-weight: 500; font-size: 14px; display: flex; align-items: center;">
+            <ion-icon style='font-size:18px;color:#00b871;margin-right:10px;' name="information-circle-outline">
+            </ion-icon>
+            Note to buyer
+          </div>
+
+          <div style=" margin-top: 5px;  font-size: 12px;width:100%;  white-space: pre-wrap;">
+            - {{items.aftersale}}</div>
+        </div>
 
 
 
@@ -58,10 +96,11 @@
 
   </div>
 
-  <div *ngIf="paid == 'true' && addresser == 'true' || paid == true && addresser == 'false'"
-    style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .3); position: fixed; top: 0;">
+  <div *ngIf="(paid == 'true' || paid == true) && (order.address == true)" style="width: 100vw; ">
 
-    <div style="width: calc(100% - 40px); max-width: 400px; height: calc(100vh / 1.5); max-height: 500px;">
+    <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
+
+    <div #heighter id="heighter" class='stuff'>
 
       <div
         style="width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
@@ -97,10 +136,41 @@
          background-image: radial-gradient(circle at left top, rgba(0, 0, 0, 0.3) 15px, transparent 0),
           radial-gradient(circle at right top, rgba(0, 0, 0, 0.3) 15px, transparent 0); padding: 30px; text-align: center;">
 
+        <div style="text-align: start;">
+          <div style="display: flex; align-items: center; ">
+            <ion-icon style='font-size:18px;color:#00b871;margin-right:10px;' name="cube-outline"></ion-icon>
+            <div style="font-size: 14px; font-weight: 500;">Order Detail</div>
+          </div>
+          <div style="margin-left:28px;margin-top: 10px; font-size: 12px; color: #333333;line-height: 25px;">
+            {{order.name}} ({{order.qty}}&nbsp;units{{getvar(order.variations||[])}}) - {{order.price_now * order.qty |
+            currency:'RM
+            '}}</div>
+          <div style="margin-left:28px;margin-top: 10px; font-size: 12px; color: #333333;">Order ID: {{order.id}}</div>
+        </div>
+
         <img style="width: 100%;" src="assets/1.png">
 
+
         <div style=" font-size: 14px; font-weight: 500; color: #cccccc; text-align: center; margin-top: 20px;">
-          Merchant will shipout your product soon.</div>
+          Merchant will deliver your product as soon as possible.</div>
+
+        <div style="display: flex; align-items: center;justify-content: center;">
+          <div (click)="track(order.id)"
+            style="cursor: pointer; font-size: 14px; padding: 10px 20px; border: 1px solid #00b871; color: #00b871; font-weight: 300; width: max-content; margin: 10px 0px;">
+            Track your order</div>
+        </div>
+
+        <div *ngIf="items.aftersale" style="text-align: start;">
+          <div style="margin-top: 30px; font-weight: 500; font-size: 14px; display: flex; align-items: center;">
+            <ion-icon style='font-size:18px;color:#00b871;margin-right:10px;' name="information-circle-outline">
+            </ion-icon>
+            Note to buyer
+          </div>
+
+          <div style="margin-left:28px; margin-top: 5px;  font-size: 12px; white-space: pre-wrap;">
+            - {{items.aftersale}}</div>
+        </div>
+
 
         <!-- <div style="font-weight: 500; display: flex; align-items: center;">
           <ion-icon style="margin-right: 10px; font-size: 25px;" name="person-circle-outline"></ion-icon>
@@ -124,11 +194,11 @@
           <div style="width: calc(100% - 20px);"> {{address}}</div>
         </div> -->
 
-        <div *ngIf="items.aftersale" style="margin-top: 30px; font-weight: 500; font-size: 12px;"><span
+        <!-- <div *ngIf="items.aftersale" style="margin-top: 30px; font-weight: 500; font-size: 12px;"><span
             style="color: red;">*</span> Instruction:</div>
 
         <div *ngIf="items.aftersale" style=" margin-top: 5px; font-weight: 500;">
-          - {{items.aftersale}}</div>
+          - {{items.aftersale}}</div> -->
 
       </div>
 
@@ -136,10 +206,11 @@
 
   </div>
 
-  <div *ngIf="paid == 'false' || paid == false"
-    style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .3); ">
+  <div *ngIf="(paid == 'false' || paid == false) && orderid " style="width: 100vw;">
 
-    <div style="width: calc(100% - 40px); max-width: 400px;">
+    <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
+
+    <div #heighter id="heighter" class='stuff'>
 
       <div
         style="width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
@@ -185,3 +256,9 @@
   </div>
 
 </ion-content>
+
+<div *ngIf="5 > animer" [ngClass]=" animer == 0 ? 'loading' : 'loadingx'" style=" width: 100vw; height: 100vh;
+  position: fixed; display: flex; align-items: center; justify-content: center;
+   background-color: white;">
+  <img style="object-fit: cover; height: 100%;" src='assets/clogo.gif'>
+</div>

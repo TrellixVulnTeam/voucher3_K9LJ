@@ -22,7 +22,26 @@ const routes: Routes = [
   {
     path: 'store/:id',
     loadChildren: () => import('./store/store.module').then( m => m.StorePageModule)
+  },
+  {
+    path: 'brand/:vendor/:user',
+    loadChildren: () => import('./brand/brand.module').then( m => m.BrandPageModule)
+  },
+  {
+    path: 'order/:id',
+    loadChildren: () => import('./order/order.module').then( m => m.OrderPageModule)
+  },
+  {
+    path: 'token',
+    loadChildren: () => import('./token/token.module').then( m => m.TokenPageModule)
+  },
+  {
+    path: 'event/:event/:user',
+    loadChildren: () => import('./event/event.module').then( m => m.EventPageModule)
   }
+
+
+
 ];
 
 @NgModule({
