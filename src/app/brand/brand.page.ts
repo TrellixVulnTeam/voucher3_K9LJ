@@ -13,7 +13,8 @@ import { Meta, Title } from '@angular/platform-browser';
 })
 export class BrandPage implements OnInit {
 
-  constructor(public platform: Platform, public activatedRoute: ActivatedRoute, public nav: NavController, private title: Title) { }
+  constructor(private meta: Meta, public platform: Platform,
+    public activatedRoute: ActivatedRoute, public nav: NavController, private title: Title) { }
 
   widther(x) {
     // console.log(this.platform.width() >= x)
@@ -53,7 +54,7 @@ export class BrandPage implements OnInit {
   proper2(x) {
     return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
   }
-  
+
   checkit(x) {
     return x.filter(a => a.value.status == true);
   }
@@ -81,7 +82,15 @@ export class BrandPage implements OnInit {
   links = [] as any;
 
   ngOnInit() {
-    this.title.setTitle('Welcome to Vendor \'s vsnap store!')
+    // this.http.post('https://us-central1-newvsnap.cloudfunctions.net/nergigante/getmeta', { id: this.id }).subscribe(data => {
+
+    //   this.meta.updateTag({ itemprop: 'name', content: data['success'].name })
+    //   this.meta.updateTag({ itemprop: 'description', content: (data['success'].description || '') })
+    //   this.meta.updateTag({ itemprop: 'image', content: data['success'].thumbnail })
+
+    // });
+
+    this.title.setTitle('Welcome to Vendor\'s vsnap store!')
   }
 
   ionViewWillEnter() {
@@ -92,11 +101,20 @@ export class BrandPage implements OnInit {
     firebase.database().ref('vouchers/').orderByChild('by').equalTo(this.vendor).once('value', data => {
       this.voucher = data.val();
       console.log(this.vendor);
+
     })
 
     firebase.database().ref('vendors/' + this.vendor).once('value', data => {
       this.vendor_info = data.val();
       this.title.setTitle('Welcome to ' + this.vendor_info['name'] + '\'s vsnap store!')
+      if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
+
+        firebase.database().ref('vouchers/').orderByChild('tag').equalTo("CSR2021").once('value', data => {
+          this.voucher = data.val();
+          console.log(this.voucher);
+        })
+
+      }
       console.log(this.voucher);
     })
 
