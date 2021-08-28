@@ -6,12 +6,14 @@
 
     <div
       style='width:100%;display:flex;align-items: center;justify-content: space-between;padding:0px 20px;background-color:white;border-bottom:1px solid #eeeeee;height:70px;'>
-      <img *ngIf='widther(400)==true' style='height:30px;object-fit: contain;cursor: pointer;'
+      <img (click)='tomain()' *ngIf='widther(400)==true' style='height:30px;object-fit: contain;cursor: pointer;'
         src="https://i.imgur.com/pEyI97C.png" alt="">
-      <img *ngIf='widther(400)==false' style='height:40px;width:40px;;object-fit: contain;cursor: pointer;'
-        src="https://i.imgur.com/vCmo9nR.png" alt="">
+      <img (click)='tomain()' *ngIf='widther(400)==false'
+        style='height:40px;width:40px;;object-fit: contain;cursor: pointer;' src="https://i.imgur.com/vCmo9nR.png"
+        alt="">
 
-      <div (click)="store(influencer['id'])" style='display:flex;align-items: center;justify-content: flex-end;'>
+      <div *ngIf='user == influencer["id"]' (click)="store(influencer['id'])"
+        style='display:flex;align-items: center;justify-content: flex-end;'>
         <img style='height:40px;width:40px;object-fit: cover;border-radius:100%;'
           src="{{influencer['photo'] ? (stringornot(influencer['photo']) ? influencer['photo'] : influencer['photo'][0] ) : 'https://i.imgur.com/GvrNqUS.png' }}"
           alt="">
@@ -36,6 +38,10 @@
             style='cursor: pointer;;padding:5px 10px;border:1px solid #eeeeee;font-size:12px;margin-right:10px;margin-bottom:10px;'>
             {{x.name}}</div>
         </div>
+        <div (click)='donatecsr2021()' *ngIf="vendor_info['tag']=='CSR2021'"
+          style='margin-top:10px;;padding:7px 15px;width:max-content;font-size:14px;color:white;background-color: #8a1515;'>
+          Donate to Fight2021</div>
+
       </div>
     </div>
 
@@ -108,8 +114,11 @@
 
     </div>
     <div style='padding:40px;border-top:1px solid #eeeeee;background-color: white;;'>
+      <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:10px;'>Become a vsnap influencer or
+        become a vsnap vendor?&nbsp; <span (click)='join()' style='text-decoration: underline;'>join us now.</span> </div>
+
       <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:20px;'>© Copyright 2020- All rights
-        reserved - Vsnap by Vsnap Global Sdn Bhd. version 3.0.1</div>
+        reserved - Vsnap by Vsnap Global Sdn Bhd. version 4.1.0</div>
       <div style='text-align: center;display:flex;align-items: center;justify-content: center;'>
         <span (click)="outside('terms')" style='cursor: pointer;;font-size:10px;color:#525dc2;'>Terms &
           Condition</span>&nbsp;•&nbsp;<span (click)="outside('privacy')"

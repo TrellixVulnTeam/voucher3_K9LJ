@@ -4,41 +4,51 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home/:item/:user',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'main',
     pathMatch: 'full'
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'thanks',
-    loadChildren: () => import('./thanks/thanks.module').then( m => m.ThanksPageModule)
+    loadChildren: () => import('./thanks/thanks.module').then(m => m.ThanksPageModule)
   },
   {
     path: 'store/:id',
-    loadChildren: () => import('./store/store.module').then( m => m.StorePageModule)
+    loadChildren: () => import('./store/store.module').then(m => m.StorePageModule)
   },
   {
     path: 'brand/:vendor/:user',
-    loadChildren: () => import('./brand/brand.module').then( m => m.BrandPageModule)
+    loadChildren: () => import('./brand/brand.module').then(m => m.BrandPageModule)
   },
   {
     path: 'order/:id',
-    loadChildren: () => import('./order/order.module').then( m => m.OrderPageModule)
+    loadChildren: () => import('./order/order.module').then(m => m.OrderPageModule)
   },
   {
     path: 'token',
-    loadChildren: () => import('./token/token.module').then( m => m.TokenPageModule)
+    loadChildren: () => import('./token/token.module').then(m => m.TokenPageModule)
   },
   {
     path: 'event/:event/:user',
-    loadChildren: () => import('./event/event.module').then( m => m.EventPageModule)
+    loadChildren: () => import('./event/event.module').then(m => m.EventPageModule)
+  },
+  {
+    path: 'guild/:guild/:user',
+    loadChildren: () => import('./guild/guild.module').then(m => m.GuildPageModule)
+  },
+  {
+    path: 'main',
+    loadChildren: () => import('./main/main.module').then(m => m.MainPageModule)
   }
+
+
 
 
 

@@ -1,6 +1,6 @@
 <ion-content style="--background: rgba(0, 0, 0, .3); ">
 
-  <div *ngIf="(paid == 'true' ||  paid == true)  && order.address == false" style="width: 100vw; ">
+  <div *ngIf="(paid == 'true' ||  paid == true)  && !order.address" style="width: 100vw; ">
 
     <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
 
@@ -96,7 +96,7 @@
 
   </div>
 
-  <div *ngIf="(paid == 'true' || paid == true) && (order.address == true)" style="width: 100vw; ">
+  <div *ngIf="(paid == 'true' || paid == true) && (order.address)" style="width: 100vw; ">
 
     <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
 
@@ -206,7 +206,7 @@
 
   </div>
 
-  <div *ngIf="(paid == 'false' || paid == false) && orderid " style="width: 100vw;">
+  <div *ngIf="(paid == 'false' || paid == false) && orderid!='' " style="width: 100vw;">
 
     <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
 

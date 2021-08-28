@@ -6,6 +6,8 @@ import "firebase/database";
 import "firebase/auth";
 import swal from 'sweetalert';
 import { Title } from '@angular/platform-browser';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-order',
@@ -15,7 +17,8 @@ import { Title } from '@angular/platform-browser';
 export class OrderPage implements OnInit {
 
   constructor(public nav: NavController, public modal: ModalController, private toastController: ToastController, private title: Title,
-    public routerOutlet: IonRouterOutlet, public alertController: AlertController, private actRoute: ActivatedRoute, public platform: Platform) { }
+    public routerOutlet: IonRouterOutlet, public alertController: AlertController, private actRoute: ActivatedRoute, public platform: Platform, private iab: InAppBrowser,
+    public http:HttpClient) { }
 
   comment = []
   order = {} as any;
@@ -43,7 +46,8 @@ export class OrderPage implements OnInit {
   openlink(x, y) {
     let temp = (y == 'Facebook' ? 'https://' : (y == 'Instagram' ? 'https://' : '')) +
       (y == 'Facebook' ? 'www.facebook.com/' : (y == 'Instagram' ? 'www.instagram.com/' : '')) + x;
-    window.open(temp);
+    // window.open(temp);
+    this.iab.create(temp, '_system');
     // xxx
   }
 
@@ -90,29 +94,30 @@ export class OrderPage implements OnInit {
 
     this.orderid = this.actRoute.snapshot.paramMap.get('id');
 
-    firebase.database().ref('orders/' + this.orderid).once('value', data => {
+    this.http.post('https://api.vsnap.my/getafforders', { id: this.orderid }).subscribe(data => {
 
-      if (data.exists()) {
-        this.title.setTitle(new Date(data.val().date).toLocaleDateString() + ' ' + data.val().name)
+    if(data['data']){
+      this.order = data['data']
+      this.title.setTitle('Order Summary for ' +  this.orders.name)
+      this.qr = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + this.orders.id + ',' + this.orders.type;
 
+      this.http.post('https://api.vsnap.my/getvouchers', { id: data['data']['type_id'] }).subscribe(data2 => {
+        this.items = data2['data'];
+        console.log(this.items)
+      })
 
-        this.orders = data.val();
-        this.qr = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + data.val().id + ',' + 'consumer'
-
-        firebase.database().ref('vendors/' + data.val().by).once('value', data => {
-          this.vendor_info = data.val();
-        })
-
-        firebase.database().ref('vouchers/' + data.val().type_id).once('value', data => {
-          this.items = data.val();
-        })
-
-        this.order = data.val();
+      this.http.post('https://api.vsnap.my/getvendors', { id: data['data']['by'] }).subscribe(data3 => {
+        this.vendor_info = data3['data'];
+        console.log(this.vendor_info)
+      })
         this.ok = 1;
-      } else {
-        this.ok = -1
-      }
+    }else{
+      this.ok = -1
+    }
+      
 
+    },e=>{
+      this.ok = -1
     })
 
   }
@@ -120,7 +125,7 @@ export class OrderPage implements OnInit {
   proper2(x) {
     return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
   }
-  
+
   ngOnInit() {
 
   }

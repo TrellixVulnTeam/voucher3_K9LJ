@@ -1,5 +1,6 @@
 <ion-content>
-  <div
+
+  <div *ngIf="paid"
     style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, .3); position: fixed; top: 0;">
 
     <div style="width: calc(100% - 40px); max-width: 300px; height: calc(100vh / 1.5); max-height: 500px;">
@@ -42,16 +43,64 @@
         </div>
 
         <div style="width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
-          <div (click)="open()"
-            style="cursor: pointer; padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: 500; color: white;
+          <!-- <div (click)="open()" style="cursor: pointer; padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: 500; color: white;
              text-align: center; background-color: #ff9900; margin-bottom: 15px;">
-            Return to Vsnap</div>
+            Return to Vsnap</div> -->
 
           <div style="width: calc(100% - 50px); font-size: 14px; font-weight: 500; color: #cccccc; text-align: center;">
-            Click this button to return into Vsnap application.</div>
+            Close this browser return to vsnap application.</div>
         </div>
 
 
+      </div>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="!paid" style="width: 100vw;  background: rgba(0, 0, 0, .3); height: 100vh;">
+
+    <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
+
+    <div #heighter id="heighter" class='stuff'>
+
+      <div
+        style="width: 100%; height: 100px; background: #ffffff; border-radius: 10px; background-image: radial-gradient(circle at left bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0), radial-gradient(circle at right bottom, rgba(0, 0, 0, 0.3) 15px, transparent 0);">
+
+        <div
+          style="width: 100%; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <div
+            style="width: calc(100% - 50px); height: 100px; display: flex; flex-direction: column; align-items: center; border-bottom: 3px dashed #eeeeee; position: relative;">
+
+            <div
+              style="width: 60px; height: 60px; padding: 5px; background-color: #ffffff; border-radius: 100%; position: absolute; top: -30px;">
+
+              <div
+                style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #e05555; border-radius: 100%;">
+                <ion-icon style="font-size: 45px; color: #ffffff;" name="close"></ion-icon>
+              </div>
+
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 30px;">
+              <h3 style="font-weight: 600; margin: 0px 0px 3px 0px;">Sorry!</h3>
+              <h6 style="font-weight: 600; color: #d7d7d7; margin: 0;">Your purchase was unsuccessful</h6>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top: -1px; width: 100%; background: #ffffff; border-radius: 10px;
+         background-image: radial-gradient(circle at left top, rgba(0, 0, 0, 0.3) 15px, transparent 0),
+          radial-gradient(circle at right top, rgba(0, 0, 0, 0.3) 15px, transparent 0); padding: 40px 30px;">
+
+        <img style="width: 100%;" src="assets/1.png">
+
+        <div style=" font-size: 14px; font-weight: 500; color: #cccccc; text-align: center; margin-top: 20px;">
+          You have cancelled your transaction.</div>
       </div>
 
     </div>

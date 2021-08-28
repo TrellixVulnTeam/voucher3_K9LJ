@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController, Platform } from '@ionic/angular';
 import firebase from 'firebase';
 import { Meta, Title } from '@angular/platform-browser';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-store',
@@ -18,48 +19,159 @@ export class StorePage implements OnInit {
   vendors = [] as any;
   animer = 0;
 
-  constructor(private platform: Platform, private actRoute: ActivatedRoute, private nav: NavController, private title: Title) { }
+  constructor(private platform: Platform, private actRoute: ActivatedRoute, private nav: NavController, private title: Title, private iab: InAppBrowser,
+    private http: HttpClient,
+    private meta: Meta,
+  ) { }
+
+  join() {
+    window.open('https://register.vsnap.my/influencer');
+  }
 
   rounder(x) {
     return Math.floor(x);
   }
 
   checkit(x) {
-    return x.filter(a => a.value.status == true);
+    return x.filter(a => a.thumbnail != "");
   }
 
   links = [] as any;
 
+  donatecsr2021() {
+    this.iab.create("https://pg.revenuemonster.my/v1/invoice-group/input?invoiceGroupId=1626521195381410810", '_system');
+  }
+
   outside(x) {
-    window.open(this.links[x]);
+    // window.open(this.links[x]);
+    this.iab.create(this.links[x], '_system');
   }
 
   proper2(x) {
     return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
   }
 
+  load = true;
+  complete = false;
+  items = {};
+
   ngOnInit() {
-    this.title.setTitle('Welcome to User\'s vsnap store!')
+
+    // private http: HttpClient,
+    // private meta: Meta, 
+    // load=true;
+    // complete=false;
+    // items={};
+
+    this.id = this.actRoute.snapshot.paramMap.get('id');
+
+    this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "users/", id: this.id }).subscribe(data => {
+
+      if (Object.keys(data['success']).length) {
+        this.load = false;
+        this.items = data['success'];
+
+        this.title.setTitle(data['success'].name + '\'s Vsnap Influencer Store')
+        // this.meta.updateTag({ name: 'description', content: data['success'].description })
+
+        this.meta.updateTag({ itemprop: 'name', content: data['success'].name + '\'s Vsnap Influencer Store' })
+        this.meta.updateTag({ itemprop: 'description', content: ('Welcome to ' + data['success'].name + '\'s Vsnap Influencer Store') })
+        this.meta.updateTag({ itemprop: 'image', content: (data['success'].photo ? (data['success'].photo[0] || "https://i.imgur.com/cW5MqH2.png") : "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/store/' + this.id) })
+        this.meta.updateTag({ property: 'og:type', content: 'article' })
+        this.meta.updateTag({ property: 'og:description', content: ('Welcome to ' + data['success'].name + '\'s Vsnap Influencer Store') })
+        this.meta.updateTag({ property: 'og:title', content: data['success'].name + '\'s Vsnap Influencer Store' })
+        this.meta.updateTag({ property: 'og:image', content: (data['success'].photo ? (data['success'].photo[0] || "https://i.imgur.com/cW5MqH2.png") : "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:image:secure_url', content: (data['success'].photo ? (data['success'].photo[0] || "https://i.imgur.com/cW5MqH2.png") : "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+        this.meta.updateTag({ property: 'og:image:width', content: '500' })
+        this.meta.updateTag({ property: 'og:image:height', content: '500' })
+
+        this.complete = true;
+      } else {
+        this.load = false;
+      }
+
+    })
   }
 
   stringornot(x) {
     return (typeof x == "string" ? true : false)
   }
 
+  tomain() {
+    this.nav.navigateForward('main?user=' + this.id)
+  }
+
   ionViewWillEnter() {
     this.id = this.actRoute.snapshot.paramMap.get('id');
-    firebase.database().ref('users/' + this.id).once('value', data => {
-      this.user = data.val();
-      this.title.setTitle('Welcome to ' + this.user.name + '\'s vsnap store!');
-      (data.val().store || []).forEach(element => {
-        firebase.database().ref('vouchers/' + element).once('value', data => {
-          this.vouchers[data.val().id] = data.val();
-          console.log(this.vouchers);
+
+    this.user.id = this.user;
+    this.http.post('https://api.vsnap.my/getusers', { id: this.id }).subscribe(a => {
+
+      if (a['data'].id) {
+        this.user = a['data'] || {};
+        this.title.setTitle(this.user.name + '\'s vsnap store');
+        (this.user.store || []).forEach((element,index) => {
+          this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+
+            if (z['data'].status == true) {
+              this.vouchers[index] = z['data'] || {};
+              console.log(this.vouchers)
+            }
+
+          }, e => {
+
+          })
+        });
+
+      } else {
+        this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+          if (a['data'].id) {
+            this.user = a['data'] || {};
+            this.title.setTitle(this.user.name + '\'s vsnap store');
+            (this.user.store || []).forEach((element,index) => {
+              this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+
+                if (z['data'].status == true) {
+                  this.vouchers[index] = z['data'] || {};
+                  console.log(this.vouchers)
+                }
+
+              }, e => {
+
+              })
+            });
+          } else {
+            this.tomain()
+          }
+        }, e => {
+          this.tomain()
         })
-      });
-    })
-    firebase.database().ref('vendors').once('value', data => {
-      this.vendors = data.val();
+      }
+    }, e => {
+      this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+        if (a['data'].id) {
+          this.user = a['data'] || {};
+          this.title.setTitle(this.user.name + '\'s vsnap store');
+          (this.user.store || []).forEach(element => {
+            this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+
+              if (z['data'].status == true) {
+                this.vouchers[element] = z['data'] || {};
+                console.log(this.vouchers)
+              }
+
+            }, e => {
+
+            })
+          });
+        } else {
+          this.tomain()
+        }
+      }, e => {
+        this.tomain()
+      })
     })
 
     firebase.database().ref('link').once('value', data => {
