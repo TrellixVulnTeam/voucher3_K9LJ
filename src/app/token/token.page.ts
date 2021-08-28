@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-token',
@@ -7,9 +10,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TokenPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private iab: InAppBrowser,
+    private actRoute: ActivatedRoute,
+    private title: Title,
+  ) { }
+
+  paid = false;
+  theheight = 1000;
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.actRoute.queryParams.subscribe(a => {
+      this.paid = (a['status'] == "SUCCESS");
+      if (this.paid) {
+        this.title.setTitle('Thanks For Your Purchase!');
+      } else {
+        this.title.setTitle('Order Cancelled!');
+      }
+    });
+
+    setInterval(() => {
+      this.theheight = (document.getElementById('heighter').clientHeight);
+    }, 500);
   }
 
   open() {

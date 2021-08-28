@@ -6,13 +6,12 @@
 
     <div
       style='width:100%;display:flex;align-items: center;justify-content: space-between;padding:0px 20px;background-color:white;border-bottom:1px solid #eeeeee;height:70px;'>
-      <img (click)='tomain()' *ngIf='widther(400)==true' style='height:30px;object-fit: contain;cursor: pointer;'
+      <img *ngIf='widther(400)==true' style='height:30px;object-fit: contain;cursor: pointer;'
         src="https://i.imgur.com/pEyI97C.png" alt="">
-      <img (click)='tomain()' *ngIf='widther(400)==false'
-        style='height:40px;width:40px;;object-fit: contain;cursor: pointer;' src="https://i.imgur.com/vCmo9nR.png"
-        alt="">
+      <img *ngIf='widther(400)==false' style='height:40px;width:40px;;object-fit: contain;cursor: pointer;'
+        src="https://i.imgur.com/vCmo9nR.png" alt="">
 
-      <div *ngIf='user == influencer["id"]' (click)="store(influencer['id'])"
+      <div *ngIf="user == influencer['id']" (click)="store(influencer['id'])"
         style='display:flex;align-items: center;justify-content: flex-end;'>
         <img style='height:40px;width:40px;object-fit: cover;border-radius:100%;'
           src="{{influencer['photo'] ? (stringornot(influencer['photo']) ? influencer['photo'] : influencer['photo'][0] ) : 'https://i.imgur.com/GvrNqUS.png' }}"
@@ -27,26 +26,45 @@
       </div>
     </div>
 
-    <div style='width:100%;display:flex;justify-content: flex-start;background-color: white;padding:20px;'>
-      <img style='height:60px;width:60px;border-radius:100%;object-fit: cover;'
-        src="{{vendor_info['photo'] || 'https://media.istockphoto.com/vectors/young-woman-engaged-in-shopping-and-checkout-her-purchases-vector-id1073204892?b=1&k=6&m=1073204892&s=612x612&w=0&h=WQz5o6GHiShCSZhpcQ6G1Fkg8fPV65UKNU7z2sWTEBg='}}"
-        alt="">
-      <div style='margin-left:20px;'>
-        <div style='font-size:15px;font-weight: bold;color:#333333;margin-top:10px;'>{{vendor_info['name']}}</div>
-        <div style='width:calc( 100% );display:flex;flex-wrap: wrap;margin-top:10px;'>
-          <div (click)='openlink(x.link, x.name)' *ngFor='let x of vendor_info["link"]'
-            style='cursor: pointer;;padding:5px 10px;border:1px solid #eeeeee;font-size:12px;margin-right:10px;margin-bottom:10px;'>
-            {{x.name}}</div>
-        </div>
-        <div (click)='donatecsr2021()' *ngIf="vendor_info['tag']=='CSR2021'"
-          style='margin-top:10px;;padding:7px 15px;width:max-content;font-size:14px;color:white;background-color: #8a1515;'>
-          Donate to Fight2021</div>
 
+    <div style="width: calc( 100% );padding:15px 15px;padding-bottom:5px;">
+      <div style='width:100%;display:flex;align-items: center;'>
+        <div
+          style="width:calc( 100%  );display: flex;align-items: center;border:1px solid #dddddd;padding:6px 10px;border-radius: 3px;height: 35px;background-color:white;">
+          <ion-icon slot="start" name="search" style="font-size: 18px;margin-right: 10px;color:#c7c7c7;"></ion-icon>
+          <ion-input type="text" class="ion-no-padding" [(ngModel)]="keyword" placeholder="Search Products"
+            style="width:calc(100% - 18px - 10px - 18px - 15px);margin-right: 15px;font-size: 12px;letter-spacing: .5px;">
+          </ion-input>
+          <ion-icon name="close-circle-sharp" style="color:#c7c7c7;font-size: 18px;" *ngIf="keyword!=''"
+            (click)="keyword=''"></ion-icon>
+        </div>
+
+        <!-- <div style='width:100px;display:flex;justify-content: flex-end;align-items: center;'>
+
+          <ion-icon (click)="page>1 ? page = page - 1 : page" [ngClass]='[ page >1 ? "blacker" : "blackerx" ]'
+            name="caret-back-outline"></ion-icon>
+
+          <div style='padding:0px 10px;font-size:15px;color:#333333;font-weight: bold;'>
+            {{countpage(filterer(voucher),20) >= page ? page :
+            countpage(filterer(voucher),20)}}/{{countpage(filterer(voucher),20)}}</div>
+
+          <ion-icon (click)="page>= countpage(filterer(voucher),20) ? page : page = page + 1"
+            [ngClass]='[ page >= countpage(filterer(voucher),20) ? "blackerx" : "blacker" ]'
+            name="caret-forward-outline"></ion-icon>
+
+        </div> -->
+      </div>
+
+
+      <div style='width:100%;display:flex;padding-left:10px;padding-top:15px; overflow-x: auto; '>
+        <div [ngClass]='[ selected=="All" ? "high" : "highx" ]' (click)='selected="All"'>All</div>
+        <div [ngClass]='[ selected==eve  ? "high" : "highx" ]' (click)='selected=eve' style="min-width: max-content;"
+          *ngFor='let eve of category; let i = index'>{{eve}}</div>
       </div>
     </div>
 
     <div style='width:100%;display:flex;flex-wrap: wrap;padding-left:20px;background-color:white;'>
-      <div *ngFor='let eve of checkit(voucher|keyvalue);let i = index' (click)="go(eve.value.id)"
+      <div *ngFor='let eve of pager(filterer(voucher), 20, true, page );let i = index' (click)="go(eve.id)"
         style='margin-right:20px;margin-bottom:20px;background-color:white;box-shadow:1px 5px 10px rgba(0,0,0,0.1);position: relative;'
         [ngStyle]='{"width" : ( 900 > widtherget()  ? ((widtherget() - 20)/rounder(widtherget() / 200)) - 20 +"px" : "calc( ( 900px - 100px ) / 4 )")  }'>
         <div style='width:100%;cursor: pointer;'>
@@ -56,23 +74,26 @@
             </div> -->
             <img
               style='width:100%;height:100%;top:0;left:0;right:0;bottom:0;position: absolute;z-index:10;object-fit: cover;'
-              src="{{eve.value.thumbnail}}" alt="">
+              src="{{eve.thumbnail}}" alt="">
           </div>
           <div style='padding:10px;width:100%;'>
-            <div style='font-size:14px;color:#262626;font-weight: bold;'>{{eve.value.name}}</div>
+            <div style='border:1px solid #eeeeee;padding:3px 7px;font-size:12px;letter-spacing: .5px;color:#999999;;margin-bottom:3px;max-width:100%;white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;width:max-content'>{{eve.by_name}}</div>
+            <div style='font-size:14px;color:#262626;font-weight: bold;'>{{eve.name}}</div>
 
             <div style='width:100%;display:flex;justify-content: space-between;align-items: center;'>
 
               <div style='margin-top:5px;display:flex;align-items: center'>
-                <div *ngIf="eve.value.price_now" style='font-size:14px;font-weight: bold;color:#8a1515;'>
-                  {{eve.value.price_now | currency:"RM"}}
+                <div *ngIf="eve.price_now" style='font-size:14px;font-weight: bold;color:#8a1515;'>
+                  {{eve.price_now | currency:"RM"}}
                 </div>
-                <div *ngIf="!eve.value.price_now" style='font-size:14px;font-weight: bold;color:#8a1515;'>
+                <div *ngIf="!eve.price_now" style='font-size:14px;font-weight: bold;color:#8a1515;'>
                   APPLY FOR FREE
                 </div>
-                <div *ngIf='eve.value.price_ori > eve.value.price_now'
+                <div *ngIf='eve.price_ori > eve.price_now'
                   style='font-size:11px;font-weight: normal;color:#999999;;text-decoration:line-through;margin-left:5px;'>
-                  &nbsp;{{eve.value.price_ori | currency:"RM"}}&nbsp;</div>
+                  &nbsp;{{eve.price_ori | currency:"RM"}}&nbsp;</div>
               </div>
 
 
@@ -101,7 +122,7 @@
 
       </div>
 
-      <div style='width:100%;' *ngIf='lengthof(voucher|keyvalue)==0'>
+      <div style='width:100%;' *ngIf='lengthof(filterer(voucher))==0'>
         <div
           style='width:calc( 100% - 40px );margin:20px;padding:20px;display:flex;justify-content: center;align-items: center;background-color: white;flex-direction: column;'>
           <img style='width:200px;' src="https://i.pinimg.com/originals/5d/35/e3/5d35e39988e3a183bdc3a9d2570d20a9.gif"
@@ -115,10 +136,11 @@
     </div>
     <div style='padding:40px;border-top:1px solid #eeeeee;background-color: white;;'>
       <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:10px;'>Become a vsnap influencer or
-        become a vsnap vendor?&nbsp; <span (click)='join()' style='text-decoration: underline;'>join us now.</span> </div>
+        become a vsnap vendor?&nbsp; <span (click)='join()' style='text-decoration: underline;'>join us now.</span>
+      </div>
 
       <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:20px;'>© Copyright 2020- All rights
-        reserved - Vsnap by Vsnap Global Sdn Bhd. version 3.1.0</div>
+        reserved - Vsnap by Vsnap Global Sdn Bhd. version 4.1.0</div>
       <div style='text-align: center;display:flex;align-items: center;justify-content: center;'>
         <span (click)="outside('terms')" style='cursor: pointer;;font-size:10px;color:#525dc2;'>Terms &
           Condition</span>&nbsp;•&nbsp;<span (click)="outside('privacy')"
@@ -130,5 +152,10 @@
     </div>
 
   </div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>

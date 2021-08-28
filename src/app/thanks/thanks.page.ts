@@ -28,65 +28,44 @@ export class ThanksPage implements OnInit {
   order = {} as any;
   qr = "";
   items = {} as any;
-  // remark; 
-  // name;
-  // contact;
-  // address;
-  // email;
-  // userid;
-  // vendor;
-  // items = [] as any;
-  // order = [] as any;
-
 
   ngOnInit() {
 
   }
 
-  theheight = 0;
-
-  // heighting(){
-  //   // console.log((document.getElementById('heighter').clientHeight))
-  //   return 
-  // }
+  theheight = 1000;
   animer = 0;
 
   proper2(x) {
     return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
   }
-  
+
   ionViewWillEnter() {
     this.qr = 'https://i.pinimg.com/originals/39/ee/de/39eede5b8818d7c02d2340a53a652961.gif'
 
     this.actRoute.queryParams.subscribe(a => {
       this.orderid = a['orderId'];
-      this.paid = a['status'] == "SUCCESS";
 
+      this.paid = (a['status'] == "SUCCESS");
+      console.log(this.orderid)
+      console.log(this.paid)
       if (this.paid == 'true' || this.paid == true) {
         this.title.setTitle('Thanks For Your Purchase!');
         // console.log(a['order']);
 
-        firebase.database().ref('orders/' + this.orderid).once('value', data => {
-          if (data.exists()) {
-            // console.log(data.val());
+        this.http.post('https://api.vsnap.my/getafforders', { id: this.orderid }).subscribe(data => {
+          this.order = data['data']
+          console.log(this.order)
 
-            this.order = data.val()
-            console.log(data.val().address);
-
+          this.http.post('https://api.vsnap.my/getvouchers', { id: data['data']['type_id'] }).subscribe(data2 => {
+            this.items = data2['data'];
+            console.log(this.items)
             this.animer = 6;
-
-            // this.theheight = (document.getElementById('heighter').clientHeight);
-
             setInterval(() => {
               this.theheight = (document.getElementById('heighter').clientHeight);
             }, 500);
 
-
-            firebase.database().ref('vouchers/' + data.val().type_id).once('value', data => {
-              this.items = data.val();
-            })
-
-          }
+          })
         })
 
 

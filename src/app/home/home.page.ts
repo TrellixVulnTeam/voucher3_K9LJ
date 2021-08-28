@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
   agree = false;
   id;
   user;
-  items = [] as any;
+  voucher = [] as any;
   vendor = [] as any;
   name;
   email;
@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
   }
 
   check() {
-    return this.name && this.email && this.contact && (this.items.address ? this.address : true);
+    return this.name && this.email && this.contact && (this.voucher.address ? this.address : true);
   }
 
   calc(x) {
@@ -70,6 +70,19 @@ export class HomePage implements OnInit {
     this.id = this.actRoute.snapshot.paramMap.get('item');
     this.user = this.actRoute.snapshot.paramMap.get('user')
 
+    this.load = false;
+
+    // this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "vouchers", id: this.id }).subscribe(data => {
+    //   console.log(data);
+
+    //   if (Object.keys(this.voucher).length) {
+    //     this.load = false;
+    //     this.voucher = this.voucher;
+    //     this.complete = true;
+    //   } else {
+    //   }
+
+    // })
 
     localforage.getItem('vsnap_userinfo').then((a) => {
       if (a) {
@@ -96,52 +109,43 @@ export class HomePage implements OnInit {
       this.city = "";
     })
 
-    this.http.post('https://us-central1-newvsnap.cloudfunctions.net/nergigante/getmeta', { id: this.id }).subscribe(data => {
 
-      if (Object.keys(data['success']).length) {
-        this.load = false;
-        this.items = data['success'];
+  }
 
-        this.title.setTitle(data['success'].name)
-        // this.meta.updateTag({ name: 'description', content: data['success'].description })
+  rounder(x) {
+    return Math.floor(x);
+  }
 
-        this.meta.updateTag({ itemprop: 'name', content: data['success'].name })
-        this.meta.updateTag({ itemprop: 'description', content: (data['success'].description || '') })
-        this.meta.updateTag({ itemprop: 'image', content: data['success'].thumbnail })
-        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/home/' + this.id + '/' + this.user) })
-        this.meta.updateTag({ property: 'og:type', content: 'article' })
-        this.meta.updateTag({ property: 'og:description', content: (data['success'].description || '') })
-        this.meta.updateTag({ property: 'og:title', content: data['success'].name })
-        this.meta.updateTag({ property: 'og:image', content: data['success'].thumbnail })
-        this.meta.updateTag({ property: 'og:image:secure_url', content: data['success'].thumbnail })
-        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
-        this.meta.updateTag({ property: 'og:image:width', content: '500' })
-        this.meta.updateTag({ property: 'og:image:height', content: '500' })
+  widtherget() {
+    return this.platform.width();
+  }
 
-        this.complete = true;
-      } else {
-        this.load = false;
-      }
-
-    })
+  go(x) {
+    this.nav.navigateForward('home/' + x + '/' + this.user);
   }
 
   item
   users
-  voucher = [] as any;
   selected
-  disabled = [true, true, true];
+  disabled = [true, true, true, true];
   influencer = [] as any;
   links = [] as any;
+  otherproduct = [] as any;
 
   outside(x) {
-    window.open(this.links[x]);
+    this.iab.create(this.links[x], '_system');
+    // window.open(this.links[x]);
+  }
+
+  donatecsr2021() {
+    this.iab.create("https://pg.revenuemonster.my/v1/invoice-group/input?invoiceGroupId=1626521195381410810", '_system');
   }
 
   openlink(x, y) {
     let temp = (y == 'Facebook' ? 'https://' : (y == 'Instagram' ? 'https://' : '')) +
       (y == 'Facebook' ? 'www.facebook.com/' : (y == 'Instagram' ? 'www.instagram.com/' : '')) + x;
-    window.open(temp);
+    this.iab.create(temp, '_system')
+    // window.open(temp);
     // xxx
   }
 
@@ -158,56 +162,132 @@ export class HomePage implements OnInit {
     return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
   }
 
+  tomain() {
+    this.nav.navigateForward('main?user=' + this.user)
+  }
+
   ionViewDidEnter() { // all firebase here
-    firebase.database().ref('vouchers/' + this.id + '/share/' + this.user).transaction(a => {
-      return a ? a + 1 : a = 1;
-    }).then(c => {
-      if (c.snapshot.exists() && c.committed) {
-        console.log('added')
-      }
-    })
 
     firebase.database().ref('link').once('value', data => {
       this.links = data.val();
     })
 
-    firebase.database().ref('vouchers/' + this.id).once('value', data => {
-      this.voucher = data.val();
-      // console.log(this.voucher);
-
-      if (this.voucher['description']) {
-        this.selected = 0;
-      } else if (this.voucher['tnc']) {
-        this.disabled[0] = false;
-        this.selected = 1;
-      } else {
-        this.disabled[0] = false;
-        this.disabled[1] = false;
-        this.selected = 2;
-      }
-
-      if (this.voucher['variations']) {
-        this.var_select = [];
-        this.voucher['variations'].forEach(element => {
-          this.var_select.push(0);
-        });
-        // console.log(this.var_select)
-      } else {
-        this.var_select = [];
-      }
-    }).then(() => {
-      firebase.database().ref('vendors/' + this.voucher['by']).once('value', data => {
-        this.vendor = data.val();
-        this.animer = 6;
-        // console.log(this.vendor);
-      })
-    })
-    firebase.database().ref('users/' + this.user).once('value', data => {
-      this.influencer = data.val();
-      // console.log(this.influencer)
-    })
     firebase.database().ref('link').once('value', data => {
       this.link = data.val();
+    })
+
+    this.influencer.id = this.user;
+    this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+
+      if (a['data'].id) {
+        this.influencer = a['data'] || {};
+      } else {
+        this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+          if (a['data'].id) {
+            this.influencer = a['data'] || {};
+          } else {
+            this.tomain()
+          }
+        }, e => {
+          this.tomain()
+        })
+      }
+    }, e => {
+      this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+        if (a['data'].id) {
+          this.influencer = a['data'] || {};
+        } else {
+          this.tomain()
+        }
+      }, e => {
+        this.tomain()
+      })
+    })
+
+    this.http.post('https://api.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
+      console.log(a);
+
+      if (a['data'].id) {
+
+        this.http.post('https://api.vsnap.my/datavendorvouchers', { id: a['data'].by }).subscribe(c => {
+          this.otherproduct = c['data'].filter(b => b.id != a['data'].id);
+          if (!this.lengthof(this.otherproduct)) {
+            this.disabled[3] = false;
+          }
+        });
+
+        this.voucher = a['data'] || {};
+        console.log(this.voucher);
+
+        this.title.setTitle(this.voucher.name)
+        // this.meta.updateTag({ name: 'description', content: this.voucher.description })
+
+        this.meta.updateTag({ itemprop: 'name', content: this.voucher.name })
+        this.meta.updateTag({ itemprop: 'description', content: (this.voucher.description || '') })
+        this.meta.updateTag({ itemprop: 'image', content: this.voucher.thumbnail })
+        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/home/' + this.id + '/' + this.user) })
+        this.meta.updateTag({ property: 'og:type', content: 'article' })
+        this.meta.updateTag({ property: 'og:description', content: (this.voucher.description || '') })
+        this.meta.updateTag({ property: 'og:title', content: this.voucher.name })
+        this.meta.updateTag({ property: 'og:image', content: this.voucher.thumbnail })
+        this.meta.updateTag({ property: 'og:image:secure_url', content: this.voucher.thumbnail })
+        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+        this.meta.updateTag({ property: 'og:image:width', content: '500' })
+        this.meta.updateTag({ property: 'og:image:height', content: '500' })
+
+        this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.voucher.by }).subscribe(c => {
+          if (c['data'][1]) {
+            if (c['data'][1].id) {
+              this.vendor = c['data'][1] || {};
+              this.animer = 6;
+            } else {
+              this.tomain()
+              this.vendor = {};
+            }
+          } else {
+            this.tomain()
+            this.vendor = {};
+          }
+
+        }, e => {
+          this.tomain()
+          this.vendor = {};
+        })
+
+        if (this.voucher['description']) {
+          this.selected = 0;
+          if (!this.voucher['tnc']) {
+            this.disabled[1] = false;
+          }
+        } else if (this.voucher['tnc']) {
+          this.disabled[0] = false;
+          this.selected = 1;
+        } else {
+          this.disabled[0] = false;
+          this.disabled[1] = false;
+          this.selected = 2;
+        }
+        if (this.voucher['variations']) {
+          this.var_select = [];
+          this.voucher['variations'].forEach(element => {
+            this.var_select.push(0);
+          });
+          console.log(this.var_select)
+          console.log(this.countvar())
+        } else {
+          this.var_select = [];
+        }
+
+        this.http.post('https://api.vsnap.my/addstats', { type: "vouchers", type_id: this.voucher.type_id, stat: "share", userid: this.influencer.id }).subscribe(b => { }, e => { })
+
+
+      } else {
+        this.tomain()
+        this.voucher = {};
+      }
+
+    }, e => {
+      this.tomain()
     })
 
   }
@@ -230,7 +310,8 @@ export class HomePage implements OnInit {
   lengthof(x) {
     return x ? Object.keys(x).length : 0;
   }
-
+  today = new Date().getTime();
+  price_vsnap2 = 0 as any;
   buys() {
     // console.log(JSON.stringify((this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), [])));
 
@@ -240,12 +321,18 @@ export class HomePage implements OnInit {
       buttons: [false],
       closeOnEsc: false,
       closeOnClickOutside: false,
-      timer: 3000,
+      timer: 10000,
     })
 
+    this.price_comm = (this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) / (this.influencer.vip_expiry > this.today ? 1 : 2) ;
+    this.price_vsnap2 = this.proper2(   (this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) - ((this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) / (this.influencer.vip_expiry > this.today ? 1 : 2))   ) ;
 
-    if (this.items.address ? (this.address && this.postcode && this.city) : true) {
-      if (this.items.price_now == 0) {
+    this.price_vsnap = this.proper2(((this.voucher.price_vsnap || 0) + this.countvar() * ((this.voucher.price_vsnap || 0) / this.voucher.price_now))) || 0;
+    this.price_now = this.proper2(((this.voucher.price_now + this.countvar())) || 0);
+    this.price_ori = this.proper2(((this.voucher.price_ori || 0) + this.countvar()) || 0);
+
+    if (this.voucher.address ? (this.address && this.postcode && this.city) : true) {
+      if (this.voucher.price_now == 0) {
         this.free()
       } else {
         this.fpx()
@@ -266,69 +353,170 @@ export class HomePage implements OnInit {
   enter = false;
 
   countvar() {
-    // if(this.voucher['variations']){
-
-    //   let holder = 0;
-
-    //   for(let i = 0 ; i < this.voucher['variations'].length ; i ++ ){
-
-    //     holder += this.voucher['variations'][i].selections[this.var_select]
-
-    //   }
-
-    // }else{
-    //   return 0
-    // }
-
-    return this.voucher['variations'] ? this.voucher['variations'].reduce((a, b, index) => a + b['selections'][this.var_select[index]].price, 0) : 0;
+    return this.voucher['variations'] ? this.voucher['variations'].reduce((a, b, index) => a + (this.var_select[index] >= 0 ? b['selections'][this.var_select[index]].price : 0), 0) : 0;
   }
 
-  fpx() {
-    let temp = {
-      name: this.name,
-      address: this.address,
-      postcode: this.postcode,
-      city: this.city,
-      contact: this.contact,
-      email: this.email,
+  checkguild() {
+    if (this.influencer.guild) {
+
+      console.log('guild/' + this.influencer.guild);
+
+
+      firebase.database().ref('guild/' + this.influencer.guild).once('value', data => {
+        if (data.exists()) {
+          console.log("guild check")
+          let multiplier = data.val().pay_rate ? (data.val().pay_rate[this.vendor.id] ? (data.val().pay_rate[this.vendor.id].rate || 0) : (data.val().pay_rate_default || 0)) : (data.val().pay_rate_default || 0)
+          this.voucher.price_guild = this.proper2((this.price_vsnap || 0) * multiplier) || 0;
+          this.voucher.price_guild_id = this.influencer.guild || "";
+          this.voucher.price_guild_remark = this.influencer.name + " has achieved a sales of RM" + this.proper2(this.price_now * this.qty).toFixed(2) + " and our guild has received a guild incentive of RM" + this.proper2(this.voucher.price_guild * this.qty).toFixed(2) + "!";
+          this.voucher.price_guild_logs = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
+
+          console.log(this.voucher)
+          this.checkvip();
+
+        } else {
+          this.voucher.price_guild = 0;
+          this.voucher.price_guild_id = "";
+          console.log("guild uncheck")
+          this.checkvip();
+        }
+      })
+
+    } else {
+      this.voucher.price_guild = 0;
+      this.voucher.price_guild_id = "";
+      console.log("guild uncheck")
+      this.checkvip();
     }
+  }
 
-    localforage.setItem('vsnap_userinfo', temp);
+  checkvip() {
+    if (this.influencer.vip == 2 && this.influencer.vip_expiry >= new Date().getTime()) {
+      console.log("vip check")
+      this.voucher.price_vip = this.proper2((this.price_vsnap || 0) * 0.15);
+      this.voucher.price_vip_remark = "You received " + this.proper2(this.voucher.price_vip * this.qty).toFixed(2) + " as VIP bonus incentive from a sales of RM" + this.proper2(this.price_now * this.qty).toFixed(2) + "!";
+      this.voucher.price_vip_logs = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
+      console.log(this.voucher)
+      this.checkmentor();
+    } else {
+      this.voucher.price_vip = 0;
+      console.log("vip uncheck")
+      this.checkmentor();
+    }
+  }
 
-    let keyer = firebase.database().ref('orders_pending').push({
-      variations: (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), []),
+  checkmentor() {
+    if (this.vendor.referred_by) {
+      console.log('guild/' + this.vendor.referred_by);
+
+      firebase.database().ref('guild/' + this.vendor.referred_by).once('value', data => {
+
+        if (data.exists()) {
+          console.log("vicheckmentorp check")
+          this.voucher.price_mentor = this.proper2((this.price_vsnap || 0) * 0.1);
+          this.voucher.price_mentor_id = this.vendor.referred_by || "";
+          this.voucher.price_mentor_remark = this.vendor.name + " has achieved a sales of RM" + this.proper2(this.price_now * this.qty).toFixed(2) + " and our guild received mentorship incentive of RM" + (this.voucher.price_mentor * this.qty).toFixed(2) + "!";
+          this.voucher.price_mentor_logs = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
+          this.checklast();
+
+        } else {
+          console.log("vicheckmentorp uncheck")
+          this.voucher.price_mentor = 0;
+          this.voucher.price_mentor_id = "";
+          this.checklast();
+        }
+
+      })
+    } else {
+      console.log("vicheckmentorp uncheck")
+      this.voucher.price_mentor = 0;
+      this.voucher.price_mentor_id = "";
+      this.checklast();
+    }
+  }
+
+  price_now = 0;
+  price_vsnap = 0;
+  price_comm = 0;
+  price_ori = 0;
+
+  join() {
+    window.open('https://register.vsnap.my/influencer');
+  }
+
+  checklast() {
+    console.log('last coming')
+    let keyer = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
+
+    firebase.database().ref('orders_pending/' + keyer).update({
       address: this.voucher.address || false,
-      date: firebase.database.ServerValue.TIMESTAMP,
-      by: this.voucher.by || "",
-      description: this.voucher.description || "",
-      name: this.voucher.name || "",
-      photo: this.voucher.photo || [],
-      price_comm: this.proper2(( this.voucher.price_comm +  this.countvar()*(this.voucher.price_comm/this.voucher.price_now)  )) || 0,
-      price_vsnap: this.proper2(( (this.voucher.price_vsnap||0) +  this.countvar()*((this.voucher.price_vsnap||0)/this.voucher.price_now)  )) || 0,
-      price_now: this.proper2(((this.voucher.price_now + this.countvar())) || 0),
-      price_ori: this.proper2(((this.voucher.price_ori||0) + this.countvar()) || 0),
-      qty: this.qty || 1,
-      seller_email: this.influencer.email || "",
-      seller_id: this.user || "",
-      seller_name: this.influencer.name || "",
-      seller_phone: this.influencer.contact || "",
-      thumbnail: this.voucher.thumbnail || "",
-      tnc: this.voucher.tnc || "",
-      type: 'vouchers',
-      type_id: this.id || "",
+      aftersale: this.voucher.aftersale || "",
+      buyer_address: ((this.address || "") + ' ' + (this.postcode || "") + ' ' + (this.city) || ""),
+      buyer_contact: this.contact || "",
       buyer_name: this.name || "",
       buyer_email: this.email || "",
-      buyer_contact: this.contact || "",
-      buyer_address: (this.address + ', ' + this.postcode + ', ' + this.city) || "",
+      by: this.voucher.by || "",
+      by_name: this.vendor.name || "",
+      category: this.voucher.category || "",
+      checklist: this.voucher.list || [],
+      date: firebase.database.ServerValue.TIMESTAMP,
+      description: this.voucher.description || "",
+      following: this.voucher.following || false,
+      hidden_remark: this.voucher.hidden_remark || "",
+      id: keyer,
+      link: this.voucher.link || [],
+      location: this.voucher.location || [],
+      min_rating: this.voucher.min_rating || 0,
+      min_vip: this.voucher.min_vip || 0,
+      name: this.voucher.name || "",
+      online: this.voucher.online || false,
       overwrite: this.voucher.overwrite || false,
-      remark: this.remark || '',
-    }).key;
+      photo: this.voucher.photo || [],
+      price_comm: this.price_comm,
+      price_vsnap: this.price_vsnap,
+      price_vsnap2: this.price_vsnap2,
+      price_now: this.price_now,
+      price_ori: this.price_ori,
+      price_guild: this.voucher.price_guild || 0,
+      price_guild_id: this.voucher.price_guild_id || "",
+      price_guild_logs: this.voucher.price_guild_logs || "",
+      price_guild_remark: this.voucher.price_guild_remark || "",
+      price_vip: this.voucher.price_vip || 0,
+      price_vip_remark: this.voucher.price_vip_remark || "",
+      price_vip_logs: this.voucher.price_vip_logs || "",
+      price_mentor: this.voucher.price_mentor || 0,
+      price_mentor_id: this.voucher.price_mentor_id || "",
+      price_mentor_remark: this.voucher.price_mentor_remark || "",
+      price_mentor_logs: this.voucher.price_mentor_logs || "",
+      qty: this.qty || 1,
+      thumbnail: this.voucher.thumbnail || "",
+      tnc: this.voucher.tnc || "",
+      token: this.voucher.token || 0,
+      type: 'vouchers',
+      type_id: this.id || "",
+      event: this.id || "",
+      userid: this.user || "",
+      value_price: this.voucher.value_price || 0,
+      value_type: this.voucher.value_type || false,
+      variations: (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), []),
+      seller_name: this.influencer.name || "",
+      seller_email: this.influencer.email || "",
+      seller_id: this.user || "",
+      seller_phone: this.influencer.contact || "",
+      survey: this.voucher.survey || [],
+      verified: this.voucher.verified || 0,
+      remark: this.voucher.remark || "",
+      tag: this.voucher.tag || "",
+    });
 
     let body = {
       amount: this.proper2(((this.voucher.price_now + this.countvar())) || 0) * this.qty * 100,
-      orderdescription: 'Purchase ' + this.items.name + ' x' + (this.qty || 1),
+      // amount: 100,
+      orderdescription: ('Purchase ' + this.voucher.name + ' x' + (this.qty || 1)).replace(/[^a-zA-Z ]/g, ""),
       ordertitle: 'Vsnap Order ' + keyer,
       orderid: keyer,
+      redirecturl: 'https://deal.vsnap.my/thanks?orderId=' + keyer,
+      callbackurl: 'https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/callback2?orderid=' + keyer,
     }
 
     // orderid
@@ -338,7 +526,9 @@ export class HomePage implements OnInit {
 
     if (this.email && this.name) {
       console.log(body)
-      this.http.post('https://us-central1-newvsnap.cloudfunctions.net/nergigante/revenuePayment', body).subscribe(a => {
+      this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/revenuePaymentAny', body).subscribe(a => {
+        console.log(a)
+
         console.log(JSON.parse(a['message']['body']))
         if (Object.values(a).length) {
           const browser = this.iab.create(JSON.parse(a['message']['body']).url, '_self');
@@ -371,7 +561,7 @@ export class HomePage implements OnInit {
     }
   }
 
-  fpx_billplz() {
+  fpx() {
     let temp = {
       name: this.name,
       address: this.address,
@@ -381,214 +571,303 @@ export class HomePage implements OnInit {
       email: this.email,
     }
 
-
     localforage.setItem('vsnap_userinfo', temp);
 
-    let keyer = firebase.database().ref('orders_pending').push({
-      variations: (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), []),
-      address: this.voucher.address || false,
-      date: firebase.database.ServerValue.TIMESTAMP,
-      by: this.voucher.by || "",
-      description: this.voucher.description || "",
-      name: this.voucher.name || "",
-      photo: this.voucher.photo || [],
-      price_comm: this.proper2(( this.voucher.price_comm +  this.countvar()*(this.voucher.price_comm/this.voucher.price_now)  )) || 0,
-      price_vsnap: this.proper2(( (this.voucher.price_vsnap||0) +  this.countvar()*((this.voucher.price_vsnap||0)/this.voucher.price_now)  )) || 0,
-      price_now: this.proper2(((this.voucher.price_now + this.countvar())) || 0),
-      price_ori: this.proper2(((this.voucher.price_ori||0) + this.countvar()) || 0),
-      qty: this.qty || 1,
-      seller_email: this.influencer.email || "",
-      seller_id: this.user || "",
-      seller_name: this.influencer.name || "",
-      seller_phone: this.influencer.contact || "",
-      thumbnail: this.voucher.thumbnail || "",
-      tnc: this.voucher.tnc || "",
-      type: 'vouchers',
-      type_id: this.id || "",
-      buyer_name: this.name || "",
-      buyer_email: this.email || "",
-      buyer_contact: this.contact || "",
-      buyer_address: (this.address + ', ' + this.postcode + ', ' + this.city) || "",
-      overwrite: this.voucher.overwrite || false,
-      remark: this.remark || '',
-    }).key;
+    console.log("FPX run")
+    console.log(this.influencer)
+    console.log(this.voucher)
+    // price_guild: 0,
+    //   price_guild_id: 0,
+    //   price_vip: 0,
+    //   price_mentor:0,
+    //   price_mentor_id: 0,
 
-    let body = {
-      amount: this.proper2(((this.voucher.price_now + this.countvar())) || 0) * this.qty * 100,
-      description: 'Purchase ' + this.items.name + ' x' + (this.qty || 1),
-      email: this.email,
-      name: this.name,
-      order: keyer,
-    }
-
-    if (this.email && this.name) {
-      this.http.post('https://us-central1-newvsnap.cloudfunctions.net/nergigante/billplz2', body).subscribe(a => {
-        if (Object.values(a).length) {
-          const browser = this.iab.create(a['url'], '_self');
-          // console.log(a);
-        } else {
-          swal({
-            icon: 'error',
-            title: 'Error',
-            text: 'Something is wrong, please try again!',
-            closeOnEsc: false,
-            closeOnClickOutside: false,
-            buttons: [false],
-            timer: 1500
-          });
-        }
-
-      }, e => {
-        // console.log(e);
-      })
+    if (this.voucher.price_vsnap / this.voucher.price_now >= 0.1) {
+      this.checkguild();
     } else {
-      swal({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please fill up all information! :)',
-        closeOnEsc: false,
-        closeOnClickOutside: false,
-        buttons: [false],
-        timer: 1500
-      });
+      this.checklast();
     }
+
   }
 
-  fpx_old() {
-    let temp = {
-      name: this.name,
-      address: this.address + ', ' + this.postcode + ', ' + this.city,
-      contact: this.contact,
-      email: this.email,
-    }
+  // fpx_billplz() {
+  //   let temp = {
+  //     name: this.name,
+  //     address: this.address,
+  //     postcode: this.postcode,
+  //     city: this.city,
+  //     contact: this.contact,
+  //     email: this.email,
+  //   }
 
 
-    localforage.setItem('vsnap_userinfo', temp);
+  //   localforage.setItem('vsnap_userinfo', temp);
 
-    let key = firebase.database().ref('orders_pending').push({
-      variations: (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), []),
-      address: this.voucher.address || false,
-      date: firebase.database.ServerValue.TIMESTAMP,
-      by: this.voucher.by || null,
-      description: this.voucher.description || null,
-      name: this.voucher.name || null,
-      photo: this.voucher.photo || [],
-      price_comm: this.proper2(( this.voucher.price_comm +  this.countvar()*(this.voucher.price_comm/this.voucher.price_now)  )) || 0,
-      price_vsnap: this.proper2(( (this.voucher.price_vsnap||0) +  this.countvar()*((this.voucher.price_vsnap||0)/this.voucher.price_now)  )) || 0,
-      price_now: this.proper2(((this.voucher.price_now + this.countvar())) || 0),
-      price_ori: this.proper2(((this.voucher.price_ori||0) + this.countvar()) || 0),
-      qty: this.qty || null,
-      seller_email: this.influencer.email || null,
-      seller_id: this.user || null,
-      seller_name: this.influencer.name || null,
-      seller_phone: this.influencer.contact || null,
-      thumbnail: this.voucher.thumbnail || null,
-      tnc: this.voucher.tnc || null,
-      type: 'vouchers',
-      type_id: this.id || null,
-      buyer_name: this.name || null,
-      buyer_email: this.email || null,
-      buyer_contact: this.contact || null,
-      buyer_address: (this.address + ', ' + this.postcode + ', ' + this.city) || null,
-      overwrite: this.voucher.overwrite || false,
-      remark: this.remark || '',
-    }).key;
+  //   let keyer = firebase.database().ref('orders_pending').push({
+  //     variations: (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), []),
+  //     address: this.voucher.address || false,
+  //     date: firebase.database.ServerValue.TIMESTAMP,
+  //     by: this.voucher.by || "",
+  //     description: this.voucher.description || "",
+  //     name: this.voucher.name || "",
+  //     photo: this.voucher.photo || [],
+  //     price_comm: this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0,
+  //     price_vsnap: this.proper2(((this.voucher.price_vsnap || 0) + this.countvar() * ((this.voucher.price_vsnap || 0) / this.voucher.price_now))) || 0,
+  //     price_now: this.proper2(((this.voucher.price_now + this.countvar())) || 0),
+  //     price_ori: this.proper2(((this.voucher.price_ori || 0) + this.countvar()) || 0),
+  //     qty: this.qty || 1,
+  //     seller_email: this.influencer.email || "",
+  //     seller_id: this.user || "",
+  //     seller_name: this.influencer.name || "",
+  //     seller_phone: this.influencer.contact || "",
+  //     thumbnail: this.voucher.thumbnail || "",
+  //     tnc: this.voucher.tnc || "",
+  //     type: 'vouchers',
+  //     type_id: this.id || "",
+  //     buyer_name: this.name || "",
+  //     buyer_email: this.email || "",
+  //     buyer_contact: this.contact || "",
+  //     buyer_address: (this.address + ', ' + this.postcode + ', ' + this.city) || "",
+  //     overwrite: this.voucher.overwrite || false,
+  //     remark: this.remark || '',
+  //   }).key;
 
-    let body = {
-      variations: this.lengthof(this.voucher.variations) ? JSON.stringify((this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), [])) : [],
-      vendor: this.vendor.id,
-      item: this.id,
-      user: this.user,
-      amount: this.proper2(((this.voucher.price_now + this.countvar())) || 0) * this.qty * 100,
-      qty: this.qty || 1,
-      description: 'Purchase ' + this.items.name + ' x' + this.qty || 1,
-      email: this.email,
-      name: this.name,
-      order: key,
-      address: (this.address + ', ' + this.postcode + ', ' + this.city) || '',
-      buyername: this.name || '',
-      buyeremail: this.email || '',
-      contact: this.contact || '',
-      addresser: this.items.address || false,
-      vendorfcm: this.vendor.fcm || '',
-      remark: this.remark || '',
-    }
+  //   let body = {
+  //     // amount: this.proper2(((this.voucher.price_now + this.countvar())) || 0) * this.qty * 100,
+  //     amount: 100,
+  //     description: 'Purchase ' + this.voucher.name + ' x' + (this.qty || 1),
+  //     email: this.email,
+  //     name: this.name,
+  //     order: keyer,
+  //   }
 
-    if (this.email && this.name) {
-      this.http.post('https://us-central1-newvsnap.cloudfunctions.net/nergigante/billplz', body).subscribe(a => {
-        if (Object.values(a).length) {
-          const browser = this.iab.create(a['url'], '_self');
-          // console.log(a);
-        } else {
-          swal({
-            icon: 'error',
-            title: 'Error',
-            text: 'Please check your email ! :(',
-            closeOnEsc: false,
-            closeOnClickOutside: false,
-            buttons: [false],
-            timer: 1500
-          });
-        }
+  //   if (this.email && this.name) {
+  //     this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/billplz2', body).subscribe(a => {
+  //       if (Object.values(a).length) {
+  //         const browser = this.iab.create(a['url'], '_self');
+  //         // console.log(a);
+  //       } else {
+  //         swal({
+  //           icon: 'error',
+  //           title: 'Error',
+  //           text: 'Something is wrong, please try again!',
+  //           closeOnEsc: false,
+  //           closeOnClickOutside: false,
+  //           buttons: [false],
+  //           timer: 1500
+  //         });
+  //       }
 
-      }, e => {
-        // console.log(e);
-      })
-    } else {
-      swal({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please fill up all information! :)',
-        closeOnEsc: false,
-        closeOnClickOutside: false,
-        buttons: [false],
-        timer: 1500
-      });
-    }
-  }
+  //     }, e => {
+  //       // console.log(e);
+  //     })
+  //   } else {
+  //     swal({
+  //       icon: 'error',
+  //       title: 'Error',
+  //       text: 'Please fill up all information! :)',
+  //       closeOnEsc: false,
+  //       closeOnClickOutside: false,
+  //       buttons: [false],
+  //       timer: 1500
+  //     });
+  //   }
+  // }
+
+  // fpx_old() {
+  //   let temp = {
+  //     name: this.name,
+  //     address: this.address + ', ' + this.postcode + ', ' + this.city,
+  //     contact: this.contact,
+  //     email: this.email,
+  //   }
+
+
+  //   localforage.setItem('vsnap_userinfo', temp);
+
+  //   let key = firebase.database().ref('orders_pending').push({
+  //     variations: (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), []),
+  //     address: this.voucher.address || false,
+  //     date: firebase.database.ServerValue.TIMESTAMP,
+  //     by: this.voucher.by || null,
+  //     description: this.voucher.description || null,
+  //     name: this.voucher.name || null,
+  //     photo: this.voucher.photo || [],
+  //     price_comm: this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0,
+  //     price_vsnap: this.proper2(((this.voucher.price_vsnap || 0) + this.countvar() * ((this.voucher.price_vsnap || 0) / this.voucher.price_now))) || 0,
+  //     price_now: this.proper2(((this.voucher.price_now + this.countvar())) || 0),
+  //     price_ori: this.proper2(((this.voucher.price_ori || 0) + this.countvar()) || 0),
+  //     qty: this.qty || null,
+  //     seller_email: this.influencer.email || null,
+  //     seller_id: this.user || null,
+  //     seller_name: this.influencer.name || null,
+  //     seller_phone: this.influencer.contact || null,
+  //     thumbnail: this.voucher.thumbnail || null,
+  //     tnc: this.voucher.tnc || null,
+  //     type: 'vouchers',
+  //     type_id: this.id || null,
+  //     buyer_name: this.name || null,
+  //     buyer_email: this.email || null,
+  //     buyer_contact: this.contact || null,
+  //     buyer_address: (this.address + ', ' + this.postcode + ', ' + this.city) || null,
+  //     overwrite: this.voucher.overwrite || false,
+  //     remark: this.remark || '',
+  //   }).key;
+
+  //   let body = {
+  //     variations: this.lengthof(this.voucher.variations) ? JSON.stringify((this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), [])) : [],
+  //     vendor: this.vendor.id,
+  //     item: this.id,
+  //     user: this.user,
+  //     // amount: this.proper2(((this.voucher.price_now + this.countvar())) || 0) * this.qty * 100,
+  //     amount: 100,
+  //     qty: this.qty || 1,
+  //     description: 'Purchase ' + this.voucher.name + ' x' + this.qty || 1,
+  //     email: this.email,
+  //     name: this.name,
+  //     order: key,
+  //     address: (this.address + ', ' + this.postcode + ', ' + this.city) || '',
+  //     buyername: this.name || '',
+  //     buyeremail: this.email || '',
+  //     contact: this.contact || '',
+  //     addresser: this.voucher.address || false,
+  //     vendorfcm: this.vendor.fcm || '',
+  //     remark: this.remark || '',
+  //   }
+
+  //   if (this.email && this.name) {
+  //     this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/billplz', body).subscribe(a => {
+  //       if (Object.values(a).length) {
+  //         const browser = this.iab.create(a['url'], '_self');
+  //         // console.log(a);
+  //       } else {
+  //         swal({
+  //           icon: 'error',
+  //           title: 'Error',
+  //           text: 'Please check your email ! :(',
+  //           closeOnEsc: false,
+  //           closeOnClickOutside: false,
+  //           buttons: [false],
+  //           timer: 1500
+  //         });
+  //       }
+
+  //     }, e => {
+  //       // console.log(e);
+  //     })
+  //   } else {
+  //     swal({
+  //       icon: 'error',
+  //       title: 'Error',
+  //       text: 'Please fill up all information! :)',
+  //       closeOnEsc: false,
+  //       closeOnClickOutside: false,
+  //       buttons: [false],
+  //       timer: 1500
+  //     });
+  //   }
+  // }
 
   free() {
-    let temp = (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), [])
+    // let temp = (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), [])
     // console.log(JSON.parse(temp))
 
     if (this.email && this.name) {
 
-      let ids = firebase.database().ref('orders').push({
-        variations: temp,
+      let keyer = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
+
+      this.http.post('https://api.vsnap.my/insertafforders', {
         address: this.voucher.address || false,
-        date: firebase.database.ServerValue.TIMESTAMP,
-        by: this.voucher.by || "",
-        description: this.voucher.description || "",
-        name: this.voucher.name || "",
-        photo: this.voucher.photo || [],
-        price_comm: this.proper2(( this.voucher.price_comm +  this.countvar()*(this.voucher.price_comm/this.voucher.price_now)  )) || 0,
-        price_vsnap: this.proper2(( (this.voucher.price_vsnap||0) +  this.countvar()*((this.voucher.price_vsnap||0)/this.voucher.price_now)  )) || 0,
-        price_now: this.proper2(((this.voucher.price_now + this.countvar())) || 0),
-        price_ori: this.proper2(((this.voucher.price_ori||0) + this.countvar()) || 0),
-        qty: this.qty || "",
-        seller_email: this.influencer.email || "",
-        seller_id: this.user || "",
-        seller_name: this.influencer.name || "",
-        seller_phone: this.influencer.contact || "",
-        thumbnail: this.voucher.thumbnail || "",
-        tnc: this.voucher.tnc || "",
-        type: 'vouchers',
-        type_id: this.id || "",
+        aftersale: this.voucher.aftersale || "",
+        buyer_address: ((this.address || "") + ' ' + (this.postcode || "") + ' ' + (this.city) || ""),
+        buyer_contact: this.contact || "",
         buyer_name: this.name || "",
         buyer_email: this.email || "",
-        buyer_contact: this.contact || "",
-        buyer_address: (this.address + ', ' + this.postcode + ', ' + this.city) || "",
+        by: this.voucher.by || "",
+        category: this.voucher.category || "",
+        checklist: JSON.stringify(this.voucher.list || []),
+        date: new Date().getTime(),
+        description: this.voucher.description || "",
+        following: this.voucher.following || false,
+        hidden_remark: this.voucher.hidden_remark || "",
+        id: keyer,
+        link: JSON.stringify(this.voucher.link || []),
+        location: JSON.stringify(this.voucher.location || []),
+        min_rating: this.voucher.min_rating || 0,
+        min_vip: this.voucher.min_vip || 0,
+        name: this.voucher.name || "",
+        online: this.voucher.online || false,
         overwrite: this.voucher.overwrite || false,
-        remark: this.remark || '',
-      }).key;
+        photo: JSON.stringify(this.voucher.photo || []),
+        price_comm: this.price_comm,
+        price_vsnap: this.price_vsnap,
+        price_now: this.price_now,
+        price_ori: this.price_ori,
+        price_guild: this.voucher.price_guild || 0,
+        price_guild_id: this.voucher.price_guild_id || "",
+        price_guild_logs: this.voucher.price_guild_logs || "",
+        price_guild_remark: this.voucher.price_guild_remark || "",
+        price_vip: this.voucher.price_vip || 0,
+        price_vip_remark: this.voucher.price_vip_remark || "",
+        price_vip_logs: this.voucher.price_vip_logs || "",
+        price_mentor: this.voucher.price_mentor || 0,
+        price_mentor_id: this.voucher.price_mentor_id || "",
+        price_mentor_remark: this.voucher.price_mentor_remark || "",
+        price_mentor_logs: this.voucher.price_mentor_logs || "",
+        qty: this.qty || 1,
+        thumbnail: this.voucher.thumbnail || "",
+        tnc: this.voucher.tnc || "",
+        token: this.voucher.token || 0,
+        type: 'vouchers',
+        type_id: this.id || "",
+        userid: this.user || "",
+        value_price: this.voucher.value_price || 0,
+        value_type: this.voucher.value_type || false,
+        variations: JSON.stringify((this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), [])),
+        seller_name: this.influencer.name || "",
+        seller_email: this.influencer.email || "",
+        seller_id: this.user || "",
+        seller_phone: this.influencer.contact || "",
+        survey: JSON.stringify(this.voucher.survey || []),
+        verified: this.voucher.verified || 0,
+        remark: this.voucher.remark || "",
+        tag: this.voucher.tag || "",
+      }).subscribe(a => {
+        this.nav.navigateForward('thanks?status=SUCCESS&orderId=' + keyer);
+      }, e => {
 
-      firebase.database().ref('orders/' + ids).update({
-        id: ids,
-      }).then(a => {
-        // console.log(2);
+      })
 
-        this.nav.navigateForward('thanks?status=SUCCESS&orderId=' + ids);
-      });
+      // let ids = firebase.database().ref('orders').push({
+      //   variations: temp,
+      //   address: this.voucher.address || false,
+      //   date: firebase.database.ServerValue.TIMESTAMP,
+      //   by: this.voucher.by || "",
+      //   description: this.voucher.description || "",
+      //   tag: this.voucher.tag || "",
+      //   name: this.voucher.name || "",
+      //   photo: this.voucher.photo || [],
+      //   price_comm: this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0,
+      //   price_vsnap: this.proper2(((this.voucher.price_vsnap || 0) + this.countvar() * ((this.voucher.price_vsnap || 0) / this.voucher.price_now))) || 0,
+      //   price_now: this.proper2(((this.voucher.price_now + this.countvar())) || 0),
+      //   price_ori: this.proper2(((this.voucher.price_ori || 0) + this.countvar()) || 0),
+      //   qty: this.qty || "",
+      //   seller_email: this.influencer.email || "",
+      //   seller_id: this.user || "",
+      //   seller_name: this.influencer.name || "",
+      //   seller_phone: this.influencer.contact || "",
+      //   thumbnail: this.voucher.thumbnail || "",
+      //   tnc: this.voucher.tnc || "",
+      //   type: 'vouchers',
+      //   type_id: this.id || "",
+      //   buyer_name: this.name || "",
+      //   buyer_email: this.email || "",
+      //   buyer_contact: this.contact || "",
+      //   buyer_address: (this.address + ', ' + this.postcode + ', ' + this.city) || "",
+      //   overwrite: this.voucher.overwrite || false,
+      //   remark: this.remark || '',
+      // }).key;
+
     } else {
       swal({
         icon: 'error',
