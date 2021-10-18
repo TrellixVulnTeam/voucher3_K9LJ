@@ -29,7 +29,7 @@ export class BrandPage implements OnInit {
 
   item = "";
   user = "";
-  voucher = {} as any;
+  voucher = [] as any;
   influencer = {} as any;
   vendor = "";
   qty = 1;
@@ -59,7 +59,7 @@ export class BrandPage implements OnInit {
   }
 
   checkit(x) {
-    return x.filter(a => a.value.status == true);
+    return x ? (x.filter(a => a.status == true)) : [];
   }
 
   lengthof(x) {
@@ -83,92 +83,120 @@ export class BrandPage implements OnInit {
   }
 
   links = [] as any;
-  items = {};
-  load = true;
-  complete = false;
-  ngOnInit() {
-    // this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta', { id: this.id }).subscribe(data => {
 
-    //   this.meta.updateTag({ itemprop: 'name', content: data['success'].name })
-    //   this.meta.updateTag({ itemprop: 'description', content: (data['success'].description || '') })
-    //   this.meta.updateTag({ itemprop: 'image', content: data['success'].thumbnail })
+  // load = true;
 
-    // });
-    // private http: HttpClient,
-    // load=true;
-    // complete=false;
+ 
+  ngOnInit(){
+    console.log('Do nothing')
 
     this.vendor = this.activatedRoute.snapshot.paramMap.get('vendor');
-    this.user = this.activatedRoute.snapshot.paramMap.get('user');
+    this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-    this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "vendors", id: this.vendor }).subscribe(data => {
+    this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
+      if (c['data'][1]) {
+        if (c['data'][1].id) {
+          // this.load = false;
+          // this.vendor_info = c['data'][1] || {};
+          // this.title.setTitle(this.vendor_info.name + '\'s Vsnap Vendor Store')
 
-      if (Object.keys(data['success']).length) {
-        this.load = false;
-        this.items = data['success'];
+          // this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/brand/' + this.vendor + '/' + this.user) });
+          // this.meta.updateTag({ property: 'og:title', content: this.vendor_info.name + '\'s Vsnap Vendor Store' });
+          // this.meta.updateTag({ property: 'og:image', content: this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png" });
+          // this.meta.updateTag({ property: 'og:description', content: (this.vendor_info.description || '') });
 
-        this.title.setTitle(data['success'].name + '\'s Vsnap Vendor Store')
-        // this.meta.updateTag({ name: 'description', content: data['success'].description })
+          this.title.setTitle(c['data'][1].name + '\'s Vsnap Vendor Store')
+          this.meta.updateTag({ name: 'description', content: (c['data'][1].description || "Welcome to "+c['data'][1].name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ itemprop: 'name', content: c['data'][1].name + '\'s Vsnap Vendor Store'})
+          this.meta.updateTag({ itemprop: 'description', content: (c['data'][1].description || "Welcome to "+c['data'][1].name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ itemprop: 'image', content: (c['data'][1].photo || "https://i.imgur.com/cW5MqH2.png") })
+          this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/brand/' + this.vendor + '/' + this.user) })
+          this.meta.updateTag({ property: 'og:type', content: 'website' })
+          this.meta.updateTag({ property: 'og:description', content: (c['data'][1].description || "Welcome to "+c['data'][1].name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ property: 'og:title', content: c['data'][1].name + '\'s Vsnap Vendor Store' })
+          this.meta.updateTag({ property: 'og:image', content: (c['data'][1].photo || "https://i.imgur.com/cW5MqH2.png") })
+          this.meta.updateTag({ property: 'og:image:secure_url', content: (c['data'][1].photo || "https://i.imgur.com/cW5MqH2.png") })
+          this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+          this.meta.updateTag({ property: 'og:image:width', content: '500' })
+          this.meta.updateTag({ property: 'og:image:height', content: '500' })  
 
-        this.meta.updateTag({ itemprop: 'name', content: data['success'].name + '\'s Vsnap Vendor Store' })
-        this.meta.updateTag({ itemprop: 'description', content: (data['success'].description || '') })
-        this.meta.updateTag({ itemprop: 'image', content: data['success'].photo || "https://i.imgur.com/cW5MqH2.png" })
-        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/brand/' + this.vendor + '/' + this.user) })
-        this.meta.updateTag({ property: 'og:type', content: 'article' })
-        this.meta.updateTag({ property: 'og:description', content: (data['success'].description || '') })
-        this.meta.updateTag({ property: 'og:title', content: data['success'].name + '\'s Vsnap Vendor Store' })
-        this.meta.updateTag({ property: 'og:image', content: data['success'].photo || "https://i.imgur.com/cW5MqH2.png" })
-        this.meta.updateTag({ property: 'og:image:secure_url', content: data['success'].photo || "https://i.imgur.com/cW5MqH2.png" })
-        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
-        this.meta.updateTag({ property: 'og:image:width', content: '500' })
-        this.meta.updateTag({ property: 'og:image:height', content: '500' })
+          // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
 
-        this.complete = true;
+          //   this.http.post('https://api.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
+          //     this.voucher = z['data'] || [];
+          //     console.log(this.voucher)
+          //   })
+
+          // }
+        } else {
+          // this.tomain()
+          // this.vendor_info = {};
+        }
       } else {
-        this.load = false;
+        // this.tomain()
+        // this.vendor_info = {};
       }
 
+    }, e => {
+      // this.tomain()
+      // this.vendor_info = {};
     })
-  }
-
-  tomain() {
-    this.nav.navigateForward('main?user=' + this.user)
-  }
-
-  join(){
-    window.open('https://register.vsnap.my/influencer');
   }
 
   ionViewWillEnter() {
 
-    this.vendor = this.activatedRoute.snapshot.paramMap.get('vendor');
-    this.user = this.activatedRoute.snapshot.paramMap.get('user');
 
-    if(this.vendor != "5qjg3XyuGGdu1janN1yp305qWL62"){
+    this.vendor = this.activatedRoute.snapshot.paramMap.get('vendor');
+    this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
+
+    if (this.vendor != "5qjg3XyuGGdu1janN1yp305qWL62") {
 
       this.http.post('https://api.vsnap.my/datavendorvouchers', { id: this.vendor }).subscribe(a => {
         this.voucher = a['data'] || [];
         console.log(this.voucher)
       })
 
-    }else{
+    } else {
 
       this.http.post('https://api.vsnap.my/datavoucherbytag', { tag: "CSR2021" }).subscribe(a => {
         console.log('here');
-        
+
         this.voucher = a['data'] || [];
         console.log(this.voucher)
       })
 
     }
 
-   
+
 
     this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
       if (c['data'][1]) {
         if (c['data'][1].id) {
+          // this.load = false;
           this.vendor_info = c['data'][1] || {};
-          this.title.setTitle(this.vendor_info['name'])
+          // this.title.setTitle(this.vendor_info.name + '\'s Vsnap Vendor Store')
+
+          // this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/brand/' + this.vendor + '/' + this.user) });
+          // this.meta.updateTag({ property: 'og:title', content: this.vendor_info.name + '\'s Vsnap Vendor Store' });
+          // this.meta.updateTag({ property: 'og:image', content: this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png" });
+          // this.meta.updateTag({ property: 'og:description', content: (this.vendor_info.description || '') });
+
+          
+          this.title.setTitle(this.vendor_info.name + '\'s Vsnap Vendor Store')
+          this.meta.updateTag({ name: 'description', content: (this.vendor_info.description || "Welcome to "+this.vendor_info.name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ itemprop: 'name', content: this.vendor_info.name + '\'s Vsnap Vendor Store'})
+          this.meta.updateTag({ itemprop: 'description', content: (this.vendor_info.description || "Welcome to "+this.vendor_info.name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ itemprop: 'image', content: (this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png") })
+          this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/brand/' + this.vendor + '/' + this.user) })
+          this.meta.updateTag({ property: 'og:type', content: 'website' })
+          this.meta.updateTag({ property: 'og:description', content: (this.vendor_info.description || "Welcome to "+this.vendor_info.name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ property: 'og:title', content: this.vendor_info.name + '\'s Vsnap Vendor Store' })
+          this.meta.updateTag({ property: 'og:image', content: (this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png") })
+          this.meta.updateTag({ property: 'og:image:secure_url', content: (this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png") })
+          this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+          this.meta.updateTag({ property: 'og:image:width', content: '500' })
+          this.meta.updateTag({ property: 'og:image:height', content: '500' })  
+
           // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
 
           //   this.http.post('https://api.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
@@ -197,7 +225,7 @@ export class BrandPage implements OnInit {
       if (a['data'].id) {
         this.influencer = a['data'] || {};
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -208,7 +236,7 @@ export class BrandPage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {
@@ -222,7 +250,102 @@ export class BrandPage implements OnInit {
     firebase.database().ref('link').once('value', data => {
       this.links = data.val();
     })
+
+    
   }
+
+  tomain() {
+    this.nav.navigateForward('main?user=' + this.user)
+  }
+
+  join() {
+    window.open('https://register.vsnap.my/influencer');
+  }
+
+  // ionViewWillEnter() {
+
+  //   this.vendor = this.activatedRoute.snapshot.paramMap.get('vendor');
+  //   this.user = this.activatedRoute.snapshot.paramMap.get('user');
+
+  //   if(this.vendor != "5qjg3XyuGGdu1janN1yp305qWL62"){
+
+  //     this.http.post('https://api.vsnap.my/datavendorvouchers', { id: this.vendor }).subscribe(a => {
+  //       this.voucher = a['data'] || [];
+  //       console.log(this.voucher)
+  //     })
+
+  //   }else{
+
+  //     this.http.post('https://api.vsnap.my/datavoucherbytag', { tag: "CSR2021" }).subscribe(a => {
+  //       console.log('here');
+
+  //       this.voucher = a['data'] || [];
+  //       console.log(this.voucher)
+  //     })
+
+  //   }
+
+
+
+  //   this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
+  //     if (c['data'][1]) {
+  //       if (c['data'][1].id) {
+  //         this.vendor_info = c['data'][1] || {};
+  //         this.title.setTitle(this.vendor_info['name'])
+  //         // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
+
+  //         //   this.http.post('https://api.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
+  //         //     this.voucher = z['data'] || [];
+  //         //     console.log(this.voucher)
+  //         //   })
+
+  //         // }
+  //       } else {
+  //         this.tomain()
+  //         this.vendor_info = {};
+  //       }
+  //     } else {
+  //       this.tomain()
+  //       this.vendor_info = {};
+  //     }
+
+  //   }, e => {
+  //     this.tomain()
+  //     this.vendor_info = {};
+  //   })
+
+  //   this.influencer.id = this.user;
+  //   this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+
+  //     if (a['data'].id) {
+  //       this.influencer = a['data'] || {};
+  //     } else {
+  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //         if (a['data'].id) {
+  //           this.influencer = a['data'] || {};
+  //         } else {
+  //           this.tomain()
+  //         }
+  //       }, e => {
+  //         this.tomain()
+  //       })
+  //     }
+  //   }, e => {
+  //     this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       if (a['data'].id) {
+  //         this.influencer = a['data'] || {};
+  //       } else {
+  //         this.tomain()
+  //       }
+  //     }, e => {
+  //       this.tomain()
+  //     })
+  //   })
+
+  //   firebase.database().ref('link').once('value', data => {
+  //     this.links = data.val();
+  //   })
+  // }
 
   store(x) {
     this.nav.navigateForward('store/' + x);

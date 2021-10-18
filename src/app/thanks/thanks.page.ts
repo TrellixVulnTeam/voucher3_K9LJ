@@ -40,15 +40,18 @@ export class ThanksPage implements OnInit {
     return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
   }
 
+  typeof(x) {
+    return typeof x;
+  }
+
   ionViewWillEnter() {
     this.qr = 'https://i.pinimg.com/originals/39/ee/de/39eede5b8818d7c02d2340a53a652961.gif'
 
     this.actRoute.queryParams.subscribe(a => {
-      this.orderid = a['orderId'];
+      this.orderid = this.typeof(a['orderId']) == 'string' ? a['orderId'] : a['orderId'][0];
 
       this.paid = (a['status'] == "SUCCESS");
-      console.log(this.orderid)
-      console.log(this.paid)
+
       if (this.paid == 'true' || this.paid == true) {
         this.title.setTitle('Thanks For Your Purchase!');
         // console.log(a['order']);

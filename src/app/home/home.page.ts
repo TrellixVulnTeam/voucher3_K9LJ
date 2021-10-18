@@ -17,7 +17,6 @@ import { Meta, Title } from '@angular/platform-browser';
 export class HomePage implements OnInit {
 
   qty = 1;
-  load = true;
   buy = false;
   agree = false;
   id;
@@ -64,13 +63,43 @@ export class HomePage implements OnInit {
 
   var_select = [] as any;
 
-  complete = false;
+
 
   ngOnInit() {
     this.id = this.actRoute.snapshot.paramMap.get('item');
-    this.user = this.actRoute.snapshot.paramMap.get('user')
+    this.user = this.actRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
+    this.http.post('https://api.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
+      console.log(a);
+      if (a['data'].id) {
+        this.title.setTitle(a['data'].name)
+        this.meta.updateTag({ name: 'description', content: (a['data'].description || "Vsnap Exclusive Product on Sale") })
+        this.meta.updateTag({ itemprop: 'name', content: a['data'].name + '\'s Vsnap Event Store' })
+        this.meta.updateTag({ itemprop: 'description', content: (a['data'].description || "Vsnap Exclusive Product on Sale") })
+        this.meta.updateTag({ itemprop: 'image', content: (a['data'].thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/home/' + this.id + '/' + this.user) })
+        this.meta.updateTag({ property: 'og:type', content: 'website' })
+        this.meta.updateTag({ property: 'og:description', content: (a['data'].description || "Vsnap Exclusive Product on Sale") })
+        this.meta.updateTag({ property: 'og:title', content: a['data'].name + '\'s Vsnap Event Store' })
+        this.meta.updateTag({ property: 'og:image', content: (a['data'].thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:image:secure_url', content: (a['data'].thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+        this.meta.updateTag({ property: 'og:image:width', content: '500' })
+        this.meta.updateTag({ property: 'og:image:height', content: '500' })
 
-    this.load = false;
+
+      } else {
+
+      }
+
+    }, e => {
+
+    })
+  }
+
+  ionViewWillEnter() {
+    this.id = this.actRoute.snapshot.paramMap.get('item');
+    this.user = this.actRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
+
 
     // this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "vouchers", id: this.id }).subscribe(data => {
     //   console.log(data);
@@ -110,63 +139,7 @@ export class HomePage implements OnInit {
     })
 
 
-  }
-
-  rounder(x) {
-    return Math.floor(x);
-  }
-
-  widtherget() {
-    return this.platform.width();
-  }
-
-  go(x) {
-    this.nav.navigateForward('home/' + x + '/' + this.user);
-  }
-
-  item
-  users
-  selected
-  disabled = [true, true, true, true];
-  influencer = [] as any;
-  links = [] as any;
-  otherproduct = [] as any;
-
-  outside(x) {
-    this.iab.create(this.links[x], '_system');
-    // window.open(this.links[x]);
-  }
-
-  donatecsr2021() {
-    this.iab.create("https://pg.revenuemonster.my/v1/invoice-group/input?invoiceGroupId=1626521195381410810", '_system');
-  }
-
-  openlink(x, y) {
-    let temp = (y == 'Facebook' ? 'https://' : (y == 'Instagram' ? 'https://' : '')) +
-      (y == 'Facebook' ? 'www.facebook.com/' : (y == 'Instagram' ? 'www.instagram.com/' : '')) + x;
-    this.iab.create(temp, '_system')
-    // window.open(temp);
-    // xxx
-  }
-
-
-  store(x) {
-    this.nav.navigateForward('store/' + x);
-  }
-
-  brand(x) {
-    this.nav.navigateForward('brand/' + x + '/' + this.user);
-  }
-
-  proper2(x) {
-    return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
-  }
-
-  tomain() {
-    this.nav.navigateForward('main?user=' + this.user)
-  }
-
-  ionViewDidEnter() { // all firebase here
+    // all firebase here
 
     firebase.database().ref('link').once('value', data => {
       this.links = data.val();
@@ -182,7 +155,7 @@ export class HomePage implements OnInit {
       if (a['data'].id) {
         this.influencer = a['data'] || {};
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -193,7 +166,7 @@ export class HomePage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {
@@ -217,20 +190,33 @@ export class HomePage implements OnInit {
         });
 
         this.voucher = a['data'] || {};
+        if (!this.voucher.status) {
+          swal({
+            title: 'Sold Out',
+            text: '产品已售罄 Product Sold Out!',
+            buttons: { 'OK': true },
+          });
+          this.nav.navigateBack('main');
+        }
         console.log(this.voucher);
+        // this.title.setTitle(this.voucher.name )
+        // this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/home/' + this.id + '/' + this.user) });
+        // this.meta.updateTag({ property: 'og:title', content: this.voucher.name });
+        // this.meta.updateTag({ property: 'og:image', content: this.voucher.thumbnail || "https://i.imgur.com/cW5MqH2.png" });
+        // this.meta.updateTag({ property: 'og:description', content: (this.voucher.description || 'Vsnap Exclusive Products') });
+
 
         this.title.setTitle(this.voucher.name)
-        // this.meta.updateTag({ name: 'description', content: this.voucher.description })
-
-        this.meta.updateTag({ itemprop: 'name', content: this.voucher.name })
-        this.meta.updateTag({ itemprop: 'description', content: (this.voucher.description || '') })
-        this.meta.updateTag({ itemprop: 'image', content: this.voucher.thumbnail })
+        this.meta.updateTag({ name: 'description', content: (this.voucher.description || "Vsnap Exclusive Product on Sale") })
+        this.meta.updateTag({ itemprop: 'name', content: this.voucher.name + '\'s Vsnap Event Store' })
+        this.meta.updateTag({ itemprop: 'description', content: (this.voucher.description || "Vsnap Exclusive Product on Sale") })
+        this.meta.updateTag({ itemprop: 'image', content: (this.voucher.thumbnail || "https://i.imgur.com/cW5MqH2.png") })
         this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/home/' + this.id + '/' + this.user) })
-        this.meta.updateTag({ property: 'og:type', content: 'article' })
-        this.meta.updateTag({ property: 'og:description', content: (this.voucher.description || '') })
-        this.meta.updateTag({ property: 'og:title', content: this.voucher.name })
-        this.meta.updateTag({ property: 'og:image', content: this.voucher.thumbnail })
-        this.meta.updateTag({ property: 'og:image:secure_url', content: this.voucher.thumbnail })
+        this.meta.updateTag({ property: 'og:type', content: 'website' })
+        this.meta.updateTag({ property: 'og:description', content: (this.voucher.description || "Vsnap Exclusive Product on Sale") })
+        this.meta.updateTag({ property: 'og:title', content: this.voucher.name + '\'s Vsnap Event Store' })
+        this.meta.updateTag({ property: 'og:image', content: (this.voucher.thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:image:secure_url', content: (this.voucher.thumbnail || "https://i.imgur.com/cW5MqH2.png") })
         this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
         this.meta.updateTag({ property: 'og:image:width', content: '500' })
         this.meta.updateTag({ property: 'og:image:height', content: '500' })
@@ -290,7 +276,188 @@ export class HomePage implements OnInit {
       this.tomain()
     })
 
+
   }
+
+  rounder(x) {
+    return Math.floor(x);
+  }
+
+  widtherget() {
+    return this.platform.width();
+  }
+
+  go(x) {
+    this.nav.navigateForward('home/' + x + '/' + this.user);
+  }
+
+  item
+  users
+  selected
+  disabled = [true, true, true, true];
+  influencer = [] as any;
+  links = [] as any;
+  otherproduct = [] as any;
+
+  outside(x) {
+    this.iab.create(this.links[x], '_system');
+    // window.open(this.links[x]);
+  }
+
+  donatecsr2021() {
+    this.iab.create("https://pg.revenuemonster.my/v1/invoice-group/input?invoiceGroupId=1626521195381410810", '_system');
+  }
+
+  openlink(x, y) {
+    let temp = (y == 'Facebook' ? 'https://' : (y == 'Instagram' ? 'https://' : '')) +
+      (y == 'Facebook' ? 'www.facebook.com/' : (y == 'Instagram' ? 'www.instagram.com/' : '')) + x;
+    this.iab.create(temp, '_system')
+    // window.open(temp);
+    // xxx
+  }
+
+
+  store(x) {
+    this.nav.navigateForward('store/' + x);
+  }
+
+  brand(x) {
+    this.nav.navigateForward('brand/' + x + '/' + this.user);
+  }
+
+  proper2(x) {
+    return Math.round(((Math.abs(x) || 0) + Number.EPSILON) * 100) / 100
+  }
+
+  tomain() {
+    this.nav.navigateForward('main?user=' + this.user)
+  }
+
+  // ionViewDidEnter() { // all firebase here
+
+  //   firebase.database().ref('link').once('value', data => {
+  //     this.links = data.val();
+  //   })
+
+  //   firebase.database().ref('link').once('value', data => {
+  //     this.link = data.val();
+  //   })
+
+  //   this.influencer.id = this.user;
+  //   this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+
+  //     if (a['data'].id) {
+  //       this.influencer = a['data'] || {};
+  //     } else {
+  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //         if (a['data'].id) {
+  //           this.influencer = a['data'] || {};
+  //         } else {
+  //           this.tomain()
+  //         }
+  //       }, e => {
+  //         this.tomain()
+  //       })
+  //     }
+  //   }, e => {
+  //     this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       if (a['data'].id) {
+  //         this.influencer = a['data'] || {};
+  //       } else {
+  //         this.tomain()
+  //       }
+  //     }, e => {
+  //       this.tomain()
+  //     })
+  //   })
+
+  //   this.http.post('https://api.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
+  //     console.log(a);
+
+  //     if (a['data'].id) {
+
+  //       this.http.post('https://api.vsnap.my/datavendorvouchers', { id: a['data'].by }).subscribe(c => {
+  //         this.otherproduct = c['data'].filter(b => b.id != a['data'].id);
+  //         if (!this.lengthof(this.otherproduct)) {
+  //           this.disabled[3] = false;
+  //         }
+  //       });
+
+  //       this.voucher = a['data'] || {};
+  //       console.log(this.voucher);
+
+  //       this.title.setTitle(this.voucher.name)
+  //       // this.meta.updateTag({ name: 'description', content: this.voucher.description })
+
+  //       this.meta.updateTag({ itemprop: 'name', content: this.voucher.name })
+  //       this.meta.updateTag({ itemprop: 'description', content: (this.voucher.description || '') })
+  //       this.meta.updateTag({ itemprop: 'image', content: this.voucher.thumbnail })
+  //       this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/home/' + this.id + '/' + this.user) })
+  //       this.meta.updateTag({ property: 'og:type', content: 'website' })
+  //       this.meta.updateTag({ property: 'og:description', content: (this.voucher.description || '') })
+  //       this.meta.updateTag({ property: 'og:title', content: this.voucher.name })
+  //       this.meta.updateTag({ property: 'og:image', content: this.voucher.thumbnail })
+  //       this.meta.updateTag({ property: 'og:image:secure_url', content: this.voucher.thumbnail })
+  //       this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+  //       this.meta.updateTag({ property: 'og:image:width', content: '500' })
+  //       this.meta.updateTag({ property: 'og:image:height', content: '500' })
+
+  //       this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.voucher.by }).subscribe(c => {
+  //         if (c['data'][1]) {
+  //           if (c['data'][1].id) {
+  //             this.vendor = c['data'][1] || {};
+  //             this.animer = 6;
+  //           } else {
+  //             this.tomain()
+  //             this.vendor = {};
+  //           }
+  //         } else {
+  //           this.tomain()
+  //           this.vendor = {};
+  //         }
+
+  //       }, e => {
+  //         this.tomain()
+  //         this.vendor = {};
+  //       })
+
+  //       if (this.voucher['description']) {
+  //         this.selected = 0;
+  //         if (!this.voucher['tnc']) {
+  //           this.disabled[1] = false;
+  //         }
+  //       } else if (this.voucher['tnc']) {
+  //         this.disabled[0] = false;
+  //         this.selected = 1;
+  //       } else {
+  //         this.disabled[0] = false;
+  //         this.disabled[1] = false;
+  //         this.selected = 2;
+  //       }
+  //       if (this.voucher['variations']) {
+  //         this.var_select = [];
+  //         this.voucher['variations'].forEach(element => {
+  //           this.var_select.push(0);
+  //         });
+  //         console.log(this.var_select)
+  //         console.log(this.countvar())
+  //       } else {
+  //         this.var_select = [];
+  //       }
+
+  //       this.http.post('https://api.vsnap.my/addstats', { type: "vouchers", type_id: this.voucher.type_id, stat: "share", userid: this.influencer.id }).subscribe(b => { }, e => { })
+
+
+  //     } else {
+  //       this.tomain()
+  //       this.voucher = {};
+  //     }
+
+  //   }, e => {
+  //     this.tomain()
+  //   })
+
+  // }
 
   stringornot(x) {
     return (typeof x == "string" ? true : false)
@@ -324,17 +491,22 @@ export class HomePage implements OnInit {
       timer: 10000,
     })
 
-    this.price_comm = (this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) / (this.influencer.vip_expiry > this.today ? 1 : 2) ;
-    this.price_vsnap2 = this.proper2(   (this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) - ((this.proper2((this.voucher.price_comm + this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) / (this.influencer.vip_expiry > this.today ? 1 : 2))   ) ;
-
-    this.price_vsnap = this.proper2(((this.voucher.price_vsnap || 0) + this.countvar() * ((this.voucher.price_vsnap || 0) / this.voucher.price_now))) || 0;
-    this.price_now = this.proper2(((this.voucher.price_now + this.countvar())) || 0);
-    this.price_ori = this.proper2(((this.voucher.price_ori || 0) + this.countvar()) || 0);
-
     if (this.voucher.address ? (this.address && this.postcode && this.city) : true) {
-      if (this.voucher.price_now == 0) {
+      if ((this.voucher.price_now + this.countvar()) == 0) {
+        this.price_comm = 0;
+        this.price_vsnap2 = 0;
+        this.price_vsnap = 0;
+        this.price_now = 0;
+        this.price_ori = 0;
+        this.price_bonus = 0;
         this.free()
       } else {
+        this.price_bonus = this.proper2(this.voucher.price_bonus); // find ratio dulu, and count ez
+        this.price_comm = this.proper2((this.proper2(this.voucher.price_comm + (this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) / ((this.influencer.vip_expiry || 0) > this.today ? 1 : 2));
+        this.price_vsnap2 = this.proper2((this.proper2(this.voucher.price_comm + (this.countvar() * (this.voucher.price_comm / this.voucher.price_now))) || 0) - this.price_comm);
+        this.price_vsnap = this.proper2(((this.voucher.price_vsnap || 0) + this.countvar() * ((this.voucher.price_vsnap || 0) / this.voucher.price_now))) || 0;
+        this.price_now = this.proper2(((this.voucher.price_now + this.countvar())) || 0);
+        this.price_ori = this.proper2(((this.voucher.price_ori || 0) + this.countvar()) || 0);
         this.fpx()
       }
     } else {
@@ -365,7 +537,8 @@ export class HomePage implements OnInit {
       firebase.database().ref('guild/' + this.influencer.guild).once('value', data => {
         if (data.exists()) {
           console.log("guild check")
-          let multiplier = data.val().pay_rate ? (data.val().pay_rate[this.vendor.id] ? (data.val().pay_rate[this.vendor.id].rate || 0) : (data.val().pay_rate_default || 0)) : (data.val().pay_rate_default || 0)
+          let multiplier = data.val().pay_rate ? (data.val().pay_rate[this.vendor.id] ? (data.val().pay_rate[this.vendor.id].rate || 0) :
+            (data.val().pay_rate_default || 0)) : (data.val().pay_rate_default || 0)
           this.voucher.price_guild = this.proper2((this.price_vsnap || 0) * multiplier) || 0;
           this.voucher.price_guild_id = this.influencer.guild || "";
           this.voucher.price_guild_remark = this.influencer.name + " has achieved a sales of RM" + this.proper2(this.price_now * this.qty).toFixed(2) + " and our guild has received a guild incentive of RM" + this.proper2(this.voucher.price_guild * this.qty).toFixed(2) + "!";
@@ -391,9 +564,11 @@ export class HomePage implements OnInit {
   }
 
   checkvip() {
+    // this.influencer.vip > 0 // next phase
     if (this.influencer.vip == 2 && this.influencer.vip_expiry >= new Date().getTime()) {
       console.log("vip check")
       this.voucher.price_vip = this.proper2((this.price_vsnap || 0) * 0.15);
+      // this.voucher.price_vip = this.proper2((this.price_vsnap || 0) * this.influencer.vip * 0.125) ; // next phase
       this.voucher.price_vip_remark = "You received " + this.proper2(this.voucher.price_vip * this.qty).toFixed(2) + " as VIP bonus incentive from a sales of RM" + this.proper2(this.price_now * this.qty).toFixed(2) + "!";
       this.voucher.price_vip_logs = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
       console.log(this.voucher)
@@ -435,10 +610,27 @@ export class HomePage implements OnInit {
     }
   }
 
+  // xxxx for checking
+  // checkupline() {
+  //   if (this.influencer.referred_by) {
+  //     console.log("checkupline")
+  //     this.voucher.price_upline = this.proper2((this.price_vsnap || 0) * 0.1);
+   //     this.voucher.price_upline_id = this.influencer.referred_by
+
+  //     this.voucher.price_upline_remark = this.influencer.name + " has made a sales of RM" + this.proper2(this.price_now * this.qty).toFixed(2) + " and you received RM" + (this.voucher.price_upline * this.qty).toFixed(2) + "as upline incentive!";
+  //     this.voucher.price_upline_logs = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
+  //     this.checklast();
+  //   } else {
+  //     console.log("checkupline")
+  //     this.checklast();
+  //   }
+  // } 
+
   price_now = 0;
   price_vsnap = 0;
   price_comm = 0;
   price_ori = 0;
+  price_bonus = 0;
 
   join() {
     window.open('https://register.vsnap.my/influencer');
@@ -472,6 +664,9 @@ export class HomePage implements OnInit {
       online: this.voucher.online || false,
       overwrite: this.voucher.overwrite || false,
       photo: this.voucher.photo || [],
+      price_bonus: this.price_bonus,
+      price_bonus_remark: 'You have received an Extra Bonus of RM' + (this.proper2(this.price_bonus)).toFixed(2) + ' from vsnap global, Congratulations!',
+      price_bonus_logs: keyer,
       price_comm: this.price_comm,
       price_vsnap: this.price_vsnap,
       price_vsnap2: this.price_vsnap2,
@@ -505,7 +700,7 @@ export class HomePage implements OnInit {
       seller_phone: this.influencer.contact || "",
       survey: this.voucher.survey || [],
       verified: this.voucher.verified || 0,
-      remark: this.voucher.remark || "",
+      remark: this.remark || "",
       tag: this.voucher.tag || "",
     });
 

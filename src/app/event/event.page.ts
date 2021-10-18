@@ -93,65 +93,88 @@ export class EventPage implements OnInit {
   }
 
   links = [] as any;
-  load = true;
+  // load = true;
   complete = false;
   items = {};
 
-  ngOnInit() {
+  ngOnInit(){
+    this.event = this.activatedRoute.snapshot.paramMap.get('event');
+    this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
+
+    this.http.post('https://api.vsnap.my/getevents', { id: this.event }).subscribe(x => {
+
+      if (x['data']) {
+        // this.event_info = x['data'];
+        // this.title.setTitle(this.event_info.name + '\'s Vsnap Event Store')
+        // this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/event/' + this.event + '/' + this.user) });
+        // this.meta.updateTag({ property: 'og:title', content: this.event_info.name + '\'s Vsnap Event Store' });
+        // this.meta.updateTag({ property: 'og:image', content:this.event_info.thumbnail || "https://i.imgur.com/cW5MqH2.png" });
+        // this.meta.updateTag({ property: 'og:description', content: (this.event_info.description || '') });
+
+        this.title.setTitle(x['data'].name + '\'s Vsnap Event Store')
+        this.meta.updateTag({ name: 'description', content: (x['data'].description || "Welcome to "+x['data'].name+"'s Vsnap Event Store") })
+        this.meta.updateTag({ itemprop: 'name', content: x['data'].name + '\'s Vsnap Event Store'})
+        this.meta.updateTag({ itemprop: 'description', content: (x['data'].description || "Welcome to "+x['data'].name+"'s Vsnap Event Store") })
+        this.meta.updateTag({ itemprop: 'image', content: (x['data'].thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/event/' + this.event + '/' + this.user) })
+        this.meta.updateTag({ property: 'og:type', content: 'website' })
+        this.meta.updateTag({ property: 'og:description', content: (x['data'].description || "Welcome to "+x['data'].name+"'s Vsnap Event Store") })
+        this.meta.updateTag({ property: 'og:title', content: x['data'].name + '\'s Vsnap Event Store' })
+        this.meta.updateTag({ property: 'og:image', content: (x['data'].thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:image:secure_url', content: (x['data'].thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+        this.meta.updateTag({ property: 'og:image:width', content: '500' })
+        this.meta.updateTag({ property: 'og:image:height', content: '500' })  
+
+      } else {
+        // this.tomain()
+      }
+
+    }, e => {
+      // this.tomain()
+    })
+  }
+
+  ionViewWillEnter() {
     // private http: HttpClient,
     // private meta: Meta, 
     // load=true;
     // complete=false;
     // items={};
 
-    this.event = this.activatedRoute.snapshot.paramMap.get('event');
-    this.user = this.activatedRoute.snapshot.paramMap.get('user');
+    // this.event = this.activatedRoute.snapshot.paramMap.get('event');
+    // this.user = this.activatedRoute.snapshot.paramMap.get('user');
 
-    this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "events", id: this.event }).subscribe(data => {
 
-      if (Object.keys(data['success']).length) {
-        this.load = false;
-        this.items = data['success'];
-
-        this.title.setTitle(data['success'].name + '\'s Vsnap Event Store')
-        // this.meta.updateTag({ name: 'description', content: data['success'].description })
-
-        this.meta.updateTag({ itemprop: 'name', content: data['success'].name + '\'s Vsnap Event Store' })
-        this.meta.updateTag({ itemprop: 'description', content: (data['success'].description || '') })
-        this.meta.updateTag({ itemprop: 'image', content: data['success'].thumbnail || "https://i.imgur.com/cW5MqH2.png" })
-        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/event/' + this.event + '/' + this.user) })
-        this.meta.updateTag({ property: 'og:type', content: 'article' })
-        this.meta.updateTag({ property: 'og:description', content: (data['success'].description || '') })
-        this.meta.updateTag({ property: 'og:title', content: data['success'].name + '\'s Vsnap Event Store' })
-        this.meta.updateTag({ property: 'og:image', content: data['success'].thumbnail || "https://i.imgur.com/cW5MqH2.png" })
-        this.meta.updateTag({ property: 'og:image:secure_url', content: data['success'].thumbnail || "https://i.imgur.com/cW5MqH2.png" })
-        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
-        this.meta.updateTag({ property: 'og:image:width', content: '500' })
-        this.meta.updateTag({ property: 'og:image:height', content: '500' })
-
-        this.complete = true;
-      } else {
-        this.load = false;
-      }
-
-    })
-
-  }
-
-  tomain() {
-    this.nav.navigateForward('main?user=' + this.user)
-  }
-
-  ionViewWillEnter() {
+    
 
     this.event = this.activatedRoute.snapshot.paramMap.get('event');
-    this.user = this.activatedRoute.snapshot.paramMap.get('user');
+    this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
     this.http.post('https://api.vsnap.my/getevents', { id: this.event }).subscribe(x => {
 
       if (x['data']) {
         this.event_info = x['data'];
-        this.title.setTitle(this.event_info['name'])
+        // this.title.setTitle(this.event_info.name + '\'s Vsnap Event Store')
+        // this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/event/' + this.event + '/' + this.user) });
+        // this.meta.updateTag({ property: 'og:title', content: this.event_info.name + '\'s Vsnap Event Store' });
+        // this.meta.updateTag({ property: 'og:image', content:this.event_info.thumbnail || "https://i.imgur.com/cW5MqH2.png" });
+        // this.meta.updateTag({ property: 'og:description', content: (this.event_info.description || '') });
+
+        this.title.setTitle(this.event_info.name + '\'s Vsnap Event Store')
+        this.meta.updateTag({ name: 'description', content: (this.event_info.description || "Welcome to "+this.event_info.name+"'s Vsnap Event Store") })
+        this.meta.updateTag({ itemprop: 'name', content: this.event_info.name + '\'s Vsnap Event Store'})
+        this.meta.updateTag({ itemprop: 'description', content: (this.event_info.description || "Welcome to "+this.event_info.name+"'s Vsnap Event Store") })
+        this.meta.updateTag({ itemprop: 'image', content: (this.event_info.thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/event/' + this.event + '/' + this.user) })
+        this.meta.updateTag({ property: 'og:type', content: 'website' })
+        this.meta.updateTag({ property: 'og:description', content: (this.event_info.description || "Welcome to "+this.event_info.name+"'s Vsnap Event Store") })
+        this.meta.updateTag({ property: 'og:title', content: this.event_info.name + '\'s Vsnap Event Store' })
+        this.meta.updateTag({ property: 'og:image', content: (this.event_info.thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'og:image:secure_url', content: (this.event_info.thumbnail || "https://i.imgur.com/cW5MqH2.png") })
+        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+        this.meta.updateTag({ property: 'og:image:width', content: '500' })
+        this.meta.updateTag({ property: 'og:image:height', content: '500' })  
 
         for (const key in (this.event_info['vouchers'] || {})) {
 
@@ -184,7 +207,7 @@ export class EventPage implements OnInit {
       if (a['data'].id) {
         this.influencer = a['data'] || {};
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -195,7 +218,7 @@ export class EventPage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
+      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {
@@ -216,13 +239,98 @@ export class EventPage implements OnInit {
     // })
 
     // firebase.database().ref('vendors/' + this.vendor).once('value', data => {
-    //   this.vendor_info = data.val();
-    //   this.title.setTitle('Welcome to ' + this.vendor_info['name'] + '\'s vsnap store!')
+    //   this.event_info = data.val();
+    //   this.title.setTitle('Welcome to ' + this.event_info['name'] + '\'s vsnap store!')
     //   console.log(this.voucher);
     // })
 
-
   }
+
+  tomain() {
+    this.nav.navigateForward('main?user=' + this.user)
+  }
+
+  // ionViewWillEnter() {
+
+  //   this.event = this.activatedRoute.snapshot.paramMap.get('event');
+  //   this.user = this.activatedRoute.snapshot.paramMap.get('user');
+
+  //   this.http.post('https://api.vsnap.my/getevents', { id: this.event }).subscribe(x => {
+
+  //     if (x['data']) {
+  //       this.event_info = x['data'];
+  //       this.title.setTitle(this.event_info['name'])
+
+  //       for (const key in (this.event_info['vouchers'] || {})) {
+
+  //         let element = this.event_info['vouchers'][key];
+
+
+  //         this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+
+  //           if (z['data'].id) {
+  //             this.voucher[element] = z['data'] || {};
+  //           }
+
+  //         }, e => {
+            
+  //         })
+
+  //       }
+
+  //     } else {
+  //       this.tomain()
+  //     }
+
+  //   }, e => {
+  //     this.tomain()
+  //   })
+
+  //   this.influencer.id = this.user;
+  //   this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+
+  //     if (a['data'].id) {
+  //       this.influencer = a['data'] || {};
+  //     } else {
+  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //         if (a['data'].id) {
+  //           this.influencer = a['data'] || {};
+  //         } else {
+  //           this.tomain()
+  //         }
+  //       }, e => {
+  //         this.tomain()
+  //       })
+  //     }
+  //   }, e => {
+  //     this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       if (a['data'].id) {
+  //         this.influencer = a['data'] || {};
+  //       } else {
+  //         this.tomain()
+  //       }
+  //     }, e => {
+  //       this.tomain()
+  //     })
+  //   })
+
+  //   firebase.database().ref('link').once('value', data => {
+  //     this.links = data.val();
+  //   })
+
+  //   // firebase.database().ref('vouchers/').orderByChild('by').equalTo(this.vendor).once('value', data => {
+  //   //   this.voucher = data.val();
+  //   //   console.log(this.vendor);
+  //   // })
+
+  //   // firebase.database().ref('vendors/' + this.vendor).once('value', data => {
+  //   //   this.event_info = data.val();
+  //   //   this.title.setTitle('Welcome to ' + this.event_info['name'] + '\'s vsnap store!')
+  //   //   console.log(this.voucher);
+  //   // })
+
+
+  // }
 
   store(x) {
     this.nav.navigateForward('store/' + x);

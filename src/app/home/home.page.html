@@ -43,7 +43,7 @@
       <div style='margin-left:0px;margin-bottom:30px;'>
         <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Phone Number (eg. 60123268301)
         </div>
-        <ion-input [(ngModel)]="contact" type='tel'
+        <ion-input [(ngModel)]="contact" type='tel' maxlength="15"
           style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
           placeholder="enter your phone number"></ion-input>
       </div>
@@ -206,9 +206,13 @@
             </div>
           </div>
 
-          <div (click)='enter=true'
+          <div *ngIf="voucher.status" (click)='enter=true'
             style='padding:10px 30px;background-color: #f53c3c;color:white;font-size:14px;width: max-content;cursor: pointer;border-radius:5px;'>
             BUY NOW</div>
+
+          <div *ngIf="!voucher.status"
+            style='padding:10px 30px;background-color: #f53c3c;color:white;font-size:14px;width: max-content;cursor: pointer;border-radius:5px;'>
+            SOLD OUT</div>
 
           <!-- <div style='margin-left:20px;'>
             <div style='font-size:16px;font-weight: bold;'>RM120.00</div>
@@ -318,7 +322,7 @@
 
 
     </div>
-    <div style='padding:40px 20px;width:100%;background-color: white;padding-top:0px;'>
+    <div style='padding:40px 0px;width:100%;background-color: white;padding-top:0px;'>
       <div style='width:100%;border-top:1px solid #eeeeee;padding-bottom:0px;'></div>
 
       <div style='width:100%;display:flex;align-items: center;'>
@@ -340,11 +344,11 @@
           {{( widther(350)==true ? "Sellable" : "Sell.")}}</div>
       </div>
 
-      <div *ngIf='selected==0' style='font-size:14px;color:#999999;width:100%;white-space: pre-line;padding:20px 0px;'>
+      <div *ngIf='selected==0' style='font-size:14px;color:#999999;width:100%;white-space: pre-line;padding:20px 20px;'>
         {{voucher["description"]}}</div>
-      <div *ngIf='selected==1' style='font-size:14px;color:#999999;width:100%;white-space: pre-line;padding:20px 0px;'>
+      <div *ngIf='selected==1' style='font-size:14px;color:#999999;width:100%;white-space: pre-line;padding:20px 20px;'>
         {{voucher["tnc"]}}</div>
-      <div *ngIf='selected==2' style='width:100%;padding:20px 0px;'>
+      <div *ngIf='selected==2' style='width:100%;padding:20px 20px;'>
         <div style='width:100%;display:flex;align-items: center;justify-content: flex-start;'>
           <img style='height:70px;width:70px;border-radius:100%;object-fit: cover;'
             src="{{vendor['photo'] || 'https://media.istockphoto.com/vectors/young-woman-engaged-in-shopping-and-checkout-her-purchases-vector-id1073204892?b=1&k=6&m=1073204892&s=612x612&w=0&h=WQz5o6GHiShCSZhpcQ6G1Fkg8fPV65UKNU7z2sWTEBg='}}"
@@ -369,7 +373,7 @@
           More from&nbsp;{{vendor["name"]}}&nbsp;></div>
 
       </div>
-      <div *ngIf='selected==3' style='width:100%;padding:20px 0px;'>
+      <div *ngIf='selected==3' style='width:100%;flex-wrap: wrap;display:flex;padding:20px 20px;padding-right:0px;'>
         <div *ngFor='let eve of otherproduct;let i = index' (click)="go(eve.id)"
           style='margin-right:20px;margin-bottom:20px;background-color:white;box-shadow:1px 5px 10px rgba(0,0,0,0.1);position: relative;'
           [ngStyle]='{"width" : ( 900 > widtherget()  ? ((widtherget() - 20)/rounder(widtherget() / 200)) - 20 +"px" : "calc( ( 900px - 100px ) / 4 )")  }'>
@@ -415,7 +419,7 @@
       </div>
 
       <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:20px;'>© Copyright 2020- All rights
-        reserved - Vsnap by Vsnap Global Sdn Bhd. version 4.1.0</div>
+        reserved - Vsnap by Vsnap Global Sdn Bhd. version 6.1.0</div>
       <div style='text-align: center;display:flex;align-items: center;justify-content: center;'>
         <span (click)="outside('terms')" style='cursor: pointer;;font-size:10px;color:#525dc2;'>Terms &
           Condition</span>&nbsp;•&nbsp;<span (click)="outside('privacy')"

@@ -32,59 +32,143 @@ export class MainPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta', { id: this.id }).subscribe(data => {
+    console.log('Do nothing')
 
-    //   this.meta.updateTag({ itemprop: 'name', content: data['success'].name })
-    //   this.meta.updateTag({ itemprop: 'description', content: (data['success'].description || '') })
-    //   this.meta.updateTag({ itemprop: 'image', content: data['success'].thumbnail })
+    this.title.setTitle('Vsnap Official Store')
+    this.meta.updateTag({ name: 'description', content: 'Welcome to Vsnap Official Store' })
+    this.meta.updateTag({ itemprop: 'name', content: 'Vsnap Official Store' })
+    this.meta.updateTag({ itemprop: 'description', content: 'Welcome to Vsnap Official Store' })
+    this.meta.updateTag({ itemprop: 'image', content: "https://i.imgur.com/DgFT4br.png" })
+    this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + this.user })
+    this.meta.updateTag({ property: 'og:type', content: 'website' })
+    this.meta.updateTag({ property: 'og:description', content: 'Welcome to Vsnap Official Store' })
+    this.meta.updateTag({ property: 'og:title', content: 'Vsnap Official Store' })
+    this.meta.updateTag({ property: 'og:image', content: "https://i.imgur.com/DgFT4br.png" })
+    this.meta.updateTag({ property: 'og:image:secure_url', content: "https://i.imgur.com/DgFT4br.png" })
+    this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+    this.meta.updateTag({ property: 'og:image:width', content: '500' })
+    this.meta.updateTag({ property: 'og:image:height', content: '500' })
+  }
 
-    // });
+  ionViewWillEnter() {
+
 
     this.activatedRoute.queryParams.subscribe(a => {
 
-      this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "users", id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(data => {
+      this.user = a['user'] || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-        if (Object.keys(data['success']).length) {
-
-
-          this.title.setTitle('Vsnap Official Store')
-
-          this.meta.updateTag({ itemprop: 'name', content: 'Vsnap Official Store' })
-          this.meta.updateTag({ itemprop: 'description', content: 'Welcome to Vsnap Official Store' })
-          this.meta.updateTag({ itemprop: 'image', content: "https://i.imgur.com/cW5MqH2.png" })
-          this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + a['user'] })
-          this.meta.updateTag({ property: 'og:type', content: 'article' })
-          this.meta.updateTag({ property: 'og:description', content: 'Welcome to Vsnap Official Store' })
-          this.meta.updateTag({ property: 'og:title', content: 'Vsnap Official Store' })
-          this.meta.updateTag({ property: 'og:image', content: "https://i.imgur.com/cW5MqH2.png" })
-          this.meta.updateTag({ property: 'og:image:secure_url', content: "https://i.imgur.com/cW5MqH2.png" })
-          this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
-          this.meta.updateTag({ property: 'og:image:width', content: '500' })
-          this.meta.updateTag({ property: 'og:image:height', content: '500' })
+      this.http.get('https://api.vsnap.my/getallvouchers').subscribe((s) => {
+        this.voucher = (s['data'] || []).filter(x => x.status == true);
+        // this.title.setTitle('Vsnap Official Store')
+        // this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + this.user });
+        // this.meta.updateTag({ property: 'og:title', content: 'Vsnap Official Store'});
+        // this.meta.updateTag({ property: 'og:image', content: "https://i.imgur.com/DgFT4br.png" });
+        // this.meta.updateTag({ property: 'og:description', content: 'Welcome to Vsnap Official Store'  });
 
 
+        this.title.setTitle('Vsnap Official Store')
+        this.meta.updateTag({ name: 'description', content: 'Welcome to Vsnap Official Store' })
+        this.meta.updateTag({ itemprop: 'name', content: 'Vsnap Official Store' })
+        this.meta.updateTag({ itemprop: 'description', content: 'Welcome to Vsnap Official Store' })
+        this.meta.updateTag({ itemprop: 'image', content: "https://i.imgur.com/DgFT4br.png" })
+        this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + this.user })
+        this.meta.updateTag({ property: 'og:type', content: 'website' })
+        this.meta.updateTag({ property: 'og:description', content: 'Welcome to Vsnap Official Store' })
+        this.meta.updateTag({ property: 'og:title', content: 'Vsnap Official Store' })
+        this.meta.updateTag({ property: 'og:image', content: "https://i.imgur.com/DgFT4br.png" })
+        this.meta.updateTag({ property: 'og:image:secure_url', content: "https://i.imgur.com/DgFT4br.png" })
+        this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+        this.meta.updateTag({ property: 'og:image:width', content: '500' })
+        this.meta.updateTag({ property: 'og:image:height', content: '500' })
+        console.log(this.voucher)
+      }, e => {
+        console.log(e)
+      })
+
+      this.influencer.id = this.user;
+      this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+
+        if (a['data'].id) {
+          this.influencer = a['data'] || {};
         } else {
-
-          this.title.setTitle('Vsnap Official Store')
-
-          this.meta.updateTag({ itemprop: 'name', content: 'Vsnap Official Store' })
-          this.meta.updateTag({ itemprop: 'description', content: 'Welcome to Vsnap Official Store' })
-          this.meta.updateTag({ itemprop: 'image', content: "https://i.imgur.com/cW5MqH2.png" })
-          this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + a['user'] })
-          this.meta.updateTag({ property: 'og:type', content: 'article' })
-          this.meta.updateTag({ property: 'og:description', content: 'Welcome to Vsnap Official Store' })
-          this.meta.updateTag({ property: 'og:title', content: 'Vsnap Official Store' })
-          this.meta.updateTag({ property: 'og:image', content: "https://i.imgur.com/cW5MqH2.png" })
-          this.meta.updateTag({ property: 'og:image:secure_url', content: "https://i.imgur.com/cW5MqH2.png" })
-          this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
-          this.meta.updateTag({ property: 'og:image:width', content: '500' })
-          this.meta.updateTag({ property: 'og:image:height', content: '500' })
-
+          this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+            if (a['data'].id) {
+              this.influencer = a['data'] || {};
+            } else {
+              console.log("something is wrong")
+            }
+          }, e => {
+            console.log("something is wrong")
+          })
         }
+      }, e => {
+        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+          if (a['data'].id) {
+            this.influencer = a['data'] || {};
+          } else {
+            console.log("something is wrong")
+          }
+        }, e => {
+          console.log("something is wrong")
+        })
+      })
 
+      firebase.database().ref('link').once('value', data => {
+        this.links = data.val();
+      })
+
+      this.http.get('https://api.vsnap.my/get?tablename=category_voucher').subscribe(a => {
+        // console.log(a['data'])
+        this.category = a['data'].map(a => a.name) || [];
       })
 
     })
+
+    // this.activatedRoute.queryParams.subscribe(a => {
+
+    //   this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "users", id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(data => {
+
+    //     if (Object.keys(data['success']).length) {
+
+
+    //       this.title.setTitle('Vsnap Official Store')
+
+    //       this.meta.updateTag({ itemprop: 'name', content: 'Vsnap Official Store' })
+    //       this.meta.updateTag({ itemprop: 'description', content: 'Welcome to Vsnap Official Store' })
+    //       this.meta.updateTag({ itemprop: 'image', content: "https://i.imgur.com/DgFT4br.png" })
+    //       this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + a['user'] })
+    //       this.meta.updateTag({ property: 'og:type', content: 'website' })
+    //       this.meta.updateTag({ property: 'og:description', content: 'Welcome to Vsnap Official Store' })
+    //       this.meta.updateTag({ property: 'og:title', content: 'Vsnap Official Store' })
+    //       this.meta.updateTag({ property: 'og:image', content: "https://i.imgur.com/DgFT4br.png" })
+    //       this.meta.updateTag({ property: 'og:image:secure_url', content: "https://i.imgur.com/DgFT4br.png" })
+    //       this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+    //       this.meta.updateTag({ property: 'og:image:width', content: '500' })
+    //       this.meta.updateTag({ property: 'og:image:height', content: '500' })
+
+
+    //     } else {
+
+    //       this.title.setTitle('Vsnap Official Store')
+
+    //       this.meta.updateTag({ itemprop: 'name', content: 'Vsnap Official Store' })
+    //       this.meta.updateTag({ itemprop: 'description', content: 'Welcome to Vsnap Official Store' })
+    //       this.meta.updateTag({ itemprop: 'image', content: "https://i.imgur.com/DgFT4br.png" })
+    //       this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + a['user'] })
+    //       this.meta.updateTag({ property: 'og:type', content: 'website' })
+    //       this.meta.updateTag({ property: 'og:description', content: 'Welcome to Vsnap Official Store' })
+    //       this.meta.updateTag({ property: 'og:title', content: 'Vsnap Official Store' })
+    //       this.meta.updateTag({ property: 'og:image', content: "https://i.imgur.com/DgFT4br.png" })
+    //       this.meta.updateTag({ property: 'og:image:secure_url', content: "https://i.imgur.com/DgFT4br.png" })
+    //       this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
+    //       this.meta.updateTag({ property: 'og:image:width', content: '500' })
+    //       this.meta.updateTag({ property: 'og:image:height', content: '500' })
+
+    //     }
+
+    //   })
+
+    // })
 
 
   }
@@ -178,58 +262,58 @@ export class MainPage implements OnInit {
 
   }
 
-  ionViewDidEnter() {
+  // ionViewDidEnter() {
 
-    this.activatedRoute.queryParams.subscribe(a => {
+  //   this.activatedRoute.queryParams.subscribe(a => {
 
-      this.user = a['user'] || "Ypgf8VDQJrRhsrP7RREb3n321sf1";
+  //     this.user = a['user'] || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-      this.http.get('https://api.vsnap.my/getallvouchers').subscribe((s) => {
-        this.voucher = (s['data'] || []).filter(x => x.status == true);
-        console.log(this.voucher)
-      }, e => {
-        console.log(e)
-      })
+  //     this.http.get('https://api.vsnap.my/getallvouchers').subscribe((s) => {
+  //       this.voucher = (s['data'] || []).filter(x => x.status == true);
+  //       console.log(this.voucher)
+  //     }, e => {
+  //       console.log(e)
+  //     })
 
-      this.influencer.id = this.user;
-      this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+  //     this.influencer.id = this.user;
+  //     this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
-        if (a['data'].id) {
-          this.influencer = a['data'] || {};
-        } else {
-          this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
-            if (a['data'].id) {
-              this.influencer = a['data'] || {};
-            } else {
-              console.log("something is wrong")
-            }
-          }, e => {
-            console.log("something is wrong")
-          })
-        }
-      }, e => {
-        this.http.post('https://api.vsnap.my/getusers', { id: "Ypgf8VDQJrRhsrP7RREb3n321sf1" }).subscribe(a => {
-          if (a['data'].id) {
-            this.influencer = a['data'] || {};
-          } else {
-            console.log("something is wrong")
-          }
-        }, e => {
-          console.log("something is wrong")
-        })
-      })
+  //       if (a['data'].id) {
+  //         this.influencer = a['data'] || {};
+  //       } else {
+  //         this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //           if (a['data'].id) {
+  //             this.influencer = a['data'] || {};
+  //           } else {
+  //             console.log("something is wrong")
+  //           }
+  //         }, e => {
+  //           console.log("something is wrong")
+  //         })
+  //       }
+  //     }, e => {
+  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //         if (a['data'].id) {
+  //           this.influencer = a['data'] || {};
+  //         } else {
+  //           console.log("something is wrong")
+  //         }
+  //       }, e => {
+  //         console.log("something is wrong")
+  //       })
+  //     })
 
-      firebase.database().ref('link').once('value', data => {
-        this.links = data.val();
-      })
+  //     firebase.database().ref('link').once('value', data => {
+  //       this.links = data.val();
+  //     })
 
-      this.http.get('https://api.vsnap.my/get?tablename=category_voucher').subscribe(a => {
-        // console.log(a['data'])
-        this.category = a['data'].map(a => a.name) || [];
-      })
+  //     this.http.get('https://api.vsnap.my/get?tablename=category_voucher').subscribe(a => {
+  //       // console.log(a['data'])
+  //       this.category = a['data'].map(a => a.name) || [];
+  //     })
 
-    })
+  //   })
 
-  }
+  // }
 
 }

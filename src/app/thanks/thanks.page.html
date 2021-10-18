@@ -96,7 +96,7 @@
 
   </div>
 
-  <div *ngIf="(paid == 'true' || paid == true) && (order.address)" style="width: 100vw; ">
+  <div *ngIf="(paid == 'true' || paid == true) && order.address" style="width: 100vw; ">
 
     <div [ngStyle]="{'padding-top' : ' calc( ( 100vh - '+theheight +'px ) / 2 )'}"></div>
 
