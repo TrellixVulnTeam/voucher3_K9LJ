@@ -17,7 +17,6 @@ export class BrandPage implements OnInit {
 
   constructor(private meta: Meta, public platform: Platform,
     public activatedRoute: ActivatedRoute, public nav: NavController, private title: Title, private iab: InAppBrowser, private http: HttpClient) { }
-
   widther(x) {
     // console.log(this.platform.width() >= x)
     this.puller = (this.platform.width() >= 900 ? 450 : (this.platform.width() < 600 ? 300 : this.platform.width() / 2));
@@ -136,10 +135,10 @@ export class BrandPage implements OnInit {
         // this.tomain()
         // this.vendor_info = {};
       }
-
     }, e => {
       // this.tomain()
       // this.vendor_info = {};
+
     })
   }
 
