@@ -103,7 +103,7 @@ export class StorePage implements OnInit {
     console.log('Do nothing')
     this.id = this.actRoute.snapshot.paramMap.get('id');
 
-    this.http.post('https://api.vsnap.my/getusers', { id: this.id }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getusers', { id: this.id }).subscribe(a => {
 
       if (a['data'].id) {
 
@@ -129,7 +129,7 @@ export class StorePage implements OnInit {
         this.meta.updateTag({ property: 'og:image:height', content: '500' });
 
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(z => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(z => {
           if (z['data'].id) {
 
             this.title.setTitle(z['data'].name + '\'s Vsnap Influencer Store');
@@ -154,7 +154,7 @@ export class StorePage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.title.setTitle(a['data'].name + '\'s Vsnap Influencer Store');
           this.meta.updateTag({ name: 'description', content: ('Welcome to ' + a['data'].name + '\'s Vsnap Influencer Store') });
@@ -188,7 +188,7 @@ export class StorePage implements OnInit {
 
     this.id = this.actRoute.snapshot.paramMap.get('id');
     this.user.id = this.user;
-    this.http.post('https://api.vsnap.my/getusers', { id: this.id }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getusers', { id: this.id }).subscribe(a => {
 
       if (a['data'].id) {
         this.user = a['data'] || {};
@@ -215,7 +215,7 @@ export class StorePage implements OnInit {
         this.meta.updateTag({ property: 'og:image:height', content: '500' });
 
         (this.user.store || []).forEach((element, index) => {
-          this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+          this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
             if (z['data'].status == true) {
               this.vouchers[index] = z['data'] || {};
@@ -228,7 +228,7 @@ export class StorePage implements OnInit {
         });
 
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(z => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(z => {
           if (z['data'].id) {
             this.user = z['data'] || {};
             this.title.setTitle(z['data'].name + '\'s Vsnap Influencer Store');
@@ -237,7 +237,7 @@ export class StorePage implements OnInit {
             this.meta.updateTag({ property: 'og:image', content: (z['data'].photo ? (z['data'].photo[0] || "https://i.imgur.com/cW5MqH2.png") : "https://i.imgur.com/cW5MqH2.png") });
             this.meta.updateTag({ property: 'og:description', content: ('Welcome to ' + z['data'].name + '\'s Vsnap Influencer Store') });
             (this.user.store || []).forEach((element, index) => {
-              this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+              this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
                 if (z['data'].status == true) {
                   this.vouchers[index] = z['data'] || {};
@@ -256,7 +256,7 @@ export class StorePage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.user = a['data'] || {};
           this.title.setTitle(a['data'].name + '\'s Vsnap Influencer Store');
@@ -265,7 +265,7 @@ export class StorePage implements OnInit {
           this.meta.updateTag({ property: 'og:image', content: (a['data'].photo ? (a['data'].photo[0] || "https://i.imgur.com/cW5MqH2.png") : "https://i.imgur.com/cW5MqH2.png") });
           this.meta.updateTag({ property: 'og:description', content: ('Welcome to ' + a['data'].name + '\'s Vsnap Influencer Store') });
           (this.user.store || []).forEach(element => {
-            this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+            this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
               if (z['data'].status == true) {
                 this.vouchers[element] = z['data'] || {};
@@ -330,13 +330,13 @@ export class StorePage implements OnInit {
   //   this.id = this.actRoute.snapshot.paramMap.get('id');
 
   //   this.user.id = this.user;
-  //   this.http.post('https://api.vsnap.my/getusers', { id: this.id }).subscribe(a => {
+  //   this.http.post('https://api2.vsnap.my/getusers', { id: this.id }).subscribe(a => {
 
   //     if (a['data'].id) {
   //       this.user = a['data'] || {};
   //       this.title.setTitle(this.user.name + '\'s vsnap store');
   //       (this.user.store || []).forEach((element,index) => {
-  //         this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+  //         this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
   //           if (z['data'].status == true) {
   //             this.vouchers[index] = z['data'] || {};
@@ -349,12 +349,12 @@ export class StorePage implements OnInit {
   //       });
 
   //     } else {
-  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //         if (a['data'].id) {
   //           this.user = a['data'] || {};
   //           this.title.setTitle(this.user.name + '\'s vsnap store');
   //           (this.user.store || []).forEach((element,index) => {
-  //             this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+  //             this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
   //               if (z['data'].status == true) {
   //                 this.vouchers[index] = z['data'] || {};
@@ -373,12 +373,12 @@ export class StorePage implements OnInit {
   //       })
   //     }
   //   }, e => {
-  //     this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //     this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //       if (a['data'].id) {
   //         this.user = a['data'] || {};
   //         this.title.setTitle(this.user.name + '\'s vsnap store');
   //         (this.user.store || []).forEach(element => {
-  //           this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+  //           this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
   //             if (z['data'].status == true) {
   //               this.vouchers[element] = z['data'] || {};

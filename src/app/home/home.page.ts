@@ -32,6 +32,7 @@ export class HomePage implements OnInit {
   remark;
   link = [] as any;
   select = [] as any;
+  delivery = [] as any;
 
   constructor(
     private actRoute: ActivatedRoute,
@@ -62,13 +63,13 @@ export class HomePage implements OnInit {
   }
 
   var_select = [] as any;
-
-
+  var_delivery;
+  deliveryrr = [] as any;
 
   ngOnInit() {
     this.id = this.actRoute.snapshot.paramMap.get('item');
     this.user = this.actRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
-    this.http.post('https://api.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
       console.log(a);
       if (a['data'].id) {
         this.title.setTitle(a['data'].name)
@@ -138,7 +139,6 @@ export class HomePage implements OnInit {
       this.city = "";
     })
 
-
     // all firebase here
 
     firebase.database().ref('link').once('value', data => {
@@ -150,12 +150,12 @@ export class HomePage implements OnInit {
     })
 
     this.influencer.id = this.user;
-    this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
       if (a['data'].id) {
         this.influencer = a['data'] || {};
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -166,7 +166,7 @@ export class HomePage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {
@@ -177,12 +177,12 @@ export class HomePage implements OnInit {
       })
     })
 
-    this.http.post('https://api.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
       console.log(a);
 
       if (a['data'].id) {
 
-        this.http.post('https://api.vsnap.my/datavendorvouchers', { id: a['data'].by }).subscribe(c => {
+        this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: a['data'].by }).subscribe(c => {
           this.otherproduct = c['data'].filter(b => b.id != a['data'].id);
           if (!this.lengthof(this.otherproduct)) {
             this.disabled[3] = false;
@@ -190,6 +190,8 @@ export class HomePage implements OnInit {
         });
 
         this.voucher = a['data'] || {};
+
+
         if (!this.voucher.status) {
           swal({
             title: 'Sold Out',
@@ -221,7 +223,7 @@ export class HomePage implements OnInit {
         this.meta.updateTag({ property: 'og:image:width', content: '500' })
         this.meta.updateTag({ property: 'og:image:height', content: '500' })
 
-        this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.voucher.by }).subscribe(c => {
+        this.http.post('https://api2.vsnap.my/dataVendorlogin', { userid: this.voucher.by }).subscribe(c => {
           if (c['data'][1]) {
             if (c['data'][1].id) {
               this.vendor = c['data'][1] || {};
@@ -239,6 +241,14 @@ export class HomePage implements OnInit {
           this.tomain()
           this.vendor = {};
         })
+
+        this.http.post('https://api2.vsnap.my/getdelivery', { vendor_id: this.voucher.by }).subscribe((a) => {
+          this.delivery = a['data']
+          this.delivery.filter(a => {
+            this.deliveryrr = this.deliveryrr.concat(a['state']);
+          })
+          console.log(this.deliveryrr);
+        });
 
         if (this.voucher['description']) {
           this.selected = 0;
@@ -264,7 +274,7 @@ export class HomePage implements OnInit {
           this.var_select = [];
         }
 
-        this.http.post('https://api.vsnap.my/addstats', { type: "vouchers", type_id: this.voucher.type_id, stat: "share", userid: this.influencer.id }).subscribe(b => { }, e => { })
+        this.http.post('https://api2.vsnap.my/addstats', { type: "vouchers", type_id: this.voucher.type_id, stat: "share", userid: this.influencer.id }).subscribe(b => { }, e => { })
 
 
       } else {
@@ -344,12 +354,12 @@ export class HomePage implements OnInit {
   //   })
 
   //   this.influencer.id = this.user;
-  //   this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+  //   this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
   //     if (a['data'].id) {
   //       this.influencer = a['data'] || {};
   //     } else {
-  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //         if (a['data'].id) {
   //           this.influencer = a['data'] || {};
   //         } else {
@@ -360,7 +370,7 @@ export class HomePage implements OnInit {
   //       })
   //     }
   //   }, e => {
-  //     this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //     this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //       if (a['data'].id) {
   //         this.influencer = a['data'] || {};
   //       } else {
@@ -371,12 +381,12 @@ export class HomePage implements OnInit {
   //     })
   //   })
 
-  //   this.http.post('https://api.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
+  //   this.http.post('https://api2.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
   //     console.log(a);
 
   //     if (a['data'].id) {
 
-  //       this.http.post('https://api.vsnap.my/datavendorvouchers', { id: a['data'].by }).subscribe(c => {
+  //       this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: a['data'].by }).subscribe(c => {
   //         this.otherproduct = c['data'].filter(b => b.id != a['data'].id);
   //         if (!this.lengthof(this.otherproduct)) {
   //           this.disabled[3] = false;
@@ -402,7 +412,7 @@ export class HomePage implements OnInit {
   //       this.meta.updateTag({ property: 'og:image:width', content: '500' })
   //       this.meta.updateTag({ property: 'og:image:height', content: '500' })
 
-  //       this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.voucher.by }).subscribe(c => {
+  //       this.http.post('https://api2.vsnap.my/dataVendorlogin', { userid: this.voucher.by }).subscribe(c => {
   //         if (c['data'][1]) {
   //           if (c['data'][1].id) {
   //             this.vendor = c['data'][1] || {};
@@ -445,7 +455,7 @@ export class HomePage implements OnInit {
   //         this.var_select = [];
   //       }
 
-  //       this.http.post('https://api.vsnap.my/addstats', { type: "vouchers", type_id: this.voucher.type_id, stat: "share", userid: this.influencer.id }).subscribe(b => { }, e => { })
+  //       this.http.post('https://api2.vsnap.my/addstats', { type: "vouchers", type_id: this.voucher.type_id, stat: "share", userid: this.influencer.id }).subscribe(b => { }, e => { })
 
 
   //     } else {
@@ -615,7 +625,7 @@ export class HomePage implements OnInit {
   //   if (this.influencer.referred_by) {
   //     console.log("checkupline")
   //     this.voucher.price_upline = this.proper2((this.price_vsnap || 0) * 0.1);
-   //     this.voucher.price_upline_id = this.influencer.referred_by
+  //     this.voucher.price_upline_id = this.influencer.referred_by
 
   //     this.voucher.price_upline_remark = this.influencer.name + " has made a sales of RM" + this.proper2(this.price_now * this.qty).toFixed(2) + " and you received RM" + (this.voucher.price_upline * this.qty).toFixed(2) + "as upline incentive!";
   //     this.voucher.price_upline_logs = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
@@ -631,9 +641,31 @@ export class HomePage implements OnInit {
   price_comm = 0;
   price_ori = 0;
   price_bonus = 0;
+  price_delivery = 0;
+  price_delivery_remark = '';
 
   join() {
     window.open('https://register.vsnap.my/influencer');
+  }
+
+  deliverer(x, i) {
+    this.var_delivery = i;
+    let temp = this.delivery.filter(a => a['state'].some(b => b == x))[0];
+    this.price_delivery_remark = temp.name;
+    let body = temp;
+    body.total = this.proper2(((this.voucher.price_now + this.countvar())) || 0) * this.qty;
+    body.weight = this.voucher.weight;
+    body.qty = this.qty;
+    this.http.post('https://api2.vsnap.my/catdelivery', body).subscribe(a => {
+      console.log(a['data']);
+      this.price_delivery = a['data'];
+    }, e => {
+      // console.log(e);
+    })
+  }
+
+  qtyr(x) {
+    this.qty += x;
   }
 
   checklast() {
@@ -664,6 +696,8 @@ export class HomePage implements OnInit {
       online: this.voucher.online || false,
       overwrite: this.voucher.overwrite || false,
       photo: this.voucher.photo || [],
+      price_delivery: this.price_delivery,
+      price_delivery_remark: this.price_delivery_remark,
       price_bonus: this.price_bonus,
       price_bonus_remark: 'You have received an Extra Bonus of RM' + (this.proper2(this.price_bonus)).toFixed(2) + ' from vsnap global, Congratulations!',
       price_bonus_logs: keyer,
@@ -705,7 +739,7 @@ export class HomePage implements OnInit {
     });
 
     let body = {
-      amount: this.proper2(((this.voucher.price_now + this.countvar())) || 0) * this.qty * 100,
+      amount: this.proper2(((this.voucher.price_now + this.countvar()) + this.price_delivery) || 0) * this.qty * 100,
       // amount: 100,
       orderdescription: ('Purchase ' + this.voucher.name + ' x' + (this.qty || 1)).replace(/[^a-zA-Z ]/g, ""),
       ordertitle: 'Vsnap Order ' + keyer,
@@ -971,7 +1005,7 @@ export class HomePage implements OnInit {
 
       let keyer = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
 
-      this.http.post('https://api.vsnap.my/insertafforders', {
+      this.http.post('https://api2.vsnap.my/insertafforders', {
         address: this.voucher.address || false,
         aftersale: this.voucher.aftersale || "",
         buyer_address: ((this.address || "") + ' ' + (this.postcode || "") + ' ' + (this.city) || ""),

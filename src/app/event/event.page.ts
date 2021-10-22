@@ -101,7 +101,7 @@ export class EventPage implements OnInit {
     this.event = this.activatedRoute.snapshot.paramMap.get('event');
     this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-    this.http.post('https://api.vsnap.my/getevents', { id: this.event }).subscribe(x => {
+    this.http.post('https://api2.vsnap.my/getevents', { id: this.event }).subscribe(x => {
 
       if (x['data']) {
         // this.event_info = x['data'];
@@ -151,7 +151,7 @@ export class EventPage implements OnInit {
     this.event = this.activatedRoute.snapshot.paramMap.get('event');
     this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-    this.http.post('https://api.vsnap.my/getevents', { id: this.event }).subscribe(x => {
+    this.http.post('https://api2.vsnap.my/getevents', { id: this.event }).subscribe(x => {
 
       if (x['data']) {
         this.event_info = x['data'];
@@ -181,7 +181,7 @@ export class EventPage implements OnInit {
           let element = this.event_info['vouchers'][key];
 
 
-          this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+          this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
             if (z['data'].id) {
               this.voucher[element] = z['data'] || {};
@@ -202,12 +202,12 @@ export class EventPage implements OnInit {
     })
 
     this.influencer.id = this.user;
-    this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
       if (a['data'].id) {
         this.influencer = a['data'] || {};
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -218,7 +218,7 @@ export class EventPage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {
@@ -255,7 +255,7 @@ export class EventPage implements OnInit {
   //   this.event = this.activatedRoute.snapshot.paramMap.get('event');
   //   this.user = this.activatedRoute.snapshot.paramMap.get('user');
 
-  //   this.http.post('https://api.vsnap.my/getevents', { id: this.event }).subscribe(x => {
+  //   this.http.post('https://api2.vsnap.my/getevents', { id: this.event }).subscribe(x => {
 
   //     if (x['data']) {
   //       this.event_info = x['data'];
@@ -266,7 +266,7 @@ export class EventPage implements OnInit {
   //         let element = this.event_info['vouchers'][key];
 
 
-  //         this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+  //         this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
   //           if (z['data'].id) {
   //             this.voucher[element] = z['data'] || {};
@@ -287,12 +287,12 @@ export class EventPage implements OnInit {
   //   })
 
   //   this.influencer.id = this.user;
-  //   this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+  //   this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
   //     if (a['data'].id) {
   //       this.influencer = a['data'] || {};
   //     } else {
-  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //         if (a['data'].id) {
   //           this.influencer = a['data'] || {};
   //         } else {
@@ -303,7 +303,7 @@ export class EventPage implements OnInit {
   //       })
   //     }
   //   }, e => {
-  //     this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //     this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //       if (a['data'].id) {
   //         this.influencer = a['data'] || {};
   //       } else {

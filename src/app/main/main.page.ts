@@ -57,7 +57,7 @@ export class MainPage implements OnInit {
 
       this.user = a['user'] || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-      this.http.get('https://api.vsnap.my/getallvouchers').subscribe((s) => {
+      this.http.get('https://api2.vsnap.my/getallvouchers').subscribe((s) => {
         this.voucher = (s['data'] || []).filter(x => x.status == true);
         // this.title.setTitle('Vsnap Official Store')
         // this.meta.updateTag({ property: 'og:url', content: 'https://deal.vsnap.my/main?user=' + this.user });
@@ -86,12 +86,12 @@ export class MainPage implements OnInit {
       })
 
       this.influencer.id = this.user;
-      this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {
-          this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+          this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
             if (a['data'].id) {
               this.influencer = a['data'] || {};
             } else {
@@ -102,7 +102,7 @@ export class MainPage implements OnInit {
           })
         }
       }, e => {
-        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -117,7 +117,7 @@ export class MainPage implements OnInit {
         this.links = data.val();
       })
 
-      this.http.get('https://api.vsnap.my/get?tablename=category_voucher').subscribe(a => {
+      this.http.get('https://api2.vsnap.my/get?tablename=category_voucher').subscribe(a => {
         // console.log(a['data'])
         this.category = a['data'].map(a => a.name) || [];
       })
@@ -268,7 +268,7 @@ export class MainPage implements OnInit {
 
   //     this.user = a['user'] || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-  //     this.http.get('https://api.vsnap.my/getallvouchers').subscribe((s) => {
+  //     this.http.get('https://api2.vsnap.my/getallvouchers').subscribe((s) => {
   //       this.voucher = (s['data'] || []).filter(x => x.status == true);
   //       console.log(this.voucher)
   //     }, e => {
@@ -276,12 +276,12 @@ export class MainPage implements OnInit {
   //     })
 
   //     this.influencer.id = this.user;
-  //     this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+  //     this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
   //       if (a['data'].id) {
   //         this.influencer = a['data'] || {};
   //       } else {
-  //         this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //         this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //           if (a['data'].id) {
   //             this.influencer = a['data'] || {};
   //           } else {
@@ -292,7 +292,7 @@ export class MainPage implements OnInit {
   //         })
   //       }
   //     }, e => {
-  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //         if (a['data'].id) {
   //           this.influencer = a['data'] || {};
   //         } else {
@@ -307,7 +307,7 @@ export class MainPage implements OnInit {
   //       this.links = data.val();
   //     })
 
-  //     this.http.get('https://api.vsnap.my/get?tablename=category_voucher').subscribe(a => {
+  //     this.http.get('https://api2.vsnap.my/get?tablename=category_voucher').subscribe(a => {
   //       // console.log(a['data'])
   //       this.category = a['data'].map(a => a.name) || [];
   //     })

@@ -56,11 +56,11 @@ export class ThanksPage implements OnInit {
         this.title.setTitle('Thanks For Your Purchase!');
         // console.log(a['order']);
 
-        this.http.post('https://api.vsnap.my/getafforders', { id: this.orderid }).subscribe(data => {
+        this.http.post('https://api2.vsnap.my/getafforders', { id: this.orderid }).subscribe(data => {
           this.order = data['data']
           console.log(this.order)
 
-          this.http.post('https://api.vsnap.my/getvouchers', { id: data['data']['type_id'] }).subscribe(data2 => {
+          this.http.post('https://api2.vsnap.my/getvouchers', { id: data['data']['type_id'] }).subscribe(data2 => {
             this.items = data2['data'];
             console.log(this.items)
             this.animer = 6;

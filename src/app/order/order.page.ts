@@ -94,19 +94,19 @@ export class OrderPage implements OnInit {
 
     this.orderid = this.actRoute.snapshot.paramMap.get('id');
 
-    this.http.post('https://api.vsnap.my/getafforders', { id: this.orderid }).subscribe(data => {
+    this.http.post('https://api2.vsnap.my/getafforders', { id: this.orderid }).subscribe(data => {
 
     if(data['data']){
       this.order = data['data']
       this.title.setTitle('Order Summary for ' +  this.orders.name)
       this.qr = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + this.orders.id + ',' + this.orders.type;
 
-      this.http.post('https://api.vsnap.my/getvouchers', { id: data['data']['type_id'] }).subscribe(data2 => {
+      this.http.post('https://api2.vsnap.my/getvouchers', { id: data['data']['type_id'] }).subscribe(data2 => {
         this.items = data2['data'];
         console.log(this.items)
       })
 
-      this.http.post('https://api.vsnap.my/getvendors', { id: data['data']['by'] }).subscribe(data3 => {
+      this.http.post('https://api2.vsnap.my/getvendors', { id: data['data']['by'] }).subscribe(data3 => {
         this.vendor_info = data3['data'];
         console.log(this.vendor_info)
       })

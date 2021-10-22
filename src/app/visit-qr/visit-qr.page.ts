@@ -54,26 +54,26 @@ export class VisitQrPage implements OnInit {
 
       this.image = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + a['vendor'] + ',' + a['user'];
 
-      this.http.post('https://api.vsnap.my/getemenu', { id: a['vendor'] }).subscribe(b => {
+      this.http.post('https://api2.vsnap.my/getemenu', { id: a['vendor'] }).subscribe(b => {
         this.menu = b['data'] || [];
       })
 
-      this.http.get('https://api.vsnap.my/geteat').subscribe(a => {
+      this.http.get('https://api2.vsnap.my/geteat').subscribe(a => {
         this.locations = a ? (a['data']).filter(c => c['vendor_id'] == this.vendor) : {};
       })
 
-      this.http.post('https://api.vsnap.my/getvendors', { id: this.vendor }).subscribe(data3 => {
+      this.http.post('https://api2.vsnap.my/getvendors', { id: this.vendor }).subscribe(data3 => {
         this.vendors = data3['data'];
         this.tab = this.vendors.tnc ? 0 : 1;
       })
     })
 
-    this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
       if (a['data'].id) {
         this.influencer = a['data'] || {};
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -84,7 +84,7 @@ export class VisitQrPage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {

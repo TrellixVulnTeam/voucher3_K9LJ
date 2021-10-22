@@ -93,7 +93,7 @@ export class BrandPage implements OnInit {
     this.vendor = this.activatedRoute.snapshot.paramMap.get('vendor');
     this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-    this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
+    this.http.post('https://api2.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
       if (c['data'][1]) {
         if (c['data'][1].id) {
           // this.load = false;
@@ -122,7 +122,7 @@ export class BrandPage implements OnInit {
 
           // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
 
-          //   this.http.post('https://api.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
+          //   this.http.post('https://api2.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
           //     this.voucher = z['data'] || [];
           //     console.log(this.voucher)
           //   })
@@ -151,14 +151,14 @@ export class BrandPage implements OnInit {
 
     if (this.vendor != "5qjg3XyuGGdu1janN1yp305qWL62") {
 
-      this.http.post('https://api.vsnap.my/datavendorvouchers', { id: this.vendor }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: this.vendor }).subscribe(a => {
         this.voucher = a['data'] || [];
         console.log(this.voucher)
       })
 
     } else {
 
-      this.http.post('https://api.vsnap.my/datavoucherbytag', { tag: "CSR2021" }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/datavoucherbytag', { tag: "CSR2021" }).subscribe(a => {
         console.log('here');
 
         this.voucher = a['data'] || [];
@@ -169,7 +169,7 @@ export class BrandPage implements OnInit {
 
 
 
-    this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
+    this.http.post('https://api2.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
       if (c['data'][1]) {
         if (c['data'][1].id) {
           // this.load = false;
@@ -199,7 +199,7 @@ export class BrandPage implements OnInit {
 
           // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
 
-          //   this.http.post('https://api.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
+          //   this.http.post('https://api2.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
           //     this.voucher = z['data'] || [];
           //     console.log(this.voucher)
           //   })
@@ -220,12 +220,12 @@ export class BrandPage implements OnInit {
     })
 
     this.influencer.id = this.user;
-    this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+    this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
       if (a['data'].id) {
         this.influencer = a['data'] || {};
       } else {
-        this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
           if (a['data'].id) {
             this.influencer = a['data'] || {};
           } else {
@@ -236,7 +236,7 @@ export class BrandPage implements OnInit {
         })
       }
     }, e => {
-      this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+      this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
         if (a['data'].id) {
           this.influencer = a['data'] || {};
         } else {
@@ -269,14 +269,14 @@ export class BrandPage implements OnInit {
 
   //   if(this.vendor != "5qjg3XyuGGdu1janN1yp305qWL62"){
 
-  //     this.http.post('https://api.vsnap.my/datavendorvouchers', { id: this.vendor }).subscribe(a => {
+  //     this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: this.vendor }).subscribe(a => {
   //       this.voucher = a['data'] || [];
   //       console.log(this.voucher)
   //     })
 
   //   }else{
 
-  //     this.http.post('https://api.vsnap.my/datavoucherbytag', { tag: "CSR2021" }).subscribe(a => {
+  //     this.http.post('https://api2.vsnap.my/datavoucherbytag', { tag: "CSR2021" }).subscribe(a => {
   //       console.log('here');
 
   //       this.voucher = a['data'] || [];
@@ -287,14 +287,14 @@ export class BrandPage implements OnInit {
 
 
 
-  //   this.http.post('https://api.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
+  //   this.http.post('https://api2.vsnap.my/dataVendorlogin', { userid: this.vendor }).subscribe(c => {
   //     if (c['data'][1]) {
   //       if (c['data'][1].id) {
   //         this.vendor_info = c['data'][1] || {};
   //         this.title.setTitle(this.vendor_info['name'])
   //         // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
 
-  //         //   this.http.post('https://api.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
+  //         //   this.http.post('https://api2.vsnap.my/datatagvouchers', { tag: "CSR2021" }).subscribe(z => {
   //         //     this.voucher = z['data'] || [];
   //         //     console.log(this.voucher)
   //         //   })
@@ -315,12 +315,12 @@ export class BrandPage implements OnInit {
   //   })
 
   //   this.influencer.id = this.user;
-  //   this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+  //   this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
   //     if (a['data'].id) {
   //       this.influencer = a['data'] || {};
   //     } else {
-  //       this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //       this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //         if (a['data'].id) {
   //           this.influencer = a['data'] || {};
   //         } else {
@@ -331,7 +331,7 @@ export class BrandPage implements OnInit {
   //       })
   //     }
   //   }, e => {
-  //     this.http.post('https://api.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
+  //     this.http.post('https://api2.vsnap.my/getusers', { id: "yRSIH0mIALf4PsxkwSUFkKnjdMI3" }).subscribe(a => {
   //       if (a['data'].id) {
   //         this.influencer = a['data'] || {};
   //       } else {
