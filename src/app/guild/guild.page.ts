@@ -25,7 +25,7 @@ export class GuildPage implements OnInit {
 
 
   join() {
-    window.open('https://register.vsnap.my/influencer');
+    window.open('https://register.vsnap.my/influencer?referrer_id=' + this.user);
   }
 
   ngOnInit() {

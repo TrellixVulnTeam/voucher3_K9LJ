@@ -86,8 +86,8 @@ export class BrandPage implements OnInit {
 
   // load = true;
 
- 
-  ngOnInit(){
+
+  ngOnInit() {
     console.log('Do nothing')
 
     this.vendor = this.activatedRoute.snapshot.paramMap.get('vendor');
@@ -106,19 +106,19 @@ export class BrandPage implements OnInit {
           // this.meta.updateTag({ property: 'og:description', content: (this.vendor_info.description || '') });
 
           this.title.setTitle(c['data'][1].name + '\'s Vsnap Vendor Store')
-          this.meta.updateTag({ name: 'description', content: (c['data'][1].description || "Welcome to "+c['data'][1].name+"'s Vsnap Vendor Store") })
-          this.meta.updateTag({ itemprop: 'name', content: c['data'][1].name + '\'s Vsnap Vendor Store'})
-          this.meta.updateTag({ itemprop: 'description', content: (c['data'][1].description || "Welcome to "+c['data'][1].name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ name: 'description', content: (c['data'][1].description || "Welcome to " + c['data'][1].name + "'s Vsnap Vendor Store") })
+          this.meta.updateTag({ itemprop: 'name', content: c['data'][1].name + '\'s Vsnap Vendor Store' })
+          this.meta.updateTag({ itemprop: 'description', content: (c['data'][1].description || "Welcome to " + c['data'][1].name + "'s Vsnap Vendor Store") })
           this.meta.updateTag({ itemprop: 'image', content: (c['data'][1].photo || "https://i.imgur.com/cW5MqH2.png") })
           this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/brand/' + this.vendor + '/' + this.user) })
           this.meta.updateTag({ property: 'og:type', content: 'website' })
-          this.meta.updateTag({ property: 'og:description', content: (c['data'][1].description || "Welcome to "+c['data'][1].name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ property: 'og:description', content: (c['data'][1].description || "Welcome to " + c['data'][1].name + "'s Vsnap Vendor Store") })
           this.meta.updateTag({ property: 'og:title', content: c['data'][1].name + '\'s Vsnap Vendor Store' })
           this.meta.updateTag({ property: 'og:image', content: (c['data'][1].photo || "https://i.imgur.com/cW5MqH2.png") })
           this.meta.updateTag({ property: 'og:image:secure_url', content: (c['data'][1].photo || "https://i.imgur.com/cW5MqH2.png") })
           this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
           this.meta.updateTag({ property: 'og:image:width', content: '500' })
-          this.meta.updateTag({ property: 'og:image:height', content: '500' })  
+          this.meta.updateTag({ property: 'og:image:height', content: '500' })
 
           // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
 
@@ -181,21 +181,21 @@ export class BrandPage implements OnInit {
           // this.meta.updateTag({ property: 'og:image', content: this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png" });
           // this.meta.updateTag({ property: 'og:description', content: (this.vendor_info.description || '') });
 
-          
+
           this.title.setTitle(this.vendor_info.name + '\'s Vsnap Vendor Store')
-          this.meta.updateTag({ name: 'description', content: (this.vendor_info.description || "Welcome to "+this.vendor_info.name+"'s Vsnap Vendor Store") })
-          this.meta.updateTag({ itemprop: 'name', content: this.vendor_info.name + '\'s Vsnap Vendor Store'})
-          this.meta.updateTag({ itemprop: 'description', content: (this.vendor_info.description || "Welcome to "+this.vendor_info.name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ name: 'description', content: (this.vendor_info.description || "Welcome to " + this.vendor_info.name + "'s Vsnap Vendor Store") })
+          this.meta.updateTag({ itemprop: 'name', content: this.vendor_info.name + '\'s Vsnap Vendor Store' })
+          this.meta.updateTag({ itemprop: 'description', content: (this.vendor_info.description || "Welcome to " + this.vendor_info.name + "'s Vsnap Vendor Store") })
           this.meta.updateTag({ itemprop: 'image', content: (this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png") })
           this.meta.updateTag({ property: 'og:url', content: ('https://deal.vsnap.my/brand/' + this.vendor + '/' + this.user) })
           this.meta.updateTag({ property: 'og:type', content: 'website' })
-          this.meta.updateTag({ property: 'og:description', content: (this.vendor_info.description || "Welcome to "+this.vendor_info.name+"'s Vsnap Vendor Store") })
+          this.meta.updateTag({ property: 'og:description', content: (this.vendor_info.description || "Welcome to " + this.vendor_info.name + "'s Vsnap Vendor Store") })
           this.meta.updateTag({ property: 'og:title', content: this.vendor_info.name + '\'s Vsnap Vendor Store' })
           this.meta.updateTag({ property: 'og:image', content: (this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png") })
           this.meta.updateTag({ property: 'og:image:secure_url', content: (this.vendor_info.photo || "https://i.imgur.com/cW5MqH2.png") })
           this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' })
           this.meta.updateTag({ property: 'og:image:width', content: '500' })
-          this.meta.updateTag({ property: 'og:image:height', content: '500' })  
+          this.meta.updateTag({ property: 'og:image:height', content: '500' })
 
           // if (this.vendor_info['id'] == "5qjg3XyuGGdu1janN1yp305qWL62") {
 
@@ -251,7 +251,7 @@ export class BrandPage implements OnInit {
       this.links = data.val();
     })
 
-    
+
   }
 
   tomain() {
@@ -259,7 +259,8 @@ export class BrandPage implements OnInit {
   }
 
   join() {
-    window.open('https://register.vsnap.my/influencer');
+    window.open('https://register.vsnap.my/influencer?referrer_id=' + this.user);
+
   }
 
   // ionViewWillEnter() {

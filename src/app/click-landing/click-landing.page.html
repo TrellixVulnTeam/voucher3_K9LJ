@@ -1,0 +1,273 @@
+<!-- [ngClass]='close==true ? "inner" : "innerx"' -->
+<div *ngIf="close == true" style='position: fixed;left:0;background-color: rgba(0,0,0,0.85);display:flex;justify-content: center;
+align-items: center;width:100vw;height:100vh;flex-direction: column; top:0;
+    opacity: 1;
+    transition: all .2s ease;
+    z-index: 10000;'>
+  <div style='width:100%;position: relative;'>
+    <div (click)='close = !close;'
+      style='font-size:10px;padding:5px 10px;border-radius:2px;color:white;background-color: #f53c3c;position: absolute;top:15px;right:15px;z-index:10;font-weight:bold;'>
+      Close</div>
+    <img style='width:100%; height: 50vh; object-fit: contain;' src="{{nowphoto}}" alt="">
+  </div>
+</div>
+
+
+<ion-content style="--background: rgb(255, 235, 210)">
+
+  <div class='outsider'>
+
+    <div
+      style='width:100vw;max-width:1600px;display:flex;align-items: center;justify-content: space-between;padding:15px;position: fixed;z-index:1000;top:0;;background-color: #f7f9fd;'>
+      <img (click)='home()' style='height:35px;' src="https://i.imgur.com/pEyI97C.png" alt="">
+
+      <div (click)='ordernow()' *ngIf="data.type != 'register'"
+        style='cursor: pointer;;padding:7px 15px;border-radius:5px;background-color: #f03030;color:white;font-size:14px;font-weight: bold;letter-spacing: 1px;'>
+        {{data.type == 'food' ? 'Get QR Now' : 'Order Now'}}</div>
+
+      <div (click)='ordernow()' *ngIf="data.type == 'register'"
+        style='cursor: pointer;;padding:7px 15px;border-radius:5px;background-color: #f03030;color:white;font-size:14px;font-weight: bold;letter-spacing: 1px;'>
+        Register Now</div>
+    </div>
+
+    <div style='height:65px;width:100%;background-color: white;'></div>
+
+    <div *ngFor='let eve of contents;let i = index'
+      style='width:100%;display:flex;align-items: center;justify-content: center;'>
+      <img *ngIf='eve.type=="photo"' style='width:100%;object-fit: contain;' src="{{eve.link}}" alt="">
+    </div>
+
+    <div *ngIf="lengthof(rating) > 0"
+      style='width:100%;padding-top:30px; background-color: white;padding-bottom: 30px;'>
+
+      <div style='font-size:30px;font-weight: bold;text-align: center;color:#333333;'> Customer Review & Feedback</div>
+      <div style='font-size:14px;color:#999999;text-align: center;margin-top:10px; margin-bottom: 20px;'>Amazing Comment
+        & Rating</div>
+
+      <ion-slides id='slides' #slides (ionSlideWillChange)="call()" class="no-scrollbar"
+        style='width:100%;  display:flex; padding: 30px 0px;' pager="false" [options]="slideOpts">
+        <ion-slide *ngFor='let eve of rating;let i = index' [ngClass]="[activeslide==i ? 'open' : 'openx']"
+          (click)="nowphoto = eve.feedback_photo; close = !close"
+          style='width:100%; display:flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; box-shadow: 0px 3px 6px rgb(0,0,0,0.1);'>
+          <img style='width: 250px; height: 250px; object-fit: cover;border-radius:10px;' src="{{eve.feedback_photo}}"
+            alt="">
+          <div style="padding: 10px 0px 20px 0px">
+            <div
+              style='font-size:16px;font-weight: bold;color:#333333;letter-spacing: .5px;text-align: center;margin-top:5px;'>
+              {{eve.buyer_name}}
+            </div>
+            <div style='width:100%;display:flex;align-items: center;justify-content: center;margin-top:5px;'>
+
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 0 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 1 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 2 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 3 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 4 ? '#ffd82a' : '#eeeeee')}" style='font-size:14px;'
+                name="star"></ion-icon>
+
+
+            </div>
+            <div
+              style='font-size:14px;font-weight: normal;color:#999999;letter-spacing: .5px;text-align: center; font-style: italic; min-height: 80px;
+            text-align: center;display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; padding: 15px 10px;'>
+              "{{eve.feedback || 'No Comment'}}"</div>
+          </div>
+
+        </ion-slide>
+      </ion-slides>
+
+      <!-- <div style='width:100%;display:flex; overflow-x: scroll; padding-left:15px;padding-top:30px;'>
+
+
+        <div *ngFor='let eve of rating;let i = index'
+          style='margin-right:15px;margin-bottom:20px;background-color:white;;position: relative;border-radius:10px;'
+          [ngStyle]='{"width" : 984 >= platform.width()  ?  ( ((widtherget() - 15)/rounder(widtherget() / 164)) - 15 +"px" ) : (((984 - 90) / 5))+"px"  }'>
+          <div style='width:100%;cursor: pointer;'>
+
+            <img
+              [ngStyle]='{"height" :984 >= platform.width()  ?  ( ((widtherget() - 15)/rounder(widtherget() / 164)) - 15 +"px" ) : (((984 - 90) / 5))+"px"  }'
+              style='width:100%;object-fit: cover;border-radius:10px;' src="{{eve.feedback_photo}}" alt="">
+
+            <div
+              style='font-size:16px;font-weight: bold;color:#333333;letter-spacing: .5px;text-align: center;margin-top:5px;'>
+              {{eve.buyer_name}}
+            </div>
+            <div style='width:100%;display:flex;align-items: center;justify-content: center;margin-top:5px;'>
+
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 0 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 1 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 2 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 3 ? '#ffd82a' : '#eeeeee')}"
+                style='font-size:14px;margin-right:10px;' name="star"></ion-icon>
+              <ion-icon [ngStyle]="{'color': (eve.feedback_rating > 4 ? '#ffd82a' : '#eeeeee')}" style='font-size:14px;'
+                name="star"></ion-icon>
+
+
+            </div>
+            <div style='font-size:14px;font-weight: normal;color:#999999;letter-spacing: .5px;text-align: center;margin-top:5px;font-style: italic;text-align: center;display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;'>"{{eve.feedback}}"</div>
+          </div>
+
+        </div>
+
+      </div> -->
+
+    </div>
+
+    <div id='buybuy' *ngIf="lengthof(products) > 0 && data.type == 'vouchers'" #buybuy
+      style='width:100%; background-color: white;padding-top:30px; padding-bottom: 30px;'>
+
+      <div style='font-size:30px;font-weight: bold;text-align: center;color:#333333;'>Purchase offer now!</div>
+      <div style='font-size:14px;color:#999999;text-align: center;margin-top:10px;'>Deals not always wait for you！</div>
+
+      <div style='width:100%;display:flex;flex-wrap: wrap;padding-left:15px;padding-top:30px;'>
+
+        <div *ngFor='let eve of products;let i = index' (click)='detail(eve)'
+          style='margin-right:15px;margin-bottom:20px;background-color:white;;position: relative;'
+          [ngStyle]='{"width" : 984 >= platform.width()  ?  ( ((widtherget() - 15)/rounder(widtherget() / 246)) - 15 +"px" ) : (((984 - 75) / 4))+"px"  }'>
+          <div style='width:100%;cursor: pointer;'>
+
+            <img
+              [ngStyle]='{"height" :984 >= platform.width()  ?  ( ((widtherget() - 15)/rounder(widtherget() / 246)) - 15 +"px" ) : (((984 - 75) / 4))+"px"  }'
+              style='width:100%;object-fit: cover;' src="{{eve.thumbnail}}" alt="">
+
+            <div style='font-size:16px;font-weight: bold;color:#333333;letter-spacing: .5px;padding:10px 15px;padding-bottom:0px; min-height: 48px; display: -webkit-box;
+              -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;'>
+              {{eve.name}}</div>
+
+            <!-- <div style='font-size:14px;font-weight: normal;color:#999999;letter-spacing: .5px;text-align: left;padding: 0px 15px;display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;'>I love it so much to the extend that I have to use it everyday!</div> -->
+
+            <div style='width:100%;display:flex;align-items: flex-end;padding:10px 15px;padding-bottom:15px;'>
+              <div style='font-size:16px;color:#f03030;font-weight: bold;letter-spacing: 1px;'>{{eve.price_now |
+                currency:"RM"}}
+              </div>
+              <div *ngIf="eve.price_ori > eve.price_now"
+                style='font-size:14px;color:#999999;letter-spacing: 1px;text-decoration: line-through;margin-left:5px;'>
+                {{eve.price_ori | currency:"RM"}}</div>
+            </div>
+            <div
+              style='width:100%;padding:7px 15px;text-align: center;background-color: #f03030;display:flex;align-items: center;justify-content: center;'>
+
+              <div style='color:white;font-size:16px;font-weight: bold;letter-spacing: 1px;'>Buy Now</div>
+              <ion-icon style='color:white;font-size:18px;font-weight: bold;letter-spacing: 1px;margin-left:10px;'
+                name="cart"></ion-icon>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+
+    <div id='buybuy' *ngIf="data.type == 'food'" #buybuy
+      style='width:100%;background-color: #f7f9fd;padding:30px 0px;  display: flex; flex-direction: column; align-items: center;'>
+
+      <div style='font-size:30px;font-weight: bold;text-align: center;color:#333333;'>Show This QR Code to Vendor</div>
+      <div style='font-size:14px;color:#999999;text-align: center;margin-top:10px; margin-bottom: 20px;'>To Recieve
+        Special Offer！</div>
+
+      <div
+        style="padding: 15px; background: white; border-radius: 10px; margin: 20px 0px; box-shadow: 0px 3px 6px rgb(0,0,0,0.1);">
+        <img style='width: 90vw ;object-fit: cover; max-width: 300px;' src="{{qr}}" alt="">
+      </div>
+      <!-- 
+      <div style='width:100%;display:flex;flex-wrap: wrap;padding-left:15px;padding-top:30px;'>
+
+        <div *ngFor='let eve of products;let i = index' (click)='detail(eve)'
+          style='margin-right:15px;margin-bottom:20px;background-color:white;;position: relative;'
+          [ngStyle]='{"width" : 984 >= platform.width()  ?  ( ((widtherget() - 15)/rounder(widtherget() / 246)) - 15 +"px" ) : (((984 - 75) / 4))+"px"  }'>
+          <div style='width:100%;cursor: pointer;'>
+
+            <img
+              [ngStyle]='{"height" :984 >= platform.width()  ?  ( ((widtherget() - 15)/rounder(widtherget() / 246)) - 15 +"px" ) : (((984 - 75) / 4))+"px"  }'
+              style='width:100%;object-fit: cover;' src="{{eve.thumbnail}}" alt="">
+
+            <div style='font-size:16px;font-weight: bold;color:#333333;letter-spacing: .5px;padding:10px 15px;padding-bottom:0px; min-height: 48px; display: -webkit-box;
+              -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;'>
+              {{eve.name}}</div>
+
+
+            <div style='width:100%;display:flex;align-items: flex-end;padding:10px 15px;padding-bottom:15px;'>
+              <div style='font-size:16px;color:#f03030;font-weight: bold;letter-spacing: 1px;'>{{eve.price_now |
+                currency:"RM"}}
+              </div>
+              <div *ngIf="eve.price_ori > eve.price_now"
+                style='font-size:14px;color:#999999;letter-spacing: 1px;text-decoration: line-through;margin-left:5px;'>
+                {{eve.price_ori | currency:"RM"}}</div>
+            </div>
+            <div
+              style='width:100%;padding:7px 15px;text-align: center;background-color: #f03030;display:flex;align-items: center;justify-content: center;'>
+
+              <div style='color:white;font-size:16px;font-weight: bold;letter-spacing: 1px;'>Buy Now</div>
+              <ion-icon style='color:white;font-size:18px;font-weight: bold;letter-spacing: 1px;margin-left:10px;'
+                name="cart"></ion-icon>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div> -->
+
+    </div>
+
+    <div id='buybuy' *ngIf="data.type == 'register'" #buybuy
+      style='width:100%;background-color: #fffaf6;padding:30px 0px;  display: flex; flex-direction: column; align-items: center;'>
+
+      <div style="width: 80vw; max-width: 300px; height: 80vw; max-height: 300px; border-radius: 10000px; ">
+
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_9xrenieu.json" speed="1" style="width: 100%; "
+          loop autoplay></lottie-player>
+
+      </div>
+
+      <div style='font-size:30px;font-weight: bold;text-align: center;color:#333333; margin-top: -30px;'>Become
+        a Redhood Influencer</div>
+      <div style='font-size:14px;color:#999999;text-align: center;margin-top:10px; margin-bottom: 20px;'>To <b>Recieve
+          many reward</b>
+        and <b>More offer</b>！</div>
+
+      <div (click)='join()' style="padding: 10px 15px; background-color: white; box-shadow: 0px 3px 6px rgb(0,0,0,0.1); font-size: 16px;
+         border-radius: 100px; background-color: #F68D44; color: white; font-weight: bold; cursor: pointer;">
+        Join us now!</div>
+
+    </div>
+
+    <!-- Footer -->
+
+    <div style='padding:40px;border-top:1px solid #eeeeee;background-color: white;;'>
+      <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:10px;'>Become a Redhood
+        Influencer?&nbsp;
+        <span (click)='join()' style='text-decoration: underline; cursor: pointer;'>join us now.</span>
+      </div>
+
+      <div style='font-size:12px;color:#999999;text-align: center;margin-bottom:20px;'>©️ Copyright 2020- All rights
+        reserved - Redhood by Redhood Global Sdn Bhd. version 6.1.0</div>
+      <div style='text-align: center;display:flex;align-items: center;justify-content: center;'>
+        <span (click)="outside('terms')" style='cursor: pointer;;font-size:10px;color:#525dc2;'>Terms &
+          Condition</span>&nbsp;•&nbsp;<span (click)="outside('privacy')"
+          style='cursor: pointer;font-size:10px;color:#525dc2;'>Privacy Policy</span>&nbsp;•&nbsp;<span
+          (click)="outside('disclaimer')"
+          style='cursor: pointer;font-size:10px;color:#525dc2;'>Disclaimer</span>&nbsp;•&nbsp;<span
+          (click)="outside('refund')" style='cursor: pointer;font-size:10px;color:#525dc2;'>Refund Policy</span>
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>

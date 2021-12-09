@@ -1,0 +1,27 @@
+.outsider{
+
+    width:100vw;
+
+    @media only screen and (min-width: 1600px) {
+        width:1600px;
+        margin-left: calc( ( 100vw - 1600px ) / 2 );
+        margin-right: calc( ( 100vw - 1600px ) / 2 );
+    }
+
+}
+
+.open {
+    transition: all 0.2s ease;
+    transform: scale(1.1);
+}
+
+.openx {
+    transition: all 0.2s ease;
+    transform: scale(0.9);
+}
+
+.no-scrollbar {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+}

@@ -46,12 +46,22 @@ const routes: Routes = [
   {
     path: 'main',
     loadChildren: () => import('./main/main.module').then(m => m.MainPageModule)
-  },  {
+  },
+  {
     path: 'visit-qr',
     loadChildren: () => import('./visit-qr/visit-qr.module').then( m => m.VisitQrPageModule)
+  },
+  {
+    path: 'click-landing',
+    loadChildren: () => import('./click-landing/click-landing.module').then( m => m.ClickLandingPageModule)
+  },  {
+    path: 'click-preview',
+    loadChildren: () => import('./click-preview/click-preview.module').then( m => m.ClickPreviewPageModule)
+  },
+  {
+    path: 'fnbqr',
+    loadChildren: () => import('./fnbqr/fnbqr.module').then( m => m.FnbqrPageModule)
   }
-
-
 
 
 

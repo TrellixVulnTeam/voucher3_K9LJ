@@ -23,7 +23,7 @@ export class MainPage implements OnInit {
   ) { }
 
   join() {
-    window.open('https://register.vsnap.my/influencer');
+    window.open('https://register.vsnap.my/influencer?referrer_id=' + this.user);
   }
 
   outside(x) {

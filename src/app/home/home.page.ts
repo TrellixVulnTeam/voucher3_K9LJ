@@ -101,7 +101,6 @@ export class HomePage implements OnInit {
     this.id = this.actRoute.snapshot.paramMap.get('item');
     this.user = this.actRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
-
     // this.http.post('https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/getmeta2', { type: "vouchers", id: this.id }).subscribe(data => {
     //   console.log(data);
 
@@ -489,7 +488,15 @@ export class HomePage implements OnInit {
   }
   today = new Date().getTime();
   price_vsnap2 = 0 as any;
+  state;
+
   buys() {
+
+    console.log(this.deliveryrr)
+    console.log(this.var_delivery)
+
+    console.log(this.lengthof(this.deliveryrr) > 0 ? this.var_delivery : true)
+
     // console.log(JSON.stringify((this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), [])));
 
     swal({
@@ -501,7 +508,7 @@ export class HomePage implements OnInit {
       timer: 10000,
     })
 
-    if (this.voucher.address ? (this.address && this.postcode && this.city) : true) {
+    if (this.voucher.address ? (this.address && this.postcode && this.city && (this.lengthof(this.deliveryrr) > 0 ? this.var_delivery != null : true)) : true) {
       if ((this.voucher.price_now + this.countvar()) == 0) {
         this.price_comm = 0;
         this.price_vsnap2 = 0;
@@ -523,7 +530,7 @@ export class HomePage implements OnInit {
       swal({
         icon: 'error',
         title: 'Error',
-        text: '请填写所有资料\nPlease fill up all information!',
+        text: '请填写所有资料\nPlease fill up all information! 123123',
         closeOnEsc: false,
         closeOnClickOutside: false,
         buttons: [false],
@@ -645,10 +652,11 @@ export class HomePage implements OnInit {
   price_delivery_remark = '';
 
   join() {
-    window.open('https://register.vsnap.my/influencer');
+    window.open('https://register.vsnap.my/influencer?referrer_id=' + this.user);
   }
 
   deliverer(x, i) {
+
     this.var_delivery = i;
     let temp = this.delivery.filter(a => a['state'].some(b => b == x))[0];
     this.price_delivery_remark = temp.name;
@@ -659,9 +667,11 @@ export class HomePage implements OnInit {
     this.http.post('https://api2.vsnap.my/catdelivery', body).subscribe(a => {
       console.log(a['data']);
       this.price_delivery = a['data'];
+
     }, e => {
       // console.log(e);
     })
+
   }
 
   qtyr(x) {
@@ -669,7 +679,6 @@ export class HomePage implements OnInit {
   }
 
   checklast() {
-    console.log('last coming')
     let keyer = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
 
     firebase.database().ref('orders_pending/' + keyer).update({
@@ -679,6 +688,7 @@ export class HomePage implements OnInit {
       buyer_contact: this.contact || "",
       buyer_name: this.name || "",
       buyer_email: this.email || "",
+      state: this.deliveryrr[this.var_delivery] || "",
       by: this.voucher.by || "",
       by_name: this.vendor.name || "",
       category: this.voucher.category || "",
@@ -707,7 +717,7 @@ export class HomePage implements OnInit {
       price_now: this.price_now,
       price_ori: this.price_ori,
       price_guild: this.voucher.price_guild || 0,
-      price_guild_id: this.voucher.price_guild_id || "",
+      price_guild_id: this.influencer.guild || "",
       price_guild_logs: this.voucher.price_guild_logs || "",
       price_guild_remark: this.voucher.price_guild_remark || "",
       price_vip: this.voucher.price_vip || 0,
@@ -739,19 +749,14 @@ export class HomePage implements OnInit {
     });
 
     let body = {
-      amount: this.proper2(((this.voucher.price_now + this.countvar()) + this.price_delivery) || 0) * this.qty * 100,
+      amount: this.proper2(((((this.voucher.price_now + this.countvar())) || 0) * this.qty) + this.price_delivery) * 100,
       // amount: 100,
-      orderdescription: ('Purchase ' + this.voucher.name + ' x' + (this.qty || 1)).replace(/[^a-zA-Z ]/g, ""),
+      orderdescription: 'Order ' + keyer,
       ordertitle: 'Vsnap Order ' + keyer,
       orderid: keyer,
       redirecturl: 'https://deal.vsnap.my/thanks?orderId=' + keyer,
       callbackurl: 'https://us-central1-newvsnap.cloudfunctions.net/vsnapsql/callback2?orderid=' + keyer,
     }
-
-    // orderid
-    // ordertitle
-    // orderdescription
-    // amount
 
     if (this.email && this.name) {
       console.log(body)
@@ -1033,7 +1038,7 @@ export class HomePage implements OnInit {
         price_now: this.price_now,
         price_ori: this.price_ori,
         price_guild: this.voucher.price_guild || 0,
-        price_guild_id: this.voucher.price_guild_id || "",
+        price_guild_id: this.influencer.guild || "",
         price_guild_logs: this.voucher.price_guild_logs || "",
         price_guild_remark: this.voucher.price_guild_remark || "",
         price_vip: this.voucher.price_vip || 0,

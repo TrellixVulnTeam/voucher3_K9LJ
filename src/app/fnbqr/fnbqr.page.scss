@@ -1,0 +1,15 @@
+
+.inner{
+    top:0;
+    opacity: 1;
+    transition: all .2s ease;
+    z-index: 100;
+}
+
+.innerx{
+    top:100%;
+    opacity: 0;
+    transition: all .2s ease;
+    z-index: -1;
+
+}

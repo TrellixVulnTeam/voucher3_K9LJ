@@ -25,7 +25,7 @@ export class StorePage implements OnInit {
   ) { }
 
   join() {
-    window.open('https://register.vsnap.my/influencer');
+    window.open('https://register.vsnap.my/influencer?referrer_id=' + this.user);
   }
 
   rounder(x) {
