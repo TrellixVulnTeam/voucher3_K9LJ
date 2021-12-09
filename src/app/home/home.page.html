@@ -16,7 +16,7 @@
           <div style='font-size:14px;'>{{voucher['name']}}</div>
           <div *ngIf="voucher.price_now"
             style='width:100%;text-align: left;font-size:14px;font-weight: bold;margin-top:10px;'>
-            {{(voucher.price_now + countvar())*qty | currency:"RM"}}</div>
+            {{((voucher.price_now + countvar())*qty) + price_delivery | currency:"RM"}}</div>
           <div *ngIf="!voucher.price_now"
             style='width:100%;text-align: left;font-size:14px;font-weight: bold;margin-top:10px;'>
             APPLY FOR FREE</div>
@@ -54,6 +54,19 @@
         <ion-input [(ngModel)]="email" type='email'
           style='--padding-start:10px;--padding-end:10px;font-size:14px;color:#333333;--background: #f7f9fd;'
           placeholder="enter your email address"></ion-input>
+      </div>
+
+      <div *ngIf="lengthof(delivery)" style='margin-left:0px;margin-bottom:30px;'>
+        <div style='font-size:12px;color:#999999;margin-left:0px;margin-bottom:5px;'>Delivery Place</div>
+        <div style='width:100%;display:flex;flex-wrap: wrap; margin-top: 10px;'>
+          <div (click)='deliverer(x, i)' *ngFor='let x of deliveryrr; let i = index'
+            [ngStyle]='{"border":var_delivery == i ? "1px solid #f53c3c" : "1px solid #999999" ,
+            "color":var_delivery == i ? "#f53c3c" : "#999999","background-color":var_delivery == i ? "rgba(192,82,84, 0.05)" : "white" }'
+            style='padding:5px 10px;margin-right:10px;margin-bottom:10px;cursor: pointer;font-size:12px;border-radius:5px;'>
+            {{x}}
+          </div>
+        </div>
+
       </div>
 
       <div *ngIf="voucher.address" style='margin-left:0px;margin-bottom:30px;'>
@@ -163,9 +176,8 @@
           {{voucher.name}}</div>
 
         <div style='margin-left:0px;display:flex;align-items: center;'>
-          <div *ngIf="voucher.price_now" style='font-size:16px;color:#f53c3c;font-weight: bold;'>{{(voucher.price_now +
-            countvar())*qty |
-            currency:"RM"}}</div>
+          <div *ngIf="voucher.price_now" style='font-size:16px;color:#f53c3c;font-weight: bold;'>{{((voucher.price_now +
+            countvar())*qty) + price_delivery | currency:"RM"}}</div>
           <div *ngIf="!voucher.price_now" style='font-size:16px;color:#f53c3c;font-weight: bold;'>APPLY FOR FREE</div>
           <div *ngIf='voucher.price_ori && voucher.price_ori>voucher.price_now'
             style='display:flex;align-items: center;margin-left:10px;'>
@@ -193,14 +205,14 @@
         <div style='width:100%;margin-top:30px;display:flex;align-items: center;'>
 
           <div style='display:flex;align-items: center;justify-content: center;margin-right:20px;'>
-            <div (click)="qty>1 ? qty=qty-1 : qty"
+            <div (click)="qty>1 ? qtyr(-1) : qty"
               style='cursor: pointer;width:30px;height:30px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
               <div style='font-size:16px;color:#999999'>-</div>
             </div>
             <div
               style='width:50px;height:30px;font-size:14px;color:#333333;text-align: center;display:flex;justify-content: center;align-items: center;'>
               {{qty}}</div>
-            <div (click)='qty=qty+1;'
+            <div (click)='qtyr(+1)'
               style='cursor: pointer;;width:30px;height:30px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
               <div style='font-size:16px;color:#999999'>+</div>
             </div>
@@ -263,8 +275,8 @@
         </div>
 
         <div style='margin-left:0px;display:flex;align-items: center;'>
-          <div *ngIf="voucher.price_now" style='font-size:14px;color:#f53c3c;font-weight: bold;'>{{(voucher.price_now +
-            countvar())*qty |
+          <div *ngIf="voucher.price_now" style='font-size:14px;color:#f53c3c;font-weight: bold;'>{{((voucher.price_now +
+            countvar())*qty) + price_delivery |
             currency:"RM"}}</div>
 
           <div *ngIf="!voucher.price_now" style='font-size:14px;color:#f53c3c;font-weight: bold;'>APPLY FOR FREE</div>
@@ -290,14 +302,14 @@
         <div style='width:100%;margin-top:30px;display:flex;align-items: center;'>
 
           <div style='display:flex;align-items: center;justify-content: center;margin-right:20px;'>
-            <div (click)="qty>1 ? qty=qty-1 : qty"
+            <div (click)="qty>1 ? qtyr(-1) : qty"
               style='cursor: pointer;width:25px;height:25px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
               <div style='font-size:16px;color:#999999'>-</div>
             </div>
             <div
               style='width:40px;height:30px;font-size:12px;color:#333333;text-align: center;display:flex;justify-content: center;align-items: center;'>
               {{qty}}</div>
-            <div (click)='qty=qty+1;'
+            <div (click)='qtyr(+1)'
               style='cursor: pointer;;width:25px;height:25px;border:1px solid #999999;display:flex;justify-content: center;align-items: center;'>
               <div style='font-size:16px;color:#999999'>+</div>
             </div>

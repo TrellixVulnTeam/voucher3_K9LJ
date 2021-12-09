@@ -89,7 +89,7 @@ export class GuildPage implements OnInit {
 
         (this.guildinfo.store || []).forEach(element => {
           console.log(element)
-          this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+          this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
             if ((z['data'].price_vsnap || 0) / (z['data'].price_now || 0) >= 0.1 && z['data'].tag != "CSR2021" && z['data'].status == true) {
               this.voucher[element] = z['data'] || {};
@@ -102,12 +102,12 @@ export class GuildPage implements OnInit {
         });
 
         this.influencer.id = this.user;
-        this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
           if (a['data'].guild == this.guild) {
             this.influencer = a['data'] || {};
           } else {
-            this.http.post('https://api.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
+            this.http.post('https://api2.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
               if (a['data'].guild == this.guild) {
                 this.influencer = a['data'] || {};
               } else {
@@ -118,7 +118,7 @@ export class GuildPage implements OnInit {
             })
           }
         }, e => {
-          this.http.post('https://api.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
+          this.http.post('https://api2.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
             if (a['data'].guild == this.guild) {
               this.influencer = a['data'] || {};
             } else {
@@ -279,7 +279,7 @@ export class GuildPage implements OnInit {
   //       console.log(this.guildinfo);
 
   //       (this.guildinfo.store || []).forEach(element => {
-  //         this.http.post('https://api.vsnap.my/getvouchers', { id: element }).subscribe(z => {
+  //         this.http.post('https://api2.vsnap.my/getvouchers', { id: element }).subscribe(z => {
 
   //           if ((z['data'].price_vsnap || 0) / (z['data'].price_now || 0) >= 0.1 && z['data'].tag != "CSR2021" && z['data'].status == true) {
   //             this.voucher[element] = z['data'] || {};
@@ -292,12 +292,12 @@ export class GuildPage implements OnInit {
   //       });
 
   //       this.influencer.id = this.user;
-  //       this.http.post('https://api.vsnap.my/getusers', { id: this.user }).subscribe(a => {
+  //       this.http.post('https://api2.vsnap.my/getusers', { id: this.user }).subscribe(a => {
 
   //         if (a['data'].guild == this.guild) {
   //           this.influencer = a['data'] || {};
   //         } else {
-  //           this.http.post('https://api.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
+  //           this.http.post('https://api2.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
   //             if (a['data'].guild == this.guild) {
   //               this.influencer = a['data'] || {};
   //             } else {
@@ -308,7 +308,7 @@ export class GuildPage implements OnInit {
   //           })
   //         }
   //       }, e => {
-  //         this.http.post('https://api.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
+  //         this.http.post('https://api2.vsnap.my/getusers', { id: this.guildinfo.by }).subscribe(a => {
   //           if (a['data'].guild == this.guild) {
   //             this.influencer = a['data'] || {};
   //           } else {
