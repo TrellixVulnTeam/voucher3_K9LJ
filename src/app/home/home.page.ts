@@ -65,8 +65,13 @@ export class HomePage implements OnInit {
   var_select = [] as any;
   var_delivery;
   deliveryrr = [] as any;
+  click_id;
 
   ngOnInit() {
+    this.actRoute.queryParams.subscribe(a => {
+      this.click_id = a['click_id'] || '';
+    })
+
     this.id = this.actRoute.snapshot.paramMap.get('item');
     this.user = this.actRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
     this.http.post('https://api2.vsnap.my/getvouchers', { id: this.id }).subscribe(a => {
@@ -182,7 +187,7 @@ export class HomePage implements OnInit {
       if (a['data'].id) {
 
         this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: a['data'].by }).subscribe(c => {
-          this.otherproduct = c['data'].filter(b => b.id != a['data'].id);
+          this.otherproduct = c['data'].filter(b => b.id != a['data'].id && b['status']);
           if (!this.lengthof(this.otherproduct)) {
             this.disabled[3] = false;
           }
@@ -297,7 +302,7 @@ export class HomePage implements OnInit {
   }
 
   go(x) {
-    this.nav.navigateForward('home/' + x + '/' + this.user);
+    this.nav.navigateForward('home/' + x + '/' + this.user + '?click_id=' + this.click_id);
   }
 
   item
@@ -327,11 +332,11 @@ export class HomePage implements OnInit {
 
 
   store(x) {
-    this.nav.navigateForward('store/' + x);
+    this.nav.navigateForward('store/' + x + '?click_id=' + this.click_id);
   }
 
   brand(x) {
-    this.nav.navigateForward('brand/' + x + '/' + this.user);
+    this.nav.navigateForward('brand/' + x + '/' + this.user + '?click_id=' + this.click_id);
   }
 
   proper2(x) {
@@ -339,7 +344,7 @@ export class HomePage implements OnInit {
   }
 
   tomain() {
-    this.nav.navigateForward('main?user=' + this.user)
+    this.nav.navigateForward('main?user=' + this.user + '&click_id=' + this.click_id)
   }
 
   // ionViewDidEnter() { // all firebase here
@@ -530,7 +535,7 @@ export class HomePage implements OnInit {
       swal({
         icon: 'error',
         title: 'Error',
-        text: '请填写所有资料\nPlease fill up all information! 123123',
+        text: '请填写所有资料\nPlease fill up all information! ',
         closeOnEsc: false,
         closeOnClickOutside: false,
         buttons: [false],
@@ -679,6 +684,74 @@ export class HomePage implements OnInit {
   }
 
   checklast() {
+    // console.log({
+    //   address: this.voucher.address || false,
+    //   aftersale: this.voucher.aftersale || "",
+    //   buyer_address: ((this.address || "") + ' ' + (this.postcode || "") + ' ' + (this.city) || ""),
+    //   buyer_contact: this.contact || "",
+    //   buyer_name: this.name || "",
+    //   buyer_email: this.email || "",
+    //   state: this.deliveryrr[this.var_delivery] || "",
+    //   by: this.voucher.by || "",
+    //   by_name: this.vendor.name || "",
+    //   category: this.voucher.category || "",
+    //   checklist: this.voucher.list || [],
+    //   date: firebase.database.ServerValue.TIMESTAMP,
+    //   description: this.voucher.description || "",
+    //   following: this.voucher.following || false,
+    //   hidden_remark: this.voucher.hidden_remark || "",
+    //   id: 'keyer',
+    //   link: this.voucher.link || [],
+    //   location: this.voucher.location || [],
+    //   min_rating: this.voucher.min_rating || 0,
+    //   min_vip: this.voucher.min_vip || 0,
+    //   name: this.voucher.name || "",
+    //   online: this.voucher.online || false,
+    //   overwrite: this.voucher.overwrite || false,
+    //   photo: this.voucher.photo || [],
+    //   price_delivery: this.price_delivery,
+    //   price_delivery_remark: this.price_delivery_remark,
+    //   price_bonus: this.price_bonus,
+    //   price_bonus_remark: 'You have received an Extra Bonus of RM' + (this.proper2(this.price_bonus)).toFixed(2) + ' from vsnap global, Congratulations!',
+    //   price_bonus_logs: 'keyer',
+    //   price_comm: this.price_comm,
+    //   price_vsnap: this.price_vsnap,
+    //   price_vsnap2: this.price_vsnap2,
+    //   price_now: this.price_now,
+    //   price_ori: this.price_ori,
+    //   price_guild: this.voucher.price_guild || 0,
+    //   price_guild_id: this.influencer.guild || "",
+    //   price_guild_logs: this.voucher.price_guild_logs || "",
+    //   price_guild_remark: this.voucher.price_guild_remark || "",
+    //   price_vip: this.voucher.price_vip || 0,
+    //   price_vip_remark: this.voucher.price_vip_remark || "",
+    //   price_vip_logs: this.voucher.price_vip_logs || "",
+    //   price_mentor: this.voucher.price_mentor || 0,
+    //   price_mentor_id: this.voucher.price_mentor_id || "",
+    //   price_mentor_remark: this.voucher.price_mentor_remark || "",
+    //   price_mentor_logs: this.voucher.price_mentor_logs || "",
+    //   qty: this.qty || 1,
+    //   thumbnail: this.voucher.thumbnail || "",
+    //   tnc: this.voucher.tnc || "",
+    //   token: this.voucher.token || 0,
+    //   type: 'vouchers',
+    //   type_id: this.id || "",
+    //   event: this.id || "",
+    //   userid: this.user || "",
+    //   value_price: this.voucher.value_price || 0,
+    //   value_type: this.voucher.value_type || false,
+    //   variations: (this.voucher.variations || []).reduce((a, b, i) => a.concat(b['selections'][this.var_select[i]]), []),
+    //   seller_name: this.influencer.name || "",
+    //   seller_email: this.influencer.email || "",
+    //   seller_id: this.user || "",
+    //   seller_phone: this.influencer.contact || "",
+    //   survey: this.voucher.survey || [],
+    //   verified: this.voucher.verified || 0,
+    //   remark: this.remark || "",
+    //   tag: this.voucher.tag || "",
+    //   click_id: this.click_id || '',
+    // });
+    
     let keyer = firebase.database().ref('pushKey').push(firebase.database.ServerValue.TIMESTAMP).key;
 
     firebase.database().ref('orders_pending/' + keyer).update({
@@ -728,6 +801,7 @@ export class HomePage implements OnInit {
       price_mentor_remark: this.voucher.price_mentor_remark || "",
       price_mentor_logs: this.voucher.price_mentor_logs || "",
       qty: this.qty || 1,
+      weight:   (this.voucher.weight || 0.1) * (this.qty || 1),
       thumbnail: this.voucher.thumbnail || "",
       tnc: this.voucher.tnc || "",
       token: this.voucher.token || 0,
@@ -746,6 +820,7 @@ export class HomePage implements OnInit {
       verified: this.voucher.verified || 0,
       remark: this.remark || "",
       tag: this.voucher.tag || "",
+      click_id: this.click_id || '',
     });
 
     let body = {

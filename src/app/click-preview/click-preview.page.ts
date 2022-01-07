@@ -66,7 +66,12 @@ export class ClickPreviewPage implements OnInit {
   }
 
 
-
+  gooo(x) {
+    // this.http.post('https://api2.vsnap.my/updateclicklogs', { click_id:'custom' , logs_pool_id: this.logsid }).subscribe(p2 => {
+    //   console.log("got the button");
+    // });
+    window.open(x + '?userid=' + this.data.userid + '&uniqueid=' + this.uniquekey + '&logsid=' + this.logsid);
+  }
 
   to(x) {
     this.nav.navigateForward('store/' + x.userid);
@@ -100,15 +105,28 @@ export class ClickPreviewPage implements OnInit {
         this.contents = x['data'].landing_photo || [];
         // console.log({ type_id: x['data'][0].type_id });
 
-        this.http.post('https://api2.vsnap.my/getclickrating', { type_id: x['data'].type_id }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/getclickrating', { type_id: this.id }).subscribe(a => {
           console.log(a['data']);
           this.rating = a['data'].filter(a => a['feedback_rating'] > 3);
         });
 
-        this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: x['data'].by }).subscribe(a => {
-          this.products = a['data'].filter(a => a['status']) || [];
+        this.http.post('https://api2.vsnap.my/datacclickvouchers', { id: x['data'].by, type_id:this.id }).subscribe(a => {
+          console.log(a);
+          
+          if (this.lengthof(a['data'].filter(a => a['status'])) > 0) {
+            this.products = a['data'].filter(a => a['status']) || [];
+          } 
+          else {
+            this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: x['data'].by }).subscribe(a => {
+              this.products = a['data'].filter(a => a['status']) || [];
+              console.log(this.products)
+            })
+          }
+        
           console.log(this.products)
         })
+
+
 
         // if (!this.notcount) {
         //   setInterval(() => {

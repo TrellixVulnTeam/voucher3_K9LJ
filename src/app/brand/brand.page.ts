@@ -79,16 +79,21 @@ export class BrandPage implements OnInit {
   }
 
   go(x) {
-    this.nav.navigateForward('home/' + x + '/' + this.user);
+    this.nav.navigateForward('home/' + x + '/' + this.user + '?click_id=' + this.click_id);
   }
 
   links = [] as any;
 
   // load = true;
 
+  click_id;
 
   ngOnInit() {
     console.log('Do nothing')
+
+    this.activatedRoute.queryParams.subscribe(a => {
+      this.click_id = a['click_id'] || '';
+    })
 
     this.vendor = this.activatedRoute.snapshot.paramMap.get('vendor');
     this.user = this.activatedRoute.snapshot.paramMap.get('user') || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
@@ -152,7 +157,7 @@ export class BrandPage implements OnInit {
     if (this.vendor != "5qjg3XyuGGdu1janN1yp305qWL62") {
 
       this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: this.vendor }).subscribe(a => {
-        this.voucher = a['data'] || [];
+        this.voucher = a['data'].filter(a => a['status']) || [];
         console.log(this.voucher)
       })
 
@@ -161,7 +166,7 @@ export class BrandPage implements OnInit {
       this.http.post('https://api2.vsnap.my/datavoucherbytag', { tag: "CSR2021" }).subscribe(a => {
         console.log('here');
 
-        this.voucher = a['data'] || [];
+        this.voucher = a['data'].filter(a => a['status']) || [];
         console.log(this.voucher)
       })
 
@@ -255,7 +260,7 @@ export class BrandPage implements OnInit {
   }
 
   tomain() {
-    this.nav.navigateForward('main?user=' + this.user)
+    this.nav.navigateForward('main?user=' + this.user + '&click_id=' + this.click_id)
   }
 
   join() {
@@ -349,7 +354,7 @@ export class BrandPage implements OnInit {
   // }
 
   store(x) {
-    this.nav.navigateForward('store/' + x);
+    this.nav.navigateForward('store/' + x + '?click_id=' + this.click_id);
   }
 
   donatecsr2021() {

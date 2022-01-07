@@ -1,0 +1,196 @@
+<ion-content #content [scrollEvents]="true">
+
+
+  <div *ngIf="ready" style="display: flex;min-height: 100vh;">
+
+    <div #right
+      [ngStyle]=' lengthof(contents.bg) ? {"background-image" : "url(" + contents.bg + ")" , "background-repeat" : "no-repeat" , "background-size" :"cover"} : {"background-color": contents.bg_color || "white" }'
+      class='paddinger'>
+
+      <div *ngIf="contents.header.status" [ngStyle]='{"background-color": contents.header.bg_color || "white" }'
+        style='width:100%;padding:10px 20px;display:flex;align-items: center;justify-content: space-between;position: sticky;z-index:100;top:0;'>
+        <img style='height:40px;' src="{{contents.header.photo}}" alt="">
+        <div (click)="scrollTo()"
+          [ngStyle]='{"background-color": (contents.header.button_color || "black") , "color": (contents.header.button_text_color || "white") }'
+          style='cursor: pointer;;padding:7px 15px;border-radius:3px;font-weight: bold;'>{{contents.header.button_text
+          || "Order"}}</div>
+      </div>
+
+      <div *ngIf="contents.photos.status && contents.photos.intro"
+        style='width:100%;display:flex;align-items: center;justify-content: center;'>
+        <img style='width:100%;object-fit: contain;' src="{{contents.photos.intro}}" alt="">
+      </div>
+
+      <div *ngIf="contents.intro.status">
+
+        <div
+          [ngStyle]=' lengthof(contents.intro.bg) ? {"background-image" : "url(" + contents.intro.bg + ")" , "background-repeat" : "no-repeat" , "background-size" :"cover"} : {"background-color": contents.intro.bg_color || "white" }'
+          style='width:100%;padding:40px 20px;display:flex;align-items: center;justify-content: center;flex-direction: column;'>
+          <div [ngStyle]='{"color": contents.intro.top_color || "white" }'
+            style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:5px;text-align: center;width:100%;white-space: pre-line;'>
+            {{contents.intro.top}}</div>
+          <div [ngStyle]='{"color": contents.intro.mid_color || "white" }'
+            style='font-size:25px;font-weight: bold;letter-spacing: 1px;margin-bottom:15px;text-align: center;width:100%;white-space: pre-line'>
+            {{contents.intro.mid}}</div>
+          <div [ngStyle]='{"color": contents.intro.bottom_color || "white" }'
+            style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:25px;text-align: center;width:100%;white-space: pre-line;line-height: 22px;'>
+            {{contents.intro.bottom}}</div>
+          <div (click)="contents.intro.button_link ? gooo(contents.intro.button_link) : scrollTo()"
+            [ngStyle]='{"background-color": (contents.intro.button_color || "black") , "color": (contents.intro.button_text_color || "white") }'
+            style='width:max-content;padding:10px 20px;border-radius:5px;font-weight: bold;'>
+            {{contents.intro.button_text}}</div>
+        </div>
+      </div>
+
+      <div *ngIf="contents.photos.status && contents.photos.pain"
+        style='width:100%;display:flex;align-items: center;justify-content: center;'>
+        <img style='width:100%;object-fit: contain;' src="{{contents.photos.pain}}" alt="">
+      </div>
+
+
+      <div *ngIf="contents.slides.status"
+        [ngStyle]=' lengthof(contents.slides.bg) ? {"background-image" : "url(" + contents.slides.bg + ")" , "background-repeat" : "no-repeat" , "background-size" :"cover"} : {"background-color": contents.slides.bg_color || "white" }'
+        style='width:100%;padding:40px 0px'>
+        <div style='width:100%;padding:0px 20px;'>
+          <div [ngStyle]='{"color": contents.slides.top_color || "white" }'
+            style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:5px;text-align: center;width:100%;white-space: pre-line;'>
+            {{contents.slides.top}}</div>
+          <div [ngStyle]='{"color": contents.slides.mid_color || "white" }'
+            style='font-size:25px;font-weight: bold;letter-spacing: 1px;margin-bottom:15px;text-align: center;width:100%;white-space: pre-line'>
+            {{contents.slides.mid}}</div>
+          <div [ngStyle]='{"color": contents.slides.bottom_color || "white" }'
+            style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:25px;text-align: center;width:100%;white-space: pre-line;line-height: 22px;'>
+            {{contents.slides.bottom}}</div>
+        </div>
+        <ion-slides id='slides' #slides (ionSlideWillChange)="call($event)"
+          style='width:100%;align-items: center;display:flex;' pager="false" [options]="slideOpts">
+          <ion-slide *ngFor='let eve of contents.slide;let i = index' [ngClass]="[activeslide==i ? 'open' : 'openx']"
+            style='width:100%;'>
+            <img style='width:100%;' src="{{eve.url}}" alt="">
+          </ion-slide>
+        </ion-slides>
+      </div>
+
+      <div *ngIf="contents.review.status && lengthof(rating)">
+        <div
+          [ngStyle]=' lengthof(contents.review.bg) ? {"background-image" : "url(" + contents.review.bg + ")" , "background-repeat" : "no-repeat" , "background-size" :"cover"} : {"background-color": contents.review.bg_color || "white" }'
+          style='width:100%;padding:40px 0px'>
+          <div style='width:100%;padding:0px 20px;'>
+            <div [ngStyle]='{"color": contents.review.top_color || "white" }'
+              style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:5px;text-align: center;width:100%;white-space: pre-line;'>
+              {{contents.review.top}}</div>
+            <div [ngStyle]='{"color": contents.review.mid_color || "white" }'
+              style='font-size:25px;font-weight: bold;letter-spacing: 1px;margin-bottom:15px;text-align: center;width:100%;white-space: pre-line'>
+              {{contents.review.mid}}</div>
+            <div [ngStyle]='{"color": contents.review.bottom_color || "white" }'
+              style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:0px;text-align: center;width:100%;white-space: pre-line;line-height: 22px;'>
+              {{contents.review.bottom}}</div>
+          </div>
+          <ion-slides *ngIf="lengthof(contents.reviews)" id='slides2' #slides2 (ionSlideWillChange)="call2($event)"
+            style='width:100%;align-items: center;display:flex;' pager="false" [options]="slideOpts2">
+            <ion-slide *ngFor='let eve of rating;let i = index' [ngClass]="[activeslide2==i ? 'open2' : 'open2x']"
+              style='width:100%;display:flex;align-items: center;justify-content: center;flex-direction: column;'>
+              <div
+                style='position: relative;width:90%;padding-bottom:90%;display:flex;align-items: center;justify-content: center;'>
+                <img style='width:100%;border-radius:1000px;height:100%;object-fit: cover;position: absolute;top:0;'
+                  src="{{eve.feedback_photo}}" alt="">
+              </div>
+              <div [ngStyle]='{"color": contents.review.review_name_color || "white" }'
+                style='font-size:15px;font-weight: bold;letter-spacing: 1px;margin-bottom:5px;text-align: center;width:100%;white-space: pre-line;margin-top:10px;margin-bottom:5px;'>
+                {{eve.name}}</div>
+              <div
+                style='width:100%;display:flex;align-items: center;justify-content: space-evenly;margin-bottom:10px;max-width:150px'>
+                <ion-icon [ngStyle]='{"color" : eve.feedback_rating>=1 ? "yellow" : "#eeeeee"}' style='font-size:18px;'
+                  name="star"></ion-icon>
+                <ion-icon [ngStyle]='{"color" : eve.feedback_rating>=2 ? "yellow" : "#eeeeee"}' style='font-size:18px;'
+                  name="star"></ion-icon>
+                <ion-icon [ngStyle]='{"color" : eve.feedback_rating>=3 ? "yellow" : "#eeeeee"}' style='font-size:18px;'
+                  name="star"></ion-icon>
+                <ion-icon [ngStyle]='{"color" : eve.feedback_rating>=4 ? "yellow" : "#eeeeee"}' style='font-size:18px;'
+                  name="star"></ion-icon>
+                <ion-icon [ngStyle]='{"color" : eve.feedback_rating>=5 ? "yellow" : "#eeeeee"}' style='font-size:18px;'
+                  name="star"></ion-icon>
+              </div>
+              <div [ngStyle]='{"color": contents.review.review_comment_color || "white" }'
+                style='font-size:14px;font-weight: normal;letter-spacing: 1px;margin-bottom:5px;text-align: center;width:100%;white-space: pre-line;opacity: 0.7;'>
+                "&nbsp;{{eve.feedback}}&nbsp;"</div>
+
+            </ion-slide>
+          </ion-slides>
+        </div>
+      </div>
+
+      <div *ngIf="lengthof(contents.photos.outro) && contents.photos.status">
+        <div *ngFor='let eve of contents.photos.outro'
+          style='width:100%;display:flex;align-items: center;justify-content: center;'>
+          <img style='width:100%;object-fit: contain;' src="{{eve.url}}" alt="">
+        </div>
+      </div>
+
+      <div *ngIf="contents.product.status">
+        <div
+          [ngStyle]=' lengthof(contents.product.bg) ? {"background-image" : "url(" + contents.product.bg + ")" , "background-repeat" : "no-repeat" , "background-size" :"cover"} : {"background-color": contents.product.bg_color || "white" }'
+          class='paddinger2'>
+
+          <div style='width:100%;padding:40px 20px;'>
+            <div [ngStyle]='{"color": contents.product.top_color || "white" }'
+              style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:5px;text-align: center;width:100%;white-space: pre-line;'>
+              {{contents.product.top}}</div>
+            <div [ngStyle]='{"color": contents.product.mid_color || "white" }'
+              style='font-size:25px;font-weight: bold;letter-spacing: 1px;margin-bottom:15px;text-align: center;width:100%;white-space: pre-line'>
+              {{contents.product.mid}}</div>
+            <div [ngStyle]='{"color": contents.product.bottom_color || "white" }'
+              style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:25px;text-align: center;width:100%;white-space: pre-line;line-height: 22px;'>
+              {{contents.product.bottom}}</div>
+
+            <div [ngStyle]='{"background-color": contents.product.product_bg || "white" }'
+              *ngFor='let eve of products;let i = index' (click)='detail(eve)'
+              style='width:100%;display:flex;align-items: center;justify-content: flex-start;padding:15px;cursor: pointer;margin-bottom:15px;border-radius:10px;'>
+              <img style='height:100px;width:100px;' src="{{lengthof(eve.photo) ? eve.photo[0].url : ''}}" alt="">
+              <div style='width:calc( 100% - 100px );padding-left:15px;'>
+                <div [ngStyle]='{"color": contents.product.product_text_color || "black" }'
+                  style='font-size:16px;font-weight: bold;letter-spacing: 1px;margin-bottom:10px;text-align: left;width:100%;'>
+                  {{eve.name}}</div>
+                <div [ngStyle]='{"color": contents.product.product_price_color || "black" }'
+                  style='font-size:20px;font-weight: bold;letter-spacing: 1px;margin-bottom:5px;text-align: left;width:100%;'>
+                  {{eve.price_now | currency:"RM"}}</div>
+                <div *ngIf="eve.price_now < eve.price_ori"
+                  [ngStyle]='{"color": contents.product.product_price_ori_color || "black" }'
+                  style='font-size:14px;font-weight: normal;letter-spacing: 1px;text-align: left;width:100%;text-decoration: line-through;opacity: 0.7;'>
+                  {{eve.price_ori | currency:"RM"}}</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div *ngIf="contents.button.status">
+        <div
+          [ngStyle]=' lengthof(contents.button.bg) ? {"background-image" : "url(" + contents.button.bg + ")" , "background-repeat" : "no-repeat" , "background-size" :"cover"} : {"background-color": contents.button.bg_color || "white" }'
+          style='width:100%;padding:40px 20px;'>
+          <div [ngStyle]='{"color": contents.button.top_color || "white" }'
+            style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:5px;text-align: center;width:100%;white-space: pre-line;'>
+            {{contents.button.top}}</div>
+          <div [ngStyle]='{"color": contents.button.mid_color || "white" }'
+            style='font-size:25px;font-weight: bold;letter-spacing: 1px;margin-bottom:15px;text-align: center;width:100%;white-space: pre-line'>
+            {{contents.button.mid}}</div>
+          <div [ngStyle]='{"color": contents.button.bottom_color || "white" }'
+            style='font-size:16px;font-weight: normal;letter-spacing: 1px;margin-bottom:25px;text-align: center;width:100%;white-space: pre-line;line-height: 22px;'>
+            {{contents.button.bottom}}</div>
+
+          <div style='width:100%;display:flex;flex-wrap: wrap;justify-content: center;padding-left:10px;'>
+            <div [ngStyle]='{"background-color": eve.bg_color || "black","color": eve.color || "white"  }'
+              *ngFor='let eve of contents.buttons;let i = index' (click)="gooo(eve)"
+              style='cursor: pointer;;padding:10px 20px;margin-right:10px;margin-bottom:10px;border-radius:5px;'>
+              {{eve.name}}</div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</ion-content>

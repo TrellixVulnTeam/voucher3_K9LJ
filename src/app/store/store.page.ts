@@ -97,6 +97,7 @@ export class StorePage implements OnInit {
   load = true;
   complete = false;
   items = {};
+  click_id;
 
 
   ngOnInit() {
@@ -147,7 +148,7 @@ export class StorePage implements OnInit {
             this.meta.updateTag({ property: 'og:image:width', content: '500' });
             this.meta.updateTag({ property: 'og:image:height', content: '500' });
 
-            
+
           } else {
           }
         }, e => {
@@ -170,7 +171,7 @@ export class StorePage implements OnInit {
           this.meta.updateTag({ property: 'fb:app_id', content: '2713339858890729' });
           this.meta.updateTag({ property: 'og:image:width', content: '500' });
           this.meta.updateTag({ property: 'og:image:height', content: '500' });
-          
+
         } else {
         }
       }, e => {
@@ -179,6 +180,10 @@ export class StorePage implements OnInit {
   }
 
   ionViewWillEnter() {
+
+    this.actRoute.queryParams.subscribe(a => {
+      this.click_id = a['click_id'] || '';
+    })
 
     // private http: HttpClient,
     // private meta: Meta, 
@@ -323,7 +328,7 @@ export class StorePage implements OnInit {
   keyword = "";
 
   tomain() {
-    this.nav.navigateForward('main?user=' + this.id)
+    this.nav.navigateForward('main?user=' + this.id + '&click_id=' + this.click_id)
   }
 
   // ionViewWillEnter() {
@@ -428,6 +433,6 @@ export class StorePage implements OnInit {
   }
 
   go(x) {
-    this.nav.navigateForward('home/' + x + '/' + this.id);
+    this.nav.navigateForward('home/' + x + '/' + this.id + '?click_id=' + this.click_id);
   }
 }

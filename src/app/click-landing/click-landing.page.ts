@@ -67,24 +67,47 @@ export class ClickLandingPage implements OnInit {
 
 
   to(x) {
-    this.nav.navigateForward('store/' + x.userid);
+    this.http.post('https://api2.vsnap.my/updateclicklogs', { click_id: 'store', logs_pool_id: this.logsid }).subscribe(p2 => {
+      console.log("got the button");
+    });
+    this.nav.navigateForward('store/' + x.userid + '&click_id=' + this.id);
   }
 
   detail(x) {
-    this.nav.navigateForward('home/' + x.id + '/' + this.user);
+    this.http.post('https://api2.vsnap.my/updateclicklogs', { click_id: x.id, logs_pool_id: this.logsid }).subscribe(p2 => {
+      console.log("got the button");
+    });
+    this.nav.navigateForward('home/' + x.id + '/' + this.user + '?logsid=' + this.logsid + '&click_id=' + this.id); // click_id
   }
 
   logsid = ''
 
   join() {
-    window.open('https://register.vsnap.my/influencer?referrer_id=' + this.data.userid);
+
+    console.log(this.logsid);
+
+    this.http.post('https://api2.vsnap.my/updateclicklogs', { click_id: 'register', logs_pool_id: this.logsid }).subscribe(p2 => {
+
+      console.log("got the button");
+
+      // window.open('https://register.vsnap.my/influencer?referrer_id=' + this.data.userid);
+
+      this.iab.create('https://register.vsnap.my/influencer?referrer_id=' + this.data.userid, '_system');
+
+    });
+
   }
 
-  qr= ''
+  gooo(x) {
+    this.http.post('https://api2.vsnap.my/updateclicklogs', { click_id: 'custom', logs_pool_id: this.logsid }).subscribe(p2 => {
+      console.log("got the button");
+    });
+    window.open(x + '?userid=' + this.data.userid + '&uniqueid=' + this.uniquekey + '&logsid=' + this.logsid);
+  }
+
+  qr = ''
 
   dataer() {
-
- 
 
     firebase.database().ref('link').once('value', data => {
       this.links = data.val();
@@ -110,7 +133,7 @@ export class ClickLandingPage implements OnInit {
           this.rating = a['data'].filter(a => a['feedback_rating'] > 3);
         });
 
-        this.http.post('https://api2.vsnap.my/datavendorvouchers', { id: x['data'][0].by }).subscribe(a => {
+        this.http.post('https://api2.vsnap.my/datacclickvouchers', { id: x['data'][0].by , type_id : x['data'][0].type_id  }).subscribe(a => {
           this.products = a['data'].filter(a => a['status']) || [];
           console.log(this.products)
         })
@@ -120,7 +143,7 @@ export class ClickLandingPage implements OnInit {
           setInterval(() => {
             this.timer += 1;
 
-                if (this.timer == 3) {
+            if (this.timer == 3) {
               console.log('first insert')
 
               let temp = {
@@ -142,7 +165,7 @@ export class ClickLandingPage implements OnInit {
               })
 
             }
-            
+
             // if (this.timer == 3) {
             //   console.log('first insert')
 
@@ -164,19 +187,21 @@ export class ClickLandingPage implements OnInit {
 
             //   })
 
-            // } else if (this.timer == 10 || this.timer == 15 || this.timer == 30 || this.timer == 60) {
+            // } 
 
-            //   this.http.post('https://api2.vsnap.my/updateclicklogs', { time: this.timer, logs_pool_id: this.logsid }).subscribe(p2 => {
-            //     console.log(this.timer);
-            //     console.log(p2)
-            //   });
+            else if (this.timer == 10 || this.timer == 15 || this.timer == 30 || this.timer == 60) {
 
-            // }
+              this.http.post('https://api2.vsnap.my/updateclicklogs', { time: this.timer, logs_pool_id: this.logsid }).subscribe(p2 => {
+                console.log(this.timer);
+                console.log(p2)
+              });
+
+            }
 
             // console.log(123)
           }, 1000);
 
-      
+
 
           // setTimeout(() => {
           //   this.http.post('https://api2.vsnap.my/insertclicklogs', temp).subscribe(p => {

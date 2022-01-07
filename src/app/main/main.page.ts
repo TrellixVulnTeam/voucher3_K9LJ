@@ -31,6 +31,8 @@ export class MainPage implements OnInit {
     // window.open(this.links[x]);
   }
 
+  click_id;
+
   ngOnInit() {
     console.log('Do nothing')
 
@@ -54,6 +56,7 @@ export class MainPage implements OnInit {
 
 
     this.activatedRoute.queryParams.subscribe(a => {
+      this.click_id = a['click_id'] || '';
 
       this.user = a['user'] || "yRSIH0mIALf4PsxkwSUFkKnjdMI3";
 
@@ -205,13 +208,13 @@ export class MainPage implements OnInit {
   }
 
   go(x) {
-    this.nav.navigateForward('home/' + x + '/' + this.user);
+    this.nav.navigateForward('home/' + x + '/' + this.user + '?click_id=' + this.click_id);
   }
 
   keyword = "";
   selected = "All";
   store(x) {
-    this.nav.navigateForward('store/' + x);
+    this.nav.navigateForward('store/' + x + '?click_id=' + this.click_id);
   }
 
   filterer(x) {

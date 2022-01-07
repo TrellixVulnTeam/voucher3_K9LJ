@@ -61,6 +61,14 @@ const routes: Routes = [
   {
     path: 'fnbqr',
     loadChildren: () => import('./fnbqr/fnbqr.module').then( m => m.FnbqrPageModule)
+  },
+  {
+    path: 'landing',
+    loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
+  },
+  {
+    path: 'preview',
+    loadChildren: () => import('./preview/preview.module').then( m => m.PreviewPageModule)
   }
 
 

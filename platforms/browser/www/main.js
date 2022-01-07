@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\CodeBento - Boruto\Desktop\voucher3.0\src\main.ts */"zUnb");
+module.exports = __webpack_require__(/*! D:\Vsnap Only\voucher4.0\src\main.ts */"zUnb");
 
 
 /***/ }),
@@ -441,32 +441,64 @@ __webpack_require__.r(__webpack_exports__);
 const routes = [
     {
         path: 'home/:item/:user',
-        loadChildren: () => Promise.all(/*! import() | home-home-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("home-home-module")]).then(__webpack_require__.bind(null, /*! ./home/home.module */ "ct+p")).then(m => m.HomePageModule)
+        loadChildren: () => Promise.all(/*! import() | home-home-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~click-landing-click-landing-module~click-preview-click-preview-module~home-home-module"), __webpack_require__.e("common"), __webpack_require__.e("home-home-module")]).then(__webpack_require__.bind(null, /*! ./home/home.module */ "ct+p")).then(m => m.HomePageModule)
     },
     {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'main',
         pathMatch: 'full'
     },
     {
         path: 'home',
-        loadChildren: () => Promise.all(/*! import() | home-home-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("home-home-module")]).then(__webpack_require__.bind(null, /*! ./home/home.module */ "ct+p")).then(m => m.HomePageModule)
+        loadChildren: () => Promise.all(/*! import() | home-home-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~click-landing-click-landing-module~click-preview-click-preview-module~home-home-module"), __webpack_require__.e("common"), __webpack_require__.e("home-home-module")]).then(__webpack_require__.bind(null, /*! ./home/home.module */ "ct+p")).then(m => m.HomePageModule)
     },
     {
         path: 'thanks',
-        loadChildren: () => Promise.all(/*! import() | thanks-thanks-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~store-store-module~thanks-thanks-module"), __webpack_require__.e("thanks-thanks-module")]).then(__webpack_require__.bind(null, /*! ./thanks/thanks.module */ "WBR6")).then(m => m.ThanksPageModule)
+        loadChildren: () => __webpack_require__.e(/*! import() | thanks-thanks-module */ "thanks-thanks-module").then(__webpack_require__.bind(null, /*! ./thanks/thanks.module */ "WBR6")).then(m => m.ThanksPageModule)
     },
     {
         path: 'store/:id',
-        loadChildren: () => Promise.all(/*! import() | store-store-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~store-store-module~thanks-thanks-module"), __webpack_require__.e("store-store-module")]).then(__webpack_require__.bind(null, /*! ./store/store.module */ "NFwV")).then(m => m.StorePageModule)
+        loadChildren: () => Promise.all(/*! import() | store-store-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("default~click-landing-click-landing-module~click-preview-click-preview-module~store-store-module"), __webpack_require__.e("store-store-module")]).then(__webpack_require__.bind(null, /*! ./store/store.module */ "NFwV")).then(m => m.StorePageModule)
     },
     {
         path: 'brand/:vendor/:user',
-        loadChildren: () => Promise.all(/*! import() | brand-brand-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("brand-brand-module")]).then(__webpack_require__.bind(null, /*! ./brand/brand.module */ "ZQTp")).then(m => m.BrandPageModule)
+        loadChildren: () => Promise.all(/*! import() | brand-brand-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("common"), __webpack_require__.e("brand-brand-module")]).then(__webpack_require__.bind(null, /*! ./brand/brand.module */ "ZQTp")).then(m => m.BrandPageModule)
     },
     {
         path: 'order/:id',
-        loadChildren: () => Promise.all(/*! import() | order-order-module */[__webpack_require__.e("default~brand-brand-module~home-home-module~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("default~brand-brand-module~firebase-auth~order-order-module~store-store-module~thanks-thanks-module"), __webpack_require__.e("common"), __webpack_require__.e("order-order-module")]).then(__webpack_require__.bind(null, /*! ./order/order.module */ "+p+5")).then(m => m.OrderPageModule)
+        loadChildren: () => Promise.all(/*! import() | order-order-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("common"), __webpack_require__.e("order-order-module")]).then(__webpack_require__.bind(null, /*! ./order/order.module */ "+p+5")).then(m => m.OrderPageModule)
+    },
+    {
+        path: 'token',
+        loadChildren: () => __webpack_require__.e(/*! import() | token-token-module */ "token-token-module").then(__webpack_require__.bind(null, /*! ./token/token.module */ "qWfp")).then(m => m.TokenPageModule)
+    },
+    {
+        path: 'event/:event/:user',
+        loadChildren: () => Promise.all(/*! import() | event-event-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("common"), __webpack_require__.e("event-event-module")]).then(__webpack_require__.bind(null, /*! ./event/event.module */ "zB96")).then(m => m.EventPageModule)
+    },
+    {
+        path: 'guild/:guild/:user',
+        loadChildren: () => Promise.all(/*! import() | guild-guild-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("common"), __webpack_require__.e("guild-guild-module")]).then(__webpack_require__.bind(null, /*! ./guild/guild.module */ "861K")).then(m => m.GuildPageModule)
+    },
+    {
+        path: 'main',
+        loadChildren: () => Promise.all(/*! import() | main-main-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("common"), __webpack_require__.e("main-main-module")]).then(__webpack_require__.bind(null, /*! ./main/main.module */ "XpXM")).then(m => m.MainPageModule)
+    },
+    {
+        path: 'visit-qr',
+        loadChildren: () => __webpack_require__.e(/*! import() | visit-qr-visit-qr-module */ "visit-qr-visit-qr-module").then(__webpack_require__.bind(null, /*! ./visit-qr/visit-qr.module */ "5Kne")).then(m => m.VisitQrPageModule)
+    },
+    {
+        path: 'click-landing',
+        loadChildren: () => Promise.all(/*! import() | click-landing-click-landing-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("default~click-landing-click-landing-module~click-preview-click-preview-module~store-store-module"), __webpack_require__.e("default~click-landing-click-landing-module~click-preview-click-preview-module~home-home-module"), __webpack_require__.e("click-landing-click-landing-module")]).then(__webpack_require__.bind(null, /*! ./click-landing/click-landing.module */ "+4tA")).then(m => m.ClickLandingPageModule)
+    },
+    {
+        path: 'click-preview',
+        loadChildren: () => Promise.all(/*! import() | click-preview-click-preview-module */[__webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~d1821be4"), __webpack_require__.e("default~brand-brand-module~click-landing-click-landing-module~click-preview-click-preview-module~eve~45f9d11f"), __webpack_require__.e("default~click-landing-click-landing-module~click-preview-click-preview-module~store-store-module"), __webpack_require__.e("default~click-landing-click-landing-module~click-preview-click-preview-module~home-home-module"), __webpack_require__.e("click-preview-click-preview-module")]).then(__webpack_require__.bind(null, /*! ./click-preview/click-preview.module */ "EgA8")).then(m => m.ClickPreviewPageModule)
+    },
+    {
+        path: 'fnbqr',
+        loadChildren: () => __webpack_require__.e(/*! import() | fnbqr-fnbqr-module */ "fnbqr-fnbqr-module").then(__webpack_require__.bind(null, /*! ./fnbqr/fnbqr.module */ "py0n")).then(m => m.FnbqrPageModule)
     }
 ];
 let AppRoutingModule = class AppRoutingModule {
